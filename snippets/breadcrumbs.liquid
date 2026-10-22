@@ -1,0 +1,147 @@
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="page-width">
+    <ol class="breadcrumbs__list">
+
+      <!-- HOME -->
+      <li class="breadcrumbs__item">
+        <a href="{{ routes.root_url }}">Home</a>
+      </li>
+
+      {% case request.page_type %}
+
+        <!-- ========================= -->
+        <!-- PRODUCT PAGE -->
+        <!-- ========================= -->
+        {% when 'product' %}
+
+          {% assign breadcrumb_collection = blank %}
+
+          {% for product_collection in product.collections %}
+
+            {% assign collection_handle = product_collection.handle | downcase %}
+
+            {% unless collection_handle == 'all'
+              or collection_handle contains 'best-seller'
+              or collection_handle contains 'best_seller'
+              or collection_handle contains 'sale'
+              or collection_handle contains 'new-arrival'
+              or collection_handle contains 'new_arrival'
+              or collection_handle contains 'featured'
+              or collection_handle contains 'all-products'
+              or collection_handle contains 'all_products'
+            %}
+
+              {% assign breadcrumb_collection = product_collection %}
+              {% break %}
+
+            {% endunless %}
+
+          {% endfor %}
+
+
+          {% if breadcrumb_collection != blank %}
+
+            <li class="breadcrumbs__separator" aria-hidden="true">
+              ›
+            </li>
+
+            <li class="breadcrumbs__item">
+              <a href="{{ breadcrumb_collection.url }}">
+                {{ breadcrumb_collection.title }}
+              </a>
+            </li>
+
+          {% endif %}
+
+
+          <!-- CURRENT PRODUCT -->
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">
+              {{ product.title }}
+            </span>
+          </li>
+
+
+        <!-- ========================= -->
+        <!-- COLLECTION PAGE -->
+        <!-- ========================= -->
+        {% when 'collection' %}
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">
+              {{ collection.title }}
+            </span>
+          </li>
+
+
+        <!-- ========================= -->
+        <!-- PAGE -->
+        <!-- ========================= -->
+        {% when 'page' %}
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">
+              {{ page.title }}
+            </span>
+          </li>
+
+
+        <!-- ========================= -->
+        <!-- BLOG -->
+        <!-- ========================= -->
+        {% when 'blog' %}
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">
+              {{ blog.title }}
+            </span>
+          </li>
+
+
+        <!-- ========================= -->
+        <!-- ARTICLE -->
+        <!-- ========================= -->
+        {% when 'article' %}
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item">
+            <a href="{{ blog.url }}">
+              {{ blog.title }}
+            </a>
+          </li>
+
+          <li class="breadcrumbs__separator" aria-hidden="true">
+            ›
+          </li>
+
+          <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">
+              {{ article.title }}
+            </span>
+          </li>
+
+      {% endcase %}
+
+    </ol>
+  </div>
+</nav>

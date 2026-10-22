@@ -1,0 +1,140 @@
+{% assign ai_gen_id = section.id | replace: '_', '' | downcase %}
+
+<style>
+.ai-sticky-atc-{{ ai_gen_id }}{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ background:#fff;
+ border-top:1px solid #eee;
+ box-shadow:0 -4px 20px rgba(0,0,0,.1);
+ padding:12px;
+ transform:translateY(100%);
+ transition:.3s;
+ z-index:999;
+}
+.ai-sticky-atc-{{ ai_gen_id }}.show{ transform:translateY(0); }
+
+.ai-sticky-wrap{
+ max-width:1200px;
+ margin:auto;
+ display:flex;
+ gap:15px;
+ align-items:center;
+}
+
+.ai-sticky-img img{
+ width:55px;height:55px;object-fit:cover;border-radius:6px;
+}
+
+.ai-sticky-title{font-weight:600;font-size:14px;margin:0}
+.ai-sticky-price{font-weight:700}
+
+.ai-sticky-select{
+ padding:10px;
+ border:1px solid #ccc;
+ border-radius:6px;
+}
+
+.ai-sticky-btn{
+ background:#00205b;
+ color:#fff;
+ border:0;
+ padding:12px 20px;
+ border-radius:8px;
+ font-weight:600;
+ cursor:pointer;
+}
+.ai-sticky-btn.loading{opacity:.6;pointer-events:none}
+</style>
+
+<sticky-atc-{{ ai_gen_id }} class="ai-sticky-atc-{{ ai_gen_id }}">
+  <div class="ai-sticky-wrap">
+
+    <div class="ai-sticky-img">
+      <img src="{{ product.featured_image | image_url: width:120 }}">
+    </div>
+
+    <div style="flex:1">
+      <p class="ai-sticky-title">{{ product.title }}</p>
+      <p class="ai-sticky-price">{{ product.selected_or_first_available_variant.price | money }}</p>
+    </div>
+
+    {% unless product.has_only_default_variant %}
+      <select class="ai-sticky-select" data-variant>
+        {% for v in product.variants %}
+          <option value="{{ v.id }}">{{ v.title }}</option>
+        {% endfor %}
+      </select>
+    {% endunless %}
+
+    <button class="ai-sticky-btn" data-atc>Add to cart</button>
+
+  </div>
+</sticky-atc-{{ ai_gen_id }}>
+
+<script>
+class StickyATC{{ ai_gen_id }} extends HTMLElement{
+ constructor(){
+  super();
+  this.btn=this.querySelector('[data-atc]');
+  this.select=this.querySelector('[data-variant]');
+  this.variant={{ product.selected_or_first_available_variant.id }};
+ }
+
+ connectedCallback(){
+  window.addEventListener('scroll',()=>{
+    if(window.scrollY>400){ this.classList.add('show'); }
+    else{ this.classList.remove('show'); }
+  });
+
+  if(this.select){
+    this.select.addEventListener('change',e=>{
+      this.variant=e.target.value;
+    });
+  }
+
+  this.btn.addEventListener('click',()=>this.add());
+ }
+
+ add(){
+  this.btn.classList.add('loading');
+
+  fetch('/cart/add.js',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      items:[{id:this.variant,quantity:1}]
+    })
+  })
+  .then(()=>fetch('/?sections=cart-drawer,cart-icon-bubble'))
+  .then(r=>r.json())
+  .then(sections=>{
+
+    const drawer=document.querySelector('cart-drawer');
+    if(drawer && sections['cart-drawer']){
+      drawer.innerHTML=sections['cart-drawer'];
+      drawer.classList.add('is-open');
+    }
+
+    const bubble=document.querySelector('#cart-icon-bubble');
+    if(bubble && sections['cart-icon-bubble']){
+      bubble.innerHTML=sections['cart-icon-bubble'];
+    }
+
+    document.dispatchEvent(new CustomEvent('cart:refresh',{bubbles:true}));
+  })
+  .finally(()=>this.btn.classList.remove('loading'));
+ }
+}
+customElements.define('sticky-atc-{{ ai_gen_id }}',StickyATC{{ ai_gen_id }});
+</script>
+
+{% schema %}
+{
+ "name":"Sticky Add To Cart",
+ "settings":[],
+ "presets":[{"name":"Sticky Add To Cart"}]
+}
+{% endschema %}

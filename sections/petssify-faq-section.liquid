@@ -1,0 +1,274 @@
+<style>
+  #shopify-section-{{ section.id }} .petssify-faq {
+    padding: 60px 20px;
+    background: #ffffff;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__heading {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__subheading {
+    text-align: center;
+    color: #666666;
+    margin-bottom: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__list {
+    border-top: 1px solid #e5e5e5;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__item {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 18px 4px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    color: #111111;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__item.is-open .petssify-faq__icon {
+    transform: rotate(180deg);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__answer-inner {
+    padding: 0 4px 18px;
+    color: #444444;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__answer-inner p {
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__answer-inner p:last-child {
+    margin-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__contact {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 15px;
+    color: #444444;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-faq__contact a {
+    color: #111111;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    #shopify-section-{{ section.id }} .petssify-faq {
+      padding: 40px 16px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-faq__heading {
+      font-size: 26px;
+    }
+  }
+</style>
+
+<section class="petssify-faq" id="petssify-faq-{{ section.id }}">
+  <div class="petssify-faq__container">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="petssify-faq__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <p class="petssify-faq__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    <div class="petssify-faq__list">
+      {%- for block in section.blocks -%}
+        <div class="petssify-faq__item" {{ block.shopify_attributes }}>
+          <button
+            class="petssify-faq__question"
+            type="button"
+            aria-expanded="false"
+            aria-controls="petssify-faq-answer-{{ block.id }}"
+            id="petssify-faq-question-{{ block.id }}"
+          >
+            <span>{{ block.settings.question }}</span>
+            <span class="petssify-faq__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+          </button>
+          <div
+            class="petssify-faq__answer"
+            id="petssify-faq-answer-{{ block.id }}"
+            role="region"
+            aria-labelledby="petssify-faq-question-{{ block.id }}"
+          >
+            <div class="petssify-faq__answer-inner">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.contact_text != blank -%}
+      <p class="petssify-faq__contact">
+        {{ section.settings.contact_text }}
+        {%- if section.settings.contact_email != blank -%}
+          <a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var section = document.getElementById('petssify-faq-{{ section.id }}');
+    if (!section) return;
+
+    var allowMultiple = {{ section.settings.allow_multiple_open | json }};
+    var items = section.querySelectorAll('.petssify-faq__item');
+
+    items.forEach(function (item) {
+      var button = item.querySelector('.petssify-faq__question');
+      var answer = item.querySelector('.petssify-faq__answer');
+
+      button.addEventListener('click', function () {
+        var isOpen = item.classList.contains('is-open');
+
+        if (!allowMultiple) {
+          items.forEach(function (other) {
+            if (other !== item) {
+              other.classList.remove('is-open');
+              other.querySelector('.petssify-faq__question').setAttribute('aria-expanded', 'false');
+              other.querySelector('.petssify-faq__answer').style.maxHeight = null;
+            }
+          });
+        }
+
+        if (isOpen) {
+          item.classList.remove('is-open');
+          button.setAttribute('aria-expanded', 'false');
+          answer.style.maxHeight = null;
+        } else {
+          item.classList.add('is-open');
+          button.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Petssify FAQ",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything you need to know before you shop with Petssify."
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow multiple questions open at once",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "Still have questions? Email us at "
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email",
+      "default": "support@petssify.com"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question goes here"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Answer goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Petssify FAQ",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "What products does Petssify sell?", "answer": "<p>Petssify offers practical pet supplies for cats and dogs, including toys, walking and training gear, grooming tools, feeding accessories, beds, comfort products, and travel essentials.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Do you ship internationally?", "answer": "<p>Currently, Petssify ships orders within the United States. Tracking information is provided for shipped orders.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders are typically processed within 1&ndash;3 business days and delivered within 5&ndash;10 business days in the United States.</p>" } },
+        { "type": "faq_item", "settings": { "question": "What is your return policy?", "answer": "<p>Petssify accepts eligible returns within 30 days of delivery. Items generally need to be unused and in their original condition and packaging. Please review our Refund Policy for exclusions and complete return requirements.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How do I know which product is right for my pet?", "answer": "<p>Each product page provides available specifications, sizing information, features, and usage details. Review these details carefully to choose the product that best fits your pet's needs.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How can I track my order?", "answer": "<p>Tracking information is emailed once your order ships. You can also use our order tracking page with the required order or tracking information. If your tracking information has not updated for several business days, contact our support team.</p>" } },
+        { "type": "faq_item", "settings": { "question": "What payment methods do you accept?", "answer": "<p>Petssify accepts several payment methods, including major credit and debit cards, PayPal, Apple Pay, Google Pay, and Shop Pay. Available payment options may vary at checkout.</p>" } },
+        { "type": "faq_item", "settings": { "question": "Do Petssify products have size or compatibility information?", "answer": "<p>Yes. When sizing or compatibility is relevant, the product page provides the available measurements, weight limits, dimensions, or other specifications to help you choose the appropriate product.</p>" } },
+        { "type": "faq_item", "settings": { "question": "What if my item arrives damaged or defective?", "answer": "<p>If your order arrives damaged, defective, or incorrect, please contact our support team as soon as possible with your order details and photos of the issue so we can assist you.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How can I contact Petssify customer support?", "answer": "<p>You can contact Petssify at support@petssify.com. Our support team typically responds within 24 hours.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
