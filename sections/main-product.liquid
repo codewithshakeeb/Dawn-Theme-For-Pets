@@ -689,6 +689,8 @@
 
     {% render 'product-media-modal', variant_images: variant_images %}
     {% render 'sticky-add-to-cart', product: product, section: section %}
+    {%- comment -%} Petssify: Mobile Sticky Add to Cart (Prototype Match) {%- endcomment -%}
+    {% render 'petssify-sticky-atc', product: product %}
 
     {% assign popups = section.blocks | where: 'type', 'popup' %}
     {%- for block in popups -%}
@@ -736,9 +738,8 @@
       endif
     -%}
 
-    <script type="application/ld+json">
-      {{ product | structured_data }}
-    </script>
+    {%- comment -%} Petssify: Dynamic Rich Product & Offer Schema (Spec 6.3) {%- endcomment -%}
+    {% render 'schema-product', product: product %}
   </div>
 </product-info>
 

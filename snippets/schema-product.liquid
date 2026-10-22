@@ -1,0 +1,110 @@
+{%- comment -%}
+  Petssify Dynamic Product JSON-LD Schema (Spec 6.3)
+  Includes BreadcrumbList, Product, Offer, shippingDetails, and MerchantReturnPolicy.
+{%- endcomment -%}
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ shop.url }}/"
+        },
+        {% if collection %}
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": "{{ shop.url }}{{ collection.url }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ product.title | json }},
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+        {% else %}
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ product.title | json }},
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+        {% endif %}
+      ]
+    },
+    {
+      "@type": "Product",
+      "@id": "{{ shop.url }}{{ product.url }}#product",
+      "name": {{ product.title | json }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      "description": {{ product.description | strip_html | truncatewords: 60 | json }},
+      "image": [
+        {% for media in product.media limit: 5 %}
+          "https:{{ media | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ],
+      "sku": {{ current_variant.sku | default: product.id | json }},
+      "mpn": {{ current_variant.barcode | default: current_variant.sku | default: product.id | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": "Petssify"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ shop.url }}{{ product.url }}",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": "{{ current_variant.price | divided_by: 100.0 }}",
+        "priceValidUntil": "2027-12-31",
+        "itemCondition": "https://schema.org/NewCondition",
+        "availability": "{% if current_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+        "seller": {
+          "@id": "{{ shop.url }}/#organization"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "{% if current_variant.price >= 5000 %}0.00{% else %}4.99{% endif %}",
+            "currency": "USD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "US"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 2,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitCode": "DAY"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "US",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 30,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnShippingFees"
+        }
+      }
+    }
+  ]
+}
+</script>

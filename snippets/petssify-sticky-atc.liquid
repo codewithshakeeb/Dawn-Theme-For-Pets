@@ -1,0 +1,72 @@
+{%- comment -%}
+  Petssify Mobile Sticky Add to Cart Bar
+  Matches Base44 Prototype:
+  Fixed to viewport bottom on mobile screens once user scrolls past main buy buttons.
+{%- endcomment -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div id="PetssifyStickyATC" class="petssify-sticky-atc" aria-hidden="true">
+  <div style="display: flex; align-items: center; gap: 10px; overflow: hidden; flex: 1;">
+    {%- if product.featured_media != blank -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 80 }}"
+        alt="{{ product.title | escape }}"
+        width="44"
+        height="44"
+        style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; flex-shrink: 0; border: 1px solid var(--color-border);"
+      >
+    {%- endif -%}
+    <div style="overflow: hidden; line-height: 1.2;">
+      <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 700; color: var(--color-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        {{ product.title | escape }}
+      </div>
+      <div style="font-size: 14px; font-weight: 800; color: var(--color-accent); margin-top: 2px;">
+        {{ current_variant.price | money }}
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-shrink: 0;">
+    <product-form>
+      {%- form 'product', product, id: 'petssify-sticky-atc-form', class: 'form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" id="PetssifyStickyVariantId">
+        <button
+          type="submit"
+          name="add"
+          class="button button--primary"
+          style="padding: 10px 18px !important; font-size: 13px !important; min-height: 42px;"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {% if current_variant.available %}
+            Add to Cart
+          {% else %}
+            Sold Out
+          {% endif %}
+        </button>
+      {%- endform -%}
+    </product-form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var stickyATC = document.getElementById('PetssifyStickyATC');
+    var buyBtn = document.querySelector('.product-form__buttons');
+    if (!stickyATC || !buyBtn) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+          stickyATC.classList.add('is-active');
+          stickyATC.setAttribute('aria-hidden', 'false');
+        } else {
+          stickyATC.classList.remove('is-active');
+          stickyATC.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }, { threshold: 0 });
+
+    observer.observe(buyBtn);
+  });
+</script>
