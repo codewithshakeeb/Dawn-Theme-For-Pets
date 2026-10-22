@@ -41,9 +41,9 @@
       <h1 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h1>
       <p class="cart-drawer__empty-subtext">Looks like you haven't added anything to your cart yet.</p>
       <div class="cart-drawer__empty-actions" style="margin-bottom: 24px;">
-        <a href="/collections/best-sellers" class="button button--primary">Shop Best Sellers</a>
-        <a href="/collections/dogs" class="button button--secondary">Shop Dog Supplies</a>
-        <a href="/collections/cat" class="button button--secondary">Shop Cat Supplies</a>
+        <a href="{{ routes.collections_url }}/best-sellers" class="button button--primary">Shop Best Sellers</a>
+        <a href="{{ routes.collections_url }}/dogs" class="button button--secondary">Shop Dog Supplies</a>
+        <a href="{{ routes.collections_url }}/cat" class="button button--secondary">Shop Cat Supplies</a>
       </div>
 
       {%- if shop.customer_accounts_enabled and customer == null -%}

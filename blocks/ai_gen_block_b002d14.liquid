@@ -53,7 +53,7 @@
   <div class="ai-sticky-wrap">
 
     <div class="ai-sticky-img">
-      <img src="{{ product.featured_image | image_url: width:120 }}">
+      <img src="{{ product.featured_image | image_url: width: 120 }}" width="120" height="120" loading="lazy" alt="{{ product.title | escape }}">
     </div>
 
     <div style="flex:1">
