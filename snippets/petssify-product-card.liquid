@@ -1,0 +1,123 @@
+{%- comment -%}
+  Petssify Product Card (Custom Component)
+  Matches Base44 Prototype:
+  - 12px rounded card with subtle border & hover lift
+  - Single "-X% OFF" badge pill
+  - 2-line title clamp
+  - Dynamic price & compare-at (only if compare_at > price)
+  - Secondary image hover swap
+  - Quick Add to Cart
+{%- endcomment -%}
+
+{%- liquid
+  assign featured_media = product.featured_media
+  assign secondary_media = product.media[1]
+  assign current_variant = product.selected_or_first_available_variant
+  assign on_sale = false
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+    assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price | round
+  endif
+-%}
+
+<div class="petssify-product-card" data-product-id="{{ product.id }}">
+  <div class="card__inner">
+    {%- if on_sale and current_variant.available -%}
+      <span class="petssify-discount-badge">
+        -{{ discount_percent }}% OFF
+      </span>
+    {%- elsif current_variant.available == false -%}
+      <span class="petssify-discount-badge" style="background-color: var(--color-primary);">
+        Sold Out
+      </span>
+    {%- endif -%}
+
+    <a href="{{ product.url }}" class="card__media-link" style="display: block; position: relative; aspect-ratio: 1 / 1; overflow: hidden;">
+      {%- if featured_media != blank -%}
+        <img
+          src="{{ featured_media | image_url: width: 600 }}"
+          alt="{{ featured_media.alt | default: product.title | escape }}"
+          loading="lazy"
+          width="600"
+          height="600"
+          class="card__media"
+          style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+        >
+        {%- if secondary_media != blank -%}
+          <img
+            src="{{ secondary_media | image_url: width: 600 }}"
+            alt="{{ secondary_media.alt | default: product.title | escape }}"
+            loading="lazy"
+            width="600"
+            height="600"
+            class="card__media--secondary"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"
+          >
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+  </div>
+
+  <div class="petssify-product-card__content" style="padding: 16px; display: flex; flex-direction: column; flex-grow: 1;">
+    {%- if current_variant.available -%}
+      <div class="petssify-stock-badge" style="margin-bottom: 6px;">
+        <span class="petssify-stock-dot"></span> In Stock
+      </div>
+    {%- endif -%}
+
+    <h3 class="petssify-product-card__title">
+      <a href="{{ product.url }}">
+        {{ product.title | escape }}
+      </a>
+    </h3>
+
+    {%- comment -%} Judge.me review snippet if available {%- endcomment -%}
+    {%- if product.metafields.judgeme.badge != blank -%}
+      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" style="margin-bottom: 8px;">
+        {{ product.metafields.judgeme.badge }}
+      </div>
+    {%- endif -%}
+
+    <div class="petssify-price-wrap">
+      <span class="petssify-price-current">
+        {{ current_variant.price | money }}
+      </span>
+      {%- if on_sale -%}
+        <span class="petssify-price-compare">
+          {{ current_variant.compare_at_price | money }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    {%- if current_variant.available -%}
+      <div class="petssify-quick-add">
+        <product-form>
+          {%- form 'product', product, id: nil, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}">
+            <button
+              type="submit"
+              name="add"
+              class="button button--secondary"
+              style="width: 100%; font-size: 13px; padding: 10px 14px;"
+            >
+              Add to Cart
+            </button>
+          {%- endform -%}
+        </product-form>
+      </div>
+    {%- else -%}
+      <div class="petssify-quick-add">
+        <button
+          type="button"
+          disabled
+          class="button button--secondary"
+          style="width: 100%; font-size: 13px; padding: 10px 14px; opacity: 0.6; cursor: not-allowed;"
+        >
+          Sold Out
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

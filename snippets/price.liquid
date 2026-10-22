@@ -113,13 +113,12 @@
       {%- endif -%}
     </div>
     {%- if show_badges -%}
-   <span class="save-badge">
-{% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
-  {% assign save_amount = product.selected_or_first_available_variant.compare_at_price 
-    | minus: product.selected_or_first_available_variant.price %}
-  SALE
-{% endif %}
-  </span>
+      {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+        {%- assign pdp_discount = product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100 | divided_by: product.selected_or_first_available_variant.compare_at_price | round -%}
+        <span class="petssify-discount-badge" style="position: static; margin-left: 8px;">
+          -{{ pdp_discount }}% OFF
+        </span>
+      {%- endif -%}
 
       <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">
         {{ 'products.product.sold_out' | t }}
