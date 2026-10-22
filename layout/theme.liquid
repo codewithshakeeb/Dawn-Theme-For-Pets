@@ -265,7 +265,8 @@
     {%- comment -%} Petssify: Theme Design Tokens & Base Styles {%- endcomment -%}
     {{ 'petssify-theme.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
-{% render 'structured-data' %}
+    {%- comment -%} Petssify: Global Organization & WebSite JSON-LD Schema (Spec 6.2) {%- endcomment -%}
+    {% render 'schema-organization' %}
     {%- if settings.cart_type == 'drawer' -%}
       {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
       {{ 'component-cart.css' | asset_url | stylesheet_tag }}

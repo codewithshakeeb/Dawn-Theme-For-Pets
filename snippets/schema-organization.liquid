@@ -1,0 +1,60 @@
+{%- comment -%}
+  Petssify Organization & WebSite JSON-LD Schema (Spec 6.2)
+{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "{{ shop.url }}/#organization",
+      "name": "Petssify",
+      "legalName": "Dynamic Resolutions LLC",
+      "url": "{{ shop.url }}/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:{{ settings.logo | image_url: width: 500 }}"
+      },
+      "email": "support@petssify.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2810 N Church St #728120",
+        "addressLocality": "Wilmington",
+        "addressRegion": "DE",
+        "postalCode": "19802",
+        "addressCountry": "US"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "support@petssify.com",
+        "availableLanguage": ["English"],
+        "areaServed": "US"
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "US",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/ReturnShippingFees"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ shop.url }}/#website",
+      "url": "{{ shop.url }}/",
+      "name": "Petssify",
+      "publisher": {"@id": "{{ shop.url }}/#organization"},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ shop.url }}/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}
+</script>
