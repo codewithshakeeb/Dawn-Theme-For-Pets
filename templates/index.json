@@ -61,7 +61,8 @@
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0
-      }
+      },
+      "disabled": true
     },
     "multicolumn_yBdKqR": {
       "type": "multicolumn",
@@ -129,7 +130,8 @@
         "swipe_on_mobile": true,
         "padding_top": 60,
         "padding_bottom": 60
-      }
+      },
+      "disabled": true
     },
     "video_mCkbRL": {
       "type": "video",
@@ -208,7 +210,8 @@
         "swipe_on_mobile": true,
         "padding_top": 36,
         "padding_bottom": 12
-      }
+      },
+      "disabled": true
     },
     "featured_collection": {
       "type": "featured-collection",
@@ -797,6 +800,11 @@
     "multicolumn_VRhJyE",
     "1764956211b0ded476",
     "petssify_faq_section_kUdc8b",
-    "newsletter_C8gnag"
+    "newsletter_C8gnag",
+    "image_banner_Xg3ffR",
+    "custom_liquid_67Pd4R",
+    "multicolumn_yBdKqR",
+    "video_mCkbRL",
+    "collection_list_h7hdFE"
   ]
 }
