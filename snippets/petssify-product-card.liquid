@@ -1,123 +1,269 @@
 {%- comment -%}
-  Petssify Product Card (Custom Component)
-  Matches Base44 Prototype:
-  - 12px rounded card with subtle border & hover lift
-  - Single "-X% OFF" badge pill
-  - 2-line title clamp
-  - Dynamic price & compare-at (only if compare_at > price)
-  - Secondary image hover swap
-  - Quick Add to Cart
+  Petssify Product Card (Single Source of Truth Component)
+  Matches Base44 Prototype & Reference UI:
+  - 12px rounded container with subtle border (#E2E8F0) and smooth hover lift
+  - 1:1 square media container, object-fit contain, white background
+  - Smooth secondary image reveal on hover (@media (hover: hover))
+  - Single top-left badge pill: coral "-XX% OFF" on sale or slate "Sold out"
+  - Strict 2-line title clamping with aligned row height
+  - Star ratings only rendered when reviews exist (>0 reviews)
+  - Price row: bold navy sale price, strikethrough muted compare-at, "From $X" for variant ranges
+  - Action button: single-variant AJAX Add to Cart, multi-variant "Choose options", disabled "Sold out"
+  - Semantic stretched-link pattern with no nested anchor violations
+  - Accessible tap targets (>= 44px) & high-contrast focus rings
+
+  Parameters:
+  - product: {Object} Product Liquid object (optional, falls back to card_product)
+  - card_product: {Object} Product Liquid object (optional alias)
+  - lazy_load: {Boolean} Image loading lazy or eager. Default: true
+  - show_quick_add: {Boolean} Show the action button. Default: true
+  - show_rating: {Boolean} Show star rating. Default: true
+  - image_sizes: {String} Responsive image sizes attribute (optional)
+  - section_id: {String} Section ID for unique form IDs (optional)
+  - horizontal_class: {Boolean} Horizontal layout modifier for PDP pairs-well-with blocks (optional)
+  - placeholder_image: {String} Placeholder image string when product is blank
 {%- endcomment -%}
 
 {%- liquid
-  assign featured_media = product.featured_media
-  assign secondary_media = product.media[1]
-  assign current_variant = product.selected_or_first_available_variant
-  assign on_sale = false
-  if current_variant.compare_at_price > current_variant.price
-    assign on_sale = true
-    assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price | round
+  assign target_product = product | default: card_product
+
+  if lazy_load == nil
+    assign lazy_load = true
+  endif
+
+  if show_quick_add == nil
+    assign show_quick_add = true
+  endif
+
+  if show_rating == nil
+    assign show_rating = true
+  endif
+
+  if target_product and target_product != empty
+    assign current_variant = target_product.selected_or_first_available_variant | default: target_product.variants.first
+    assign compare_at_price = current_variant.compare_at_price | default: target_product.compare_at_price_max
+    assign price = current_variant.price | default: target_product.price_min
+    assign is_available = target_product.available
+
+    assign on_sale = false
+    if compare_at_price > price and is_available
+      assign discount_pct = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
+      if discount_pct >= 1
+        assign on_sale = true
+      endif
+    endif
+
+    assign product_form_id = 'petssify-quick-add-' | append: section_id | append: '-' | append: target_product.id
+    assign featured_media = target_product.featured_media
+    assign secondary_media = target_product.media[1] | default: target_product.images[1]
   endif
 -%}
 
-<div class="petssify-product-card" data-product-id="{{ product.id }}">
-  <div class="card__inner">
-    {%- if on_sale and current_variant.available -%}
-      <span class="petssify-discount-badge">
-        -{{ discount_percent }}% OFF
-      </span>
-    {%- elsif current_variant.available == false -%}
-      <span class="petssify-discount-badge" style="background-color: var(--color-primary);">
-        Sold Out
-      </span>
-    {%- endif -%}
-
-    <a href="{{ product.url }}" class="card__media-link" style="display: block; position: relative; aspect-ratio: 1 / 1; overflow: hidden;">
-      {%- if featured_media != blank -%}
-        <img
-          src="{{ featured_media | image_url: width: 600 }}"
-          alt="{{ featured_media.alt | default: product.title | escape }}"
-          loading="lazy"
-          width="600"
-          height="600"
-          class="card__media"
-          style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-        >
-        {%- if secondary_media != blank -%}
-          <img
-            src="{{ secondary_media | image_url: width: 600 }}"
-            alt="{{ secondary_media.alt | default: product.title | escape }}"
-            loading="lazy"
-            width="600"
-            height="600"
-            class="card__media--secondary"
-            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"
-          >
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
-    </a>
-  </div>
-
-  <div class="petssify-product-card__content" style="padding: 16px; display: flex; flex-direction: column; flex-grow: 1;">
-    {%- if current_variant.available -%}
-      <div class="petssify-stock-badge" style="margin-bottom: 6px;">
-        <span class="petssify-stock-dot"></span> In Stock
-      </div>
-    {%- endif -%}
-
-    <h3 class="petssify-product-card__title">
-      <a href="{{ product.url }}">
-        {{ product.title | escape }}
-      </a>
-    </h3>
-
-    {%- comment -%} Judge.me review snippet if available {%- endcomment -%}
-    {%- if product.metafields.judgeme.badge != blank -%}
-      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" style="margin-bottom: 8px;">
-        {{ product.metafields.judgeme.badge }}
-      </div>
-    {%- endif -%}
-
-    <div class="petssify-price-wrap">
-      <span class="petssify-price-current">
-        {{ current_variant.price | money }}
-      </span>
-      {%- if on_sale -%}
-        <span class="petssify-price-compare">
-          {{ current_variant.compare_at_price | money }}
+{%- if target_product and target_product != empty -%}
+  <div
+    class="petssify-product-card{% if is_available == false %} petssify-product-card--sold-out{% endif %}{% if horizontal_class %} petssify-product-card--horizontal{% endif %}"
+    data-product-id="{{ target_product.id }}"
+  >
+    <div class="petssify-product-card__media-wrap">
+      {%- comment -%} Top-Left Single Status Badge Pill {%- endcomment -%}
+      {%- if is_available == false -%}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="Sold out">
+          Sold out
+        </span>
+      {%- elsif on_sale -%}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="{{ discount_pct }} percent off">
+          -{{ discount_pct }}% OFF
         </span>
       {%- endif -%}
+
+      {%- comment -%} 1:1 Aspect Ratio Media Container {%- endcomment -%}
+      <div class="petssify-product-card__media-inner">
+        {%- if featured_media != blank -%}
+          {%- capture default_sizes -%}
+            (min-width: 1200px) 280px, (min-width: 750px) calc((100vw - 60px) / 3), calc((100vw - 36px) / 2)
+          {%- endcapture -%}
+          {%- assign img_sizes = image_sizes | default: default_sizes -%}
+
+          <img
+            srcset="
+              {%- if featured_media.width >= 165 -%}{{ featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if featured_media.width >= 360 -%}{{ featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if featured_media.width >= 540 -%}{{ featured_media | image_url: width: 540 }} 540w,{%- endif -%}
+              {%- if featured_media.width >= 720 -%}{{ featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if featured_media.width >= 940 -%}{{ featured_media | image_url: width: 940 }} 940w,{%- endif -%}
+              {{ featured_media | image_url }} {{ featured_media.width }}w
+            "
+            src="{{ featured_media | image_url: width: 540 }}"
+            sizes="{{ img_sizes }}"
+            alt="{{ featured_media.alt | default: target_product.title | escape }}"
+            class="petssify-product-card__image petssify-product-card__image--primary"
+            {% if lazy_load == false %}
+              loading="eager"
+              fetchpriority="high"
+            {% else %}
+              loading="lazy"
+              decoding="async"
+            {% endif %}
+            width="{{ featured_media.width | default: 540 }}"
+            height="{{ featured_media.height | default: 540 }}"
+          >
+
+          {%- if secondary_media != blank -%}
+            <img
+              srcset="
+                {%- if secondary_media.width >= 165 -%}{{ secondary_media | image_url: width: 165 }} 165w,{%- endif -%}
+                {%- if secondary_media.width >= 360 -%}{{ secondary_media | image_url: width: 360 }} 360w,{%- endif -%}
+                {%- if secondary_media.width >= 540 -%}{{ secondary_media | image_url: width: 540 }} 540w,{%- endif -%}
+                {%- if secondary_media.width >= 720 -%}{{ secondary_media | image_url: width: 720 }} 720w,{%- endif -%}
+                {{ secondary_media | image_url }} {{ secondary_media.width }}w
+              "
+              src="{{ secondary_media | image_url: width: 540 }}"
+              sizes="{{ img_sizes }}"
+              alt="{{ secondary_media.alt | default: target_product.title | escape }}"
+              class="petssify-product-card__image petssify-product-card__image--secondary"
+              loading="lazy"
+              decoding="async"
+              width="{{ secondary_media.width | default: 540 }}"
+              height="{{ secondary_media.height | default: 540 }}"
+              aria-hidden="true"
+            >
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
+        {%- endif -%}
+      </div>
     </div>
 
-    {%- if current_variant.available -%}
-      <div class="petssify-quick-add">
-        <product-form>
-          {%- form 'product', product, id: nil, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-            <input type="hidden" name="id" value="{{ current_variant.id }}">
-            <button
-              type="submit"
-              name="add"
-              class="button button--secondary"
-              style="width: 100%; font-size: 13px; padding: 10px 14px;"
-            >
-              Add to Cart
-            </button>
-          {%- endform -%}
-        </product-form>
+    <div class="petssify-product-card__content">
+      {%- comment -%} 2-Line Clamped Title with Stretched Link {%- endcomment -%}
+      <h3 class="petssify-product-card__title">
+        <a href="{{ target_product.url }}" class="petssify-product-card__link">
+          {{ target_product.title | escape }}
+        </a>
+      </h3>
+
+      {%- comment -%} Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
+      {%- if show_rating -%}
+        {%- liquid
+          assign rating_value = nil
+          assign rating_count = 0
+
+          if target_product.metafields.reviews.rating.value != blank
+            assign rating_value = target_product.metafields.reviews.rating.value.rating | round: 1
+            assign rating_count = target_product.metafields.reviews.rating_count.value | default: 0
+          elsif target_product.metafields.judgeme.badge != blank
+            assign jm_badge = target_product.metafields.judgeme.badge
+            if jm_badge contains "data-score='"
+              assign rating_value = jm_badge | split: "data-score='" | last | split: "'" | first | times: 1.0 | round: 1
+            endif
+            if jm_badge contains "data-number-of-reviews='"
+              assign rating_count = jm_badge | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
+            endif
+          endif
+        -%}
+
+        {%- if rating_count > 0 and rating_value != nil -%}
+          <div class="petssify-product-card__rating" aria-label="{{ rating_value }} out of 5 stars ({{ rating_count }} reviews)">
+            <span class="petssify-product-card__star" aria-hidden="true">★</span>
+            <span class="petssify-product-card__rating-value">{{ rating_value }}</span>
+            <span class="petssify-product-card__rating-count">({{ rating_count }})</span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%} Price Row {%- endcomment -%}
+      <div class="petssify-product-card__price-row">
+        {%- if target_product.price_varies -%}
+          <span class="petssify-product-card__price-current">
+            From {{ target_product.price_min | money }}
+          </span>
+        {%- else -%}
+          <span class="petssify-product-card__price-current">
+            {{ price | money }}
+          </span>
+          {%- if on_sale and compare_at_price > price -%}
+            <s class="petssify-product-card__price-compare">
+              {{ compare_at_price | money }}
+            </s>
+          {%- endif -%}
+        {%- endif -%}
       </div>
-    {%- else -%}
-      <div class="petssify-quick-add">
-        <button
-          type="button"
-          disabled
-          class="button button--secondary"
-          style="width: 100%; font-size: 13px; padding: 10px 14px; opacity: 0.6; cursor: not-allowed;"
-        >
-          Sold Out
+
+      {%- comment -%} Action Button / Quick Add Row {%- endcomment -%}
+      {%- if show_quick_add -%}
+        <div class="petssify-product-card__action">
+          {%- if is_available == false -%}
+            <button
+              type="button"
+              class="petssify-quick-add__btn button is-sold-out"
+              disabled
+              aria-disabled="true"
+            >
+              Sold out
+            </button>
+          {%- elsif target_product.variants.size > 1 -%}
+            <a
+              href="{{ target_product.url }}"
+              class="petssify-quick-add__btn button button--secondary petssify-quick-add__btn--options"
+            >
+              Choose options
+            </a>
+          {%- else -%}
+            <product-form data-section-id="{{ section_id }}">
+              {%- form 'product',
+                target_product,
+                id: product_form_id,
+                class: 'petssify-product-card__form',
+                novalidate: 'novalidate',
+                data-type: 'add-to-cart-form'
+              -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ current_variant.id }}"
+                  class="product-variant-id"
+                >
+                <button
+                  id="{{ product_form_id }}-submit"
+                  type="submit"
+                  name="add"
+                  class="petssify-quick-add__btn button button--secondary"
+                  aria-haspopup="dialog"
+                  aria-live="polite"
+                >
+                  <span class="petssify-quick-add__text">Add to Cart</span>
+                  <div class="loading__spinner hidden">
+                    {%- render 'loading-spinner' -%}
+                  </div>
+                </button>
+              {%- endform -%}
+            </product-form>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  {%- comment -%} Placeholder Card for Empty/Onboarding States {%- endcomment -%}
+  <div class="petssify-product-card petssify-product-card--placeholder">
+    <div class="petssify-product-card__media-wrap">
+      <div class="petssify-product-card__media-inner">
+        {%- assign placeholder_name = placeholder_image | default: 'product-1' -%}
+        {{ placeholder_name | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
+      </div>
+    </div>
+    <div class="petssify-product-card__content">
+      <h3 class="petssify-product-card__title">
+        <span class="petssify-product-card__link">Example Product Title</span>
+      </h3>
+      <div class="petssify-product-card__price-row">
+        <span class="petssify-product-card__price-current">$19.99</span>
+      </div>
+      <div class="petssify-product-card__action">
+        <button type="button" class="petssify-quick-add__btn button button--secondary" disabled>
+          Add to Cart
         </button>
       </div>
-    {%- endif -%}
+    </div>
   </div>
-</div>
+{%- endif -%}
