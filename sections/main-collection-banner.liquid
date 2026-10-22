@@ -7,26 +7,60 @@
       padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
     }
   }
+  .petssify-collection-breadcrumbs {
+    margin-bottom: 8px;
+  }
+  .petssify-collection-breadcrumbs .breadcrumbs {
+    padding-left: 0;
+  }
+  .petssify-subcollection-chips::-webkit-scrollbar {
+    height: 4px;
+  }
+  .petssify-subcollection-chips::-webkit-scrollbar-thumb {
+    background: var(--color-border-dark);
+    border-radius: var(--radius-full);
+  }
 {%- endstyle -%}
-
 
 <div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-   
+    
     <div class="collection-hero__text-wrapper">
-      <h1 class="collection-hero__title">
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+      {%- comment -%} Petssify: Breadcrumbs placed directly above visual H1 {%- endcomment -%}
+      <div class="petssify-collection-breadcrumbs">
+        {% render 'breadcrumbs' %}
+      </div>
+
+      {%- comment -%} Petssify: Clean H1 without "Collection: " prefix (Spec 4.1) {%- endcomment -%}
+      <h1 class="collection-hero__title" style="font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; color: var(--color-primary); line-height: 1.2; margin: 0 0 8px 0;">
         {{- collection.title | escape -}}
       </h1>
 
-      {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- comment -%} Petssify: 820px readable intro text container (Spec 4.1) {%- endcomment -%}
+      {%- if section.settings.show_collection_description and collection.description != blank -%}
+        <div class="collection-hero__description rte" style="max-width: 820px; font-size: 15px; line-height: 1.6; color: #475569; margin-top: 8px; margin-bottom: 16px;">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Petssify: Optional sub-collection filter chips {%- endcomment -%}
+      {%- if section.settings.subcollections_menu != blank and linklists[section.settings.subcollections_menu].links.size > 0 -%}
+        <nav class="petssify-subcollection-chips" aria-label="Subcollections" style="display: flex; gap: 8px; overflow-x: auto; padding: 6px 0 12px 0; margin-top: 8px;">
+          {%- for link in linklists[section.settings.subcollections_menu].links -%}
+            <a
+              href="{{ link.url }}"
+              class="petssify-chip{% if link.active %} is-active{% endif %}"
+              style="display: inline-flex; align-items: center; white-space: nowrap; padding: 6px 16px; border-radius: var(--radius-full); font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid {% if link.active %}var(--color-primary){% else %}var(--color-border){% endif %}; background-color: {% if link.active %}var(--color-primary){% else %}#FFFFFF{% endif %}; color: {% if link.active %}#FFFFFF{% else %}var(--color-text-main){% endif %}; transition: all var(--transition-fast);"
+            >
+              {{ link.title }}
+            </a>
+          {%- endfor -%}
+        </nav>
       {%- endif -%}
     </div>
 
-    
     {%- if section.settings.show_collection_image and collection.image -%}
-      <div class="collection-hero__image-container media gradient">
+      <div class="collection-hero__image-container media gradient" style="border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-md);">
         <img
           srcset="
             {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
@@ -39,9 +73,10 @@
           "
           src="{{ collection.image | image_url: width: 750 }}"
           sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-          alt="{{ collection.image.alt | escape }}"
+          alt="{{ collection.image.alt | default: collection.title | escape }}"
           width="{{ collection.image.width }}"
           height="{{ collection.image.height }}"
+          style="border-radius: var(--radius-card);"
         >
       </div>
     {%- endif -%}
@@ -68,6 +103,11 @@
       "id": "show_collection_image",
       "default": false,
       "label": "t:sections.main-collection-banner.settings.show_collection_image.label"
+    },
+    {
+      "type": "link_list",
+      "id": "subcollections_menu",
+      "label": "Optional Sub-collections Menu"
     },
     {
       "type": "color_scheme",

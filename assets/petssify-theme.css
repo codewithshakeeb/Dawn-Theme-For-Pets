@@ -691,3 +691,58 @@ h1, h2, h3, h4, h5, h6,
     display: none;
   }
 }
+
+/* ==========================================================================
+   Collection & Facets Styling (Prototype Match)
+   ========================================================================== */
+.facets__summary {
+  font-family: var(--font-heading) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--color-primary) !important;
+  background-color: var(--color-bg-subtle) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 8px 16px !important;
+  transition: all var(--transition-fast);
+}
+
+.facets__summary:hover {
+  background-color: #FFFFFF !important;
+  border-color: var(--color-primary) !important;
+}
+
+.facets__disclosure[open] .facets__summary {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+  border-color: var(--color-primary) !important;
+}
+
+.facets__display {
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--color-border) !important;
+  background: #FFFFFF !important;
+}
+
+.active-facets__button {
+  background: var(--color-bg-muted) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-full) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--color-primary) !important;
+  padding: 4px 12px !important;
+  transition: all var(--transition-fast);
+}
+
+.active-facets__button:hover {
+  background: var(--color-accent-light) !important;
+  color: var(--color-accent-hover) !important;
+}
+
+.product-count__text {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  color: var(--color-text-muted) !important;
+}

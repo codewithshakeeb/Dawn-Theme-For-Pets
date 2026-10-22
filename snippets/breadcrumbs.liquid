@@ -14,29 +14,30 @@
         <!-- ========================= -->
         {% when 'product' %}
 
-          {% assign breadcrumb_collection = blank %}
-
-          {% for product_collection in product.collections %}
-
-            {% assign collection_handle = product_collection.handle | downcase %}
-
-            {% unless collection_handle == 'all'
-              or collection_handle contains 'best-seller'
-              or collection_handle contains 'best_seller'
-              or collection_handle contains 'sale'
-              or collection_handle contains 'new-arrival'
-              or collection_handle contains 'new_arrival'
-              or collection_handle contains 'featured'
-              or collection_handle contains 'all-products'
-              or collection_handle contains 'all_products'
-            %}
-
-              {% assign breadcrumb_collection = product_collection %}
-              {% break %}
-
-            {% endunless %}
-
-          {% endfor %}
+          {%- comment -%} Petssify: Intelligent collection context & cross-species guard (Spec 3.5) {%- endcomment -%}
+          {% assign breadcrumb_collection = collection %}
+          {% unless breadcrumb_collection %}
+            {% for product_collection in product.collections %}
+              {% assign collection_handle = product_collection.handle | downcase %}
+              {% unless collection_handle == 'all'
+                or collection_handle contains 'best-seller'
+                or collection_handle contains 'best_seller'
+                or collection_handle contains 'sale'
+                or collection_handle contains 'accessories'
+                or collection_handle contains 'featured'
+                or collection_handle contains 'all-products'
+              %}
+                {% if product.title contains 'Dog' and collection_handle contains 'cat' %}
+                  {% continue %}
+                {% endif %}
+                {% if product.title contains 'Cat' and collection_handle contains 'dog' %}
+                  {% continue %}
+                {% endif %}
+                {% assign breadcrumb_collection = product_collection %}
+                {% break %}
+              {% endunless %}
+            {% endfor %}
+          {% endunless %}
 
 
           {% if breadcrumb_collection != blank %}
