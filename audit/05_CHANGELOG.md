@@ -218,3 +218,35 @@ Merchant freedom was a primary architectural objective. The following settings a
 | **Design Tokens** | CSS Audit | **Verified** | Navy (`#0F172A`), Teal (`#0D9488`), Amber (`#F59E0B`), Slate (`#F8FAFC`). |
 | **Mobile Grid** | Responsive Viewport | **Verified** | 2-column product card layout on mobile devices (<750px). |
 | **Structured Data** | Schema Validator / JSON-LD | **Valid** | `Organization`, `WebSite`, `Product`, `Offer` compliant. |
+
+---
+
+## 6. Product Card Unification & PDP State Handling (Parts A–D)
+
+### Part A: Product Card Audit & Single-Source Architecture
+- **Audit:** Documented all 8 product card rendering locations in [`audit/07_product_card_audit.md`](file:///d:/Dawn%20Theme%20Customization/Petssify/audit/07_product_card_audit.md) with exact lines.
+- **`snippets/petssify-product-card.liquid`:** Built as the single source of truth:
+  - 1:1 contain square media container on white background with secondary image hover-swap.
+  - Unified top-left single status pill: coral `-XX% OFF` on sale, slate `Sold out` when unavailable (no duplicate "Sale" badges).
+  - Strict 2-line title clamping with row min-height.
+  - Review star rating rendered only when reviews exist (>0 reviews).
+  - Bold navy price with "From $X" for variant ranges; strikethrough suppressed if compare <= price.
+  - Accessible stretched link with proper focus ring and no nested anchor violations.
+  - AJAX Quick Add for single-variant, "Choose options" for multi-variant, disabled state for sold out.
+- **`snippets/card-product.liquid`:** Refactored into a lightweight adapter delegating all calls directly to `petssify-product-card.liquid`.
+- **`assets/petssify-theme.css`:** Added complete card design tokens, media transition, and 4/3/2 column responsive grid support.
+
+### Part B: Test Products Data & Admin Instructions
+- **`test-data/petssify_test_products.csv`:** Created standard Shopify import CSV with:
+  - Product 1 (In-Stock): `petssify-test-in-stock-slow-feeder-bowl` (4 variants including sold-out edge case).
+  - Product 2 (Out-of-Stock): `petssify-test-out-of-stock-cat-fountain` (2 variants, both inventory 0).
+- **`test-data/README_IMPORT.md`:** Documented step-by-step admin import, configuration, and cleanup instructions.
+
+### Part C: Product Page (PDP) Dynamic State Handling
+- **Dynamic Stock Status Badge:** Enhanced in `sections/main-product.liquid` and `templates/product.json` (`#Inventory-{{ section.id }}`) to update live on variant change ("IN STOCK — Ships within 1–2 business days..." vs "Currently out of stock").
+- **`snippets/petssify-notify-me.liquid`:** Reusable restock notification component using Shopify native contact form for out-of-stock products.
+- **`snippets/buy-buttons.liquid`:** Hides dynamic checkout buttons ("Buy with Shop Pay") when sold out, switches primary button to disabled "Sold out", and renders the restock notification form.
+- **`snippets/breadcrumbs.liquid`:** Hardened cross-species collection guard so cat products never reference dog collections and vice-versa.
+- **`templates/product.json`:** Reordered sections so "You may also like" recommendations render above the reviews app.
+- **`assets/sticky-add-to-cart.js` & `.css`:** Synced mobile sticky buy bar with real-time variant availability and disabled sold-out state.
+
