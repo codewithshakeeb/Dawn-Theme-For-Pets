@@ -1,0 +1,76 @@
+{%- comment -%}
+  Petssify "Notify Me When Available" Component
+  Uses native Shopify contact form to capture customer email alerts for restocked items.
+  No third-party app required.
+{%- endcomment -%}
+
+<div
+  id="Petssify-Notify-Me-{{ section_id | default: section.id }}"
+  class="petssify-notify-me{% if product.selected_or_first_available_variant.available %} hidden{% endif %}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-url="{{ shop.url }}{{ product.url }}"
+>
+  <div class="petssify-notify-me__card">
+    <div class="petssify-notify-me__header">
+      <span class="petssify-notify-me__icon" aria-hidden="true">🔔</span>
+      <div class="petssify-notify-me__title-wrap">
+        <h4 class="petssify-notify-me__title">Notify Me When Available</h4>
+        <p class="petssify-notify-me__subtitle">
+          We'll send you a one-time email as soon as this item is back in stock.
+        </p>
+      </div>
+    </div>
+
+    {%- form 'contact', id: 'Petssify-Notify-Form', class: 'petssify-notify-me__form' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="petssify-notify-me__message petssify-notify-me__message--success" role="status">
+          ✓ Thank you! We'll notify you the moment this product is back in stock.
+        </div>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="petssify-notify-me__message petssify-notify-me__message--error" role="alert">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}.
+          </div>
+        {%- endif -%}
+
+        {%- assign variant_title = product.selected_or_first_available_variant.title -%}
+        {%- if variant_title == blank or variant_title contains 'Default' -%}
+          {%- assign variant_title = 'Standard' -%}
+        {%- endif -%}
+
+        <input
+          type="hidden"
+          name="contact[body]"
+          value="Restock Notification Request: {{ product.title }} (Variant: {{ variant_title }}) - {{ shop.url }}{{ product.url }}"
+        >
+        <input
+          type="hidden"
+          name="contact[Product]"
+          value="{{ product.title | escape }}"
+        >
+        <input
+          type="hidden"
+          name="contact[Variant]"
+          value="{{ variant_title | escape }}"
+        >
+
+        <div class="petssify-notify-me__input-row">
+          <input
+            type="email"
+            name="contact[email]"
+            id="Petssify-Notify-Email-{{ section_id | default: section.id }}"
+            class="petssify-notify-me__input"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="Enter your email address"
+            required
+            autocomplete="email"
+            aria-label="Email address for restock alert"
+          >
+          <button type="submit" class="button button--primary petssify-notify-me__button">
+            Notify Me
+          </button>
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>

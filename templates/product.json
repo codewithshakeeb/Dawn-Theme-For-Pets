@@ -35,7 +35,7 @@
         "custom_liquid_k8nVae": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% if product.selected_or_first_available_variant.available %}\n  <div class=\"product-inventory-status in-stock\">\n    <span class=\"status-dot\"></span> IN STOCK — Ships within 1–2 business days from our US partner network\n  </div>\n{% else %}\n  <div class=\"product-inventory-status out-of-stock\">\n    Currently Out of Stock\n  </div>\n{% endif %}"
+            "custom_liquid": "<div id=\"Inventory-{{ section.id }}\" class=\"product-inventory-status {% if product.selected_or_first_available_variant.available %}in-stock{% else %}out-of-stock{% endif %}\">\n  {% if product.selected_or_first_available_variant.available %}\n    <span class=\"status-dot\"></span> IN STOCK — Ships within 1–2 business days from our US partner network\n  {% else %}\n    Currently out of stock\n  {% endif %}\n</div>"
           }
         },
         "custom_liquid_74meCg": {
@@ -205,7 +205,7 @@
     "custom_liquid_cFdme7",
     "main",
     "custom_liquid_38U7cF",
-    "17683278085186f09e",
-    "related-products"
+    "related-products",
+    "17683278085186f09e"
   ]
 }

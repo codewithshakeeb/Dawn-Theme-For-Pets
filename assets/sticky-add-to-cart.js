@@ -75,21 +75,51 @@ if (!customElements.get('sticky-add-to-cart')) {
             setTimeout(() => this.syncVariantTitle(), 50);
           }
         });
+
+        if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+            if (event.data.sectionId === this.sectionId) {
+              setTimeout(() => {
+                this.syncPrice();
+                this.syncVariantTitle();
+              }, 80);
+            }
+          });
+        }
       }
 
       syncVariantTitle() {
-        if (!this.realForm || !this.variantTitleContainer) return;
+        if (!this.realForm) return;
         const idInput = this.realForm.querySelector('[name="id"]');
         if (!idInput) return;
         const selected = this.variants.find((v) => String(v.id) === String(idInput.value));
-        if (selected) {
+        if (selected && this.variantTitleContainer) {
           this.variantTitleContainer.textContent = selected.title;
+        }
+
+        this.realSubmitButton = this.realForm.querySelector('button[type="submit"]');
+        if (this.button && this.realSubmitButton) {
+          const isSoldOut = this.realSubmitButton.hasAttribute('disabled');
+          this.button.toggleAttribute('disabled', isSoldOut);
+          this.button.setAttribute('aria-disabled', isSoldOut ? 'true' : 'false');
+          const hiddenLabel = this.button.querySelector('.visually-hidden');
+          if (hiddenLabel) {
+            hiddenLabel.textContent = isSoldOut ? 'Sold out' : 'Add to cart';
+          }
+          this.button.classList.toggle('is-sold-out', isSoldOut);
         }
       }
 
       bindClick() {
         if (!this.button) return;
         this.button.addEventListener('click', () => {
+          if (this.button.hasAttribute('disabled')) {
+            const notifyEl = document.querySelector('.petssify-notify-me');
+            if (notifyEl) {
+              notifyEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+          }
           if (this.realSubmitButton) this.realSubmitButton.click();
         });
       }

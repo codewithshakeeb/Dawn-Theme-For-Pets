@@ -27,10 +27,20 @@
                 or collection_handle contains 'featured'
                 or collection_handle contains 'all-products'
               %}
-                {% if product.title contains 'Dog' and collection_handle contains 'cat' %}
+                {% assign has_cat_tag = false %}
+                {% if product.tags contains 'cat' or product.title contains 'Cat' %}
+                  {% assign has_cat_tag = true %}
+                {% endif %}
+
+                {% assign has_dog_tag = false %}
+                {% if product.tags contains 'dog' or product.title contains 'Dog' %}
+                  {% assign has_dog_tag = true %}
+                {% endif %}
+
+                {% if has_dog_tag and has_cat_tag == false and collection_handle contains 'cat' %}
                   {% continue %}
                 {% endif %}
-                {% if product.title contains 'Cat' and collection_handle contains 'dog' %}
+                {% if has_cat_tag and has_dog_tag == false and collection_handle contains 'dog' %}
                   {% continue %}
                 {% endif %}
                 {% assign breadcrumb_collection = product_collection %}

@@ -18,8 +18,9 @@
         assign gift_card_recipient_feature_active = true
       endif
 
+      assign is_variant_available = product.selected_or_first_available_variant.available | default: false
       assign show_dynamic_checkout = false
-      if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
+      if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false and is_variant_available
         assign show_dynamic_checkout = true
       endif
     -%}
@@ -80,6 +81,7 @@
               or product.selected_or_first_available_variant == null
             %}
               disabled
+              aria-disabled="true"
             {% endif %}
           >
             <span>
@@ -99,6 +101,9 @@
         </div>
       {%- endform -%}
     </product-form>
+
+    {%- comment -%} Petssify: Native Restock Notification Form for Out-of-Stock States {%- endcomment -%}
+    {%- render 'petssify-notify-me', product: product, section_id: section_id -%}
   {%- else -%}
     <div class="product-form">
       <div class="product-form__buttons form">
