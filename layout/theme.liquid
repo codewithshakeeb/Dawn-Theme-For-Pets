@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://shop.app">
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 <link rel="dns-prefetch" href="//cdn.shopify.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
-
-
-    {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
@@ -262,6 +262,8 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Petssify: Theme Design Tokens & Base Styles {%- endcomment -%}
+    {{ 'petssify-theme.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 {% render 'structured-data' %}
     {%- if settings.cart_type == 'drawer' -%}

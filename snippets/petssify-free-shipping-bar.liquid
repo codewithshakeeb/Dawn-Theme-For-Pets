@@ -1,0 +1,22 @@
+{%- comment -%}
+  Petssify: Free Shipping Progress Bar (Spec 1.3)
+  Default threshold: $50.00 (5000 cents)
+{%- endcomment -%}
+{%- assign free_shipping_threshold = settings.free_shipping_threshold | default: 5000 -%}
+{%- assign cart_total = cart.total_price -%}
+{%- assign progress_percent = cart_total | times: 100.0 | divided_by: free_shipping_threshold | at_most: 100 -%}
+
+<div class="petssify-shipping-bar" data-threshold="{{ free_shipping_threshold }}">
+  <div class="petssify-shipping-bar__message">
+    {%- if cart_total >= free_shipping_threshold -%}
+      <span>🎉 You've unlocked <strong>FREE Tracked US Shipping!</strong></span>
+    {%- else -%}
+      {%- assign remaining_cents = free_shipping_threshold | minus: cart_total -%}
+      {%- assign remaining_money = remaining_cents | money -%}
+      <span>Add <strong>{{ remaining_money }}</strong> more to unlock <strong>FREE Tracked US Shipping!</strong></span>
+    {%- endif -%}
+  </div>
+  <div class="petssify-shipping-bar__progress-track" role="progressbar" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">
+    <div class="petssify-shipping-bar__progress-fill" style="width: {{ progress_percent }}%;"></div>
+  </div>
+</div>

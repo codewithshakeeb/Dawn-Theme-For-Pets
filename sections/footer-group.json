@@ -1,1 +1,64 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"footer":{"type":"footer","blocks":{"brand_information_xdWyLR":{"type":"brand_information","settings":{"show_social":true}},"link_list_6KN8bM":{"type":"link_list","settings":{"heading":"Main Menu","menu":"main-menu"}},"link_list_TCKEEW":{"type":"link_list","settings":{"heading":"Quick links","menu":"footer"}},"text_imCJpV":{"type":"text","settings":{"heading":"Contact Info","subtext":"<p><strong>Brand Name:<\/strong> Petssify (Operated by Dynamic Resolutions LLC)&nbsp;<br\/><strong>Customer Support Email: <\/strong>support@petssify.com&nbsp;<br\/><strong>Registered Corporate Address: <\/strong>Dynamic Resolutions LLC, 2810 N Church St #728120, Wilmington, DE 19802, United States&nbsp;<br\/><strong>Response Time Guarantee:<\/strong> Within 24 business hours (Monday through Friday)<\/p>"}}},"block_order":["brand_information_xdWyLR","link_list_6KN8bM","link_list_TCKEEW","text_imCJpV"],"custom_css":[".footer:not(.color-scheme-1) {border-top-left-radius: 30px; border-top-right-radius: 30px;}"],"settings":{"color_scheme":"scheme-be67989a-20c9-42ec-9bd1-c4b22c355695","newsletter_enable":false,"newsletter_heading":"","enable_follow_on_shop":false,"show_social":true,"enable_country_selector":true,"enable_language_selector":true,"payment_enable":true,"show_policy":true,"margin_top":0,"padding_top":36,"padding_bottom":24}}},"order":["footer"]}
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand_information_xdWyLR": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "link_list_6KN8bM": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Explore Petssify",
+            "menu": "main-menu"
+          }
+        },
+        "link_list_TCKEEW": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Customer Care & Policies",
+            "menu": "footer"
+          }
+        },
+        "text_imCJpV": {
+          "type": "text",
+          "settings": {
+            "heading": "Contact & Operations",
+            "subtext": "<p><strong>Email:</strong> <a href=\"mailto:support@petssify.com\">support@petssify.com</a> (Mon–Fri, 24h response)<br/><strong>Phone:</strong> +1 (800) [Insert Active US Support Number] (Mon–Fri, 9am–5pm EST)<br/><strong>Legal Entity:</strong> Dynamic Resolutions LLC<br/><strong>Corporate Office:</strong> 2810 N Church St #728120, Wilmington, DE 19802, USA<br/><strong>Returns &amp; Operations Hub:</strong> 315 Grand Blvd, Suite 3, San Mateo, CA 94401, USA</p>"
+          }
+        }
+      },
+      "block_order": [
+        "brand_information_xdWyLR",
+        "link_list_6KN8bM",
+        "link_list_TCKEEW",
+        "text_imCJpV"
+      ],
+      "custom_css": [
+        ".footer:not(.color-scheme-1) {border-top-left-radius: 0; border-top-right-radius: 0;}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695",
+        "newsletter_enable": false,
+        "newsletter_heading": "",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

@@ -29,9 +29,10 @@
     >
       {%- if cart == empty -%}
         <div class="drawer__inner-empty">
-          <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
+          <div class="cart-drawer__warnings center">
             <div class="cart-drawer__empty-content">
-              <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
+              <h2 class="cart-drawer__empty-text">{{ 'sections.cart.empty' | t }}</h2>
+              <p class="cart-drawer__empty-subtext">Looks like you haven't added anything to your cart yet.</p>
               <button
                 class="drawer__close"
                 type="button"
@@ -42,9 +43,13 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
-                {{ 'general.continue_shopping' | t }}
-              </a>
+
+              {%- comment -%} Petssify: Empty Cart Navigation Actions (Spec 1.3) {%- endcomment -%}
+              <div class="cart-drawer__empty-actions">
+                <a href="/collections/best-sellers" class="button button--primary">Shop Best Sellers</a>
+                <a href="/collections/dogs" class="button button--secondary">Shop Dog Supplies</a>
+                <a href="/collections/cat" class="button button--secondary">Shop Cat Supplies</a>
+              </div>
 
               {%- if shop.customer_accounts_enabled and customer == null -%}
                 <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
@@ -54,11 +59,6 @@
               {%- endif -%}
             </div>
           </div>
-          {%- if settings.cart_drawer_collection != blank -%}
-            <div class="cart-drawer__collection">
-              {% render 'card-collection', card_collection: settings.cart_drawer_collection, columns: 1 %}
-            </div>
-          {%- endif -%}
         </div>
       {%- endif -%}
       <div class="drawer__header">
@@ -74,6 +74,8 @@
           </span>
         </button>
       </div>
+      {%- comment -%} Petssify: Free Shipping Progress Bar (Spec 1.3) {%- endcomment -%}
+      {%- render 'petssify-free-shipping-bar' -%}
       <cart-drawer-items
         {% if cart == empty %}
           class=" is-empty"
