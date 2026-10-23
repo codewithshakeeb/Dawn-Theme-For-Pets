@@ -87,38 +87,63 @@
                       {{ block.settings.subtext }}
                     </div>
                   {%- when 'link_list' -%}
-                    {%- if block.settings.menu != blank -%}
-                      <ul class="footer-block__details-content list-unstyled">
-                        {%- for link in block.settings.menu.links -%}
-                          <li>
-                            <a
-                              href="{{ link.url }}"
-                              class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
-                            >
-                              {{ link.title | escape }}
-                            </a>
-                          </li>
+                    {%- assign menu_links = block.settings.menu.links -%}
+                    <ul class="footer-block__details-content list-unstyled">
+                      {%- for link in menu_links -%}
+                        <li>
+                          <a
+                            href="{{ link.url }}"
+                            class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
+                          >
+                            {{ link.title | escape }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                      {%- comment -%} Petssify: Automatic policy links fallback when menu only has search or is Customer Care & Policies {%- endcomment -%}
+                      {%- assign block_heading_down = block.settings.heading | downcase -%}
+                      {%- if block_heading_down contains 'polic' or block_heading_down contains 'care' or menu_links.size <= 1 -%}
+                        {%- for policy in shop.policies -%}
+                          {%- if policy != blank -%}
+                            {%- assign policy_already_in_menu = false -%}
+                            {%- for link in menu_links -%}
+                              {%- if link.url == policy.url -%}
+                                {%- assign policy_already_in_menu = true -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            {%- unless policy_already_in_menu -%}
+                              <li>
+                                <a
+                                  href="{{ policy.url }}"
+                                  class="link link--text list-menu__item list-menu__item--link"
+                                >
+                                  {{ policy.title | escape }}
+                                </a>
+                              </li>
+                            {%- endunless -%}
+                          {%- endif -%}
                         {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
+                      {%- endif -%}
+                    </ul>
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
-                      {%- if settings.brand_image != blank -%}
-                        {%- assign brand_image_height = settings.brand_image_width
-                          | divided_by: settings.brand_image.aspect_ratio
-                        -%}
+                      {%- assign footer_logo = settings.brand_image | default: settings.logo -%}
+                      {%- if footer_logo != blank -%}
+                        {%- assign brand_image_width = settings.brand_image_width | default: 160 -%}
+                        {%- assign brand_image_height = brand_image_width | divided_by: footer_logo.aspect_ratio -%}
                         <div
                           class="footer-block__image-wrapper"
-                          style="max-width: min(100%, {{ settings.brand_image_width }}px);"
+                          style="max-width: min(100%, {{ brand_image_width }}px); margin-bottom: 16px;"
                         >
                           {{
-                            settings.brand_image
-                            | image_url: width: 1100
+                            footer_logo
+                            | image_url: width: 600
                             | image_tag:
                               loading: 'lazy',
-                              widths: '50, 100, 150, 200, 300, 400, 550, 800, 1100',
+                              widths: '100, 150, 200, 300, 400',
                               height: brand_image_height,
-                              width: settings.brand_image_width
+                              width: brand_image_width,
+                              alt: shop.name
                           }}
                         </div>
                       {%- endif -%}

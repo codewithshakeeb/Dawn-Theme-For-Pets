@@ -135,14 +135,19 @@
     if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
       assign localization_forms = true
     endif
+
+    assign header_menu = section.settings.menu
+    if header_menu == blank or header_menu.links.size == 0
+      assign header_menu = linklists['main-menu']
+    endif
   -%}
-  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if header_menu != blank and header_menu.links.size > 0 %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
-      if section.settings.menu != blank
-        render 'header-drawer'
+      if header_menu != blank and header_menu.links.size > 0
+        render 'header-drawer', header_menu: header_menu
       endif
 
-      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+      if section.settings.logo_position == 'top-center' or header_menu == blank or header_menu.links.size == 0
         render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
@@ -181,11 +186,11 @@
     {%- endif -%}
 
     {%- liquid
-      if section.settings.menu != blank
+      if header_menu != blank and header_menu.links.size > 0
         if section.settings.menu_type_desktop == 'dropdown'
-          render 'header-dropdown-menu'
+          render 'header-dropdown-menu', header_menu: header_menu
         elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
+          render 'header-mega-menu', header_menu: header_menu
         endif
       endif
     %}

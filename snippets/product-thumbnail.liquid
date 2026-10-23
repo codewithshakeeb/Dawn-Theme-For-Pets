@@ -78,12 +78,19 @@
     </span>
     {%- render 'loading-spinner' -%}
     <div class="product__media media media--transparent">
+      {%- liquid
+        assign fetchpriority = 'auto'
+        if position == 1
+          assign fetchpriority = 'high'
+        endif
+      -%}
       {{
         media.preview_image
         | image_url: width: 1946
         | image_tag:
           class: image_class,
           loading: lazy,
+          fetchpriority: fetchpriority,
           sizes: sizes,
           widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
       }}

@@ -15,17 +15,35 @@
         {% when 'product' %}
 
           {%- comment -%} Petssify: Intelligent collection context & cross-species guard (Spec 3.5) {%- endcomment -%}
-          {% assign breadcrumb_collection = collection %}
+          {% assign breadcrumb_collection = null %}
+          {% if collection != blank %}
+            {% assign ctx_handle = collection.handle | downcase %}
+            {% unless ctx_handle == 'frontpage'
+              or ctx_handle contains 'home'
+              or ctx_handle == 'all'
+              or ctx_handle contains 'all-products'
+              or ctx_handle contains 'best-seller'
+              or ctx_handle contains 'best_seller'
+              or ctx_handle contains 'sale'
+              or ctx_handle contains 'accessories'
+              or ctx_handle contains 'featured'
+            %}
+              {% assign breadcrumb_collection = collection %}
+            {% endunless %}
+          {% endif %}
+
           {% unless breadcrumb_collection %}
             {% for product_collection in product.collections %}
               {% assign collection_handle = product_collection.handle | downcase %}
-              {% unless collection_handle == 'all'
+              {% unless collection_handle == 'frontpage'
+                or collection_handle contains 'home'
+                or collection_handle == 'all'
+                or collection_handle contains 'all-products'
                 or collection_handle contains 'best-seller'
                 or collection_handle contains 'best_seller'
                 or collection_handle contains 'sale'
                 or collection_handle contains 'accessories'
                 or collection_handle contains 'featured'
-                or collection_handle contains 'all-products'
               %}
                 {% assign has_cat_tag = false %}
                 {% if product.tags contains 'cat' or product.title contains 'Cat' %}

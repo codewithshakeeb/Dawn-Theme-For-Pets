@@ -1,0 +1,21 @@
+{%- comment -%}
+  Petssify: Product Details & Lifestyle Feature Tabs (Spec 2.5)
+  Renders responsive tabs on desktop (Details, Materials & Specs, Size & Fit, Shipping & Returns)
+  and accessible accordions on mobile, with 1:1 lifestyle media split.
+{%- endcomment -%}
+
+{% render 'petssify-details-tabs', product: product %}
+
+{% schema %}
+{
+  "name": "Petssify Details Tabs",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Petssify Details Tabs"
+    }
+  ]
+}
+{% endschema %}

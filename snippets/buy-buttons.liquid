@@ -75,7 +75,7 @@
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="product-form__submit button button--full-width button--primary petssify-main-atc-btn"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null
@@ -88,14 +88,14 @@
               {%- if product.selected_or_first_available_variant == null -%}
                 {{ 'products.product.unavailable' | t }}
               {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                {{ 'products.product.sold_out' | t }}
+                Available soon
               {%- else -%}
                 {{ 'products.product.add_to_cart' | t }}
               {%- endif -%}
             </span>
             {%- render 'loading-spinner' -%}
           </button>
-          {%- if show_dynamic_checkout -%}
+          {%- if show_dynamic_checkout and product.selected_or_first_available_variant.available -%}
             {{ form | payment_button }}
           {%- endif -%}
         </div>

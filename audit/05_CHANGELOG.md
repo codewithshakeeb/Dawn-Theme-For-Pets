@@ -250,3 +250,15 @@ Merchant freedom was a primary architectural objective. The following settings a
 - **`templates/product.json`:** Reordered sections so "You may also like" recommendations render above the reviews app.
 - **`assets/sticky-add-to-cart.js` & `.css`:** Synced mobile sticky buy bar with real-time variant availability and disabled sold-out state.
 
+### Part E: Phase 2 PDP Conversion & Velora Alignment Overhaul
+- **Comprehensive Audit:** Documented 10 core PDP issues and files involved in [`audit/09_pdp_audit.md`](file:///d:/Dawn%20Theme%20Customization/Petssify/audit/09_pdp_audit.md).
+- **Sticky 56/44 Media Gallery Split:** Modernized layout with `position: sticky; top: 96px`, vertical 72px thumbnail rail, active navy border, 1:1 image container with 12px radius on `#F5F7FB`, and `"hide_variants": false` for multi-angle browsing.
+- **`snippets/petssify-stock-status.liquid`:** Redesigned badge architecture resolving Dawn's class-retention bug on variant switch. Adds low-inventory scarcity badge (`<= 5` items) and "Choose another option" variant jumper link.
+- **`snippets/petssify-trust-row.liquid`:** High-converting 3-column trust row (Free shipping $50+, 30-day returns, Secure payment).
+- **`snippets/petssify-promise-card.liquid`:** Centered 30px payment icons with "Guaranteed Safe & Secure Checkout" + 100% width Petssify Promise card with updated copy "Email support within 24 hours Mon–Fri".
+- **`sections/petssify-details-tabs.liquid` & `snippets/petssify-details-tabs.liquid`:** Below-the-fold 4-tab panel (Details, Materials & Specs, Size & Fit, Shipping & Returns) with 1:1 lifestyle media split on desktop and responsive accordions on mobile.
+- **`snippets/petssify-sticky-atc.liquid` & `assets/petssify-pdp.js`:** IntersectionObserver-powered sticky bar (desktop 72px bar with variant selector & Ajax cart drawer trigger; mobile compact bar with `env(safe-area-inset-bottom)`).
+- **Navigation & Footer Resiliency:** Fixed breadcrumb collection resolution, header menu fallback to `main-menu`, and footer logo fallback with policy links.
+- **Validation:** Linter `shopify theme check` passed with **0 errors** across 192 inspected files.
+
+

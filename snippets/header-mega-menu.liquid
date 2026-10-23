@@ -7,7 +7,11 @@
 
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
-    {%- for link in section.settings.menu.links -%}
+    {%- assign active_menu = header_menu | default: section.settings.menu -%}
+    {%- if active_menu == blank or active_menu.links.size == 0 -%}
+      {%- assign active_menu = linklists['main-menu'] -%}
+    {%- endif -%}
+    {%- for link in active_menu.links -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>

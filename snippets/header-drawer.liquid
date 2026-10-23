@@ -21,7 +21,11 @@
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-              {%- for link in section.settings.menu.links -%}
+              {%- assign active_menu = header_menu | default: section.settings.menu -%}
+              {%- if active_menu == blank or active_menu.links.size == 0 -%}
+                {%- assign active_menu = linklists['main-menu'] -%}
+              {%- endif -%}
+              {%- for link in active_menu.links -%}
                 <li>
                   {%- if link.links != blank -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">

@@ -1,72 +1,116 @@
 {%- comment -%}
-  Petssify Mobile Sticky Add to Cart Bar
-  Matches Base44 Prototype:
-  Fixed to viewport bottom on mobile screens once user scrolls past main buy buttons.
+  Petssify: High-Conversion Rebuilt Sticky Add to Cart Bar (Spec 2.4)
+  Desktop: Slim bar aligned to 1280px grid with thumbnail, title, variant picker, price, primary ATC button.
+  Mobile: Fixed bottom bar with 48px thumb, title, price, 48px navy ATC button, iOS safe area support.
+  Dynamic out-of-stock mode: "Out of stock — available soon" + "Notify me" scroll action.
 {%- endcomment -%}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
-<div id="PetssifyStickyATC" class="petssify-sticky-atc" aria-hidden="true">
-  <div style="display: flex; align-items: center; gap: 10px; overflow: hidden; flex: 1;">
-    {%- if product.featured_media != blank -%}
-      <img
-        src="{{ product.featured_media | image_url: width: 80 }}"
-        alt="{{ product.title | escape }}"
-        width="44"
-        height="44"
-        style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; flex-shrink: 0; border: 1px solid var(--color-border);"
-      >
-    {%- endif -%}
-    <div style="overflow: hidden; line-height: 1.2;">
-      <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 700; color: var(--color-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-        {{ product.title | escape }}
+<div
+  id="PetssifyStickyBar"
+  class="petssify-sticky-bar"
+  role="region"
+  aria-label="Quick add to cart"
+  data-product-id="{{ product.id }}"
+  data-available="{{ current_variant.available }}"
+  aria-hidden="true"
+>
+  <div class="petssify-sticky-bar__container page-width">
+    <!-- Media & Product Info -->
+    <div class="petssify-sticky-bar__product">
+      {%- assign sticky_media = current_variant.featured_media | default: product.featured_media -%}
+      {%- if sticky_media != blank -%}
+        <div class="petssify-sticky-bar__thumb">
+          {{
+            sticky_media
+            | image_url: width: 120
+            | image_tag:
+              loading: 'lazy',
+              id: 'PetssifyStickyThumbImg',
+              width: 52,
+              height: 52,
+              alt: product.title | escape
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="petssify-sticky-bar__details">
+        <h4 class="petssify-sticky-bar__title">{{ product.title | escape }}</h4>
+        <div class="petssify-sticky-bar__meta">
+          {%- unless product.has_only_default_variant -%}
+            <span id="PetssifyStickyVariantLabel" class="petssify-sticky-bar__variant">
+              {{ current_variant.title }}
+            </span>
+            <span class="petssify-sticky-bar__meta-dot" aria-hidden="true">·</span>
+          {%- endunless -%}
+          <div id="PetssifyStickyPriceWrapper" class="petssify-sticky-bar__price-wrapper">
+            <span id="PetssifyStickyPrice" class="petssify-sticky-bar__price">
+              {{ current_variant.price | money }}
+            </span>
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <s id="PetssifyStickyComparePrice" class="petssify-sticky-bar__compare-price">
+                {{ current_variant.compare_at_price | money }}
+              </s>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
-      <div style="font-size: 14px; font-weight: 800; color: var(--color-accent); margin-top: 2px;">
-        {{ current_variant.price | money }}
+    </div>
+
+    <!-- Actions & Variant Dropdown -->
+    <div class="petssify-sticky-bar__actions">
+      {%- unless product.has_only_default_variant -%}
+        <div class="petssify-sticky-bar__select-wrap">
+          <label for="PetssifyStickySelect" class="visually-hidden">Choose option</label>
+          <select id="PetssifyStickySelect" class="petssify-sticky-bar__select" aria-label="Select variant">
+            {%- for variant in product.variants -%}
+              <option
+                value="{{ variant.id }}"
+                data-price="{{ variant.price | money }}"
+                data-compare-at="{{ variant.compare_at_price | money }}"
+                data-available="{{ variant.available }}"
+                data-image="{{ variant.featured_media | default: product.featured_media | image_url: width: 120 }}"
+                {% if variant.id == current_variant.id %}selected="selected"{% endif %}
+              >
+                {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} (Sold out){% endunless %}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endunless -%}
+
+      <!-- Add to Cart or Notify Me Button -->
+      <div class="petssify-sticky-bar__button-area">
+        <button
+          type="button"
+          id="PetssifyStickyAddBtn"
+          class="button button--primary petssify-sticky-bar__button {% unless current_variant.available %}petssify-hidden{% endunless %}"
+          data-variant-id="{{ current_variant.id }}"
+        >
+          <span class="petssify-sticky-bar__btn-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </span>
+          <span class="petssify-sticky-bar__btn-text">Add to cart</span>
+          <span class="petssify-sticky-bar__btn-spinner petssify-hidden"></span>
+        </button>
+
+        <button
+          type="button"
+          id="PetssifyStickyNotifyBtn"
+          class="button button--secondary petssify-sticky-bar__button petssify-sticky-bar__button--notify {% if current_variant.available %}petssify-hidden{% endif %}"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span>Notify me when back</span>
+        </button>
       </div>
     </div>
   </div>
-
-  <div style="flex-shrink: 0;">
-    <product-form>
-      {%- form 'product', product, id: 'petssify-sticky-atc-form', class: 'form', novalidate: 'novalidate' -%}
-        <input type="hidden" name="id" value="{{ current_variant.id }}" id="PetssifyStickyVariantId">
-        <button
-          type="submit"
-          name="add"
-          class="button button--primary"
-          style="padding: 10px 18px !important; font-size: 13px !important; min-height: 42px;"
-          {% unless current_variant.available %}disabled{% endunless %}
-        >
-          {% if current_variant.available %}
-            Add to Cart
-          {% else %}
-            Sold Out
-          {% endif %}
-        </button>
-      {%- endform -%}
-    </product-form>
-  </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var stickyATC = document.getElementById('PetssifyStickyATC');
-    var buyBtn = document.querySelector('.product-form__buttons');
-    if (!stickyATC || !buyBtn) return;
-
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-          stickyATC.classList.add('is-active');
-          stickyATC.setAttribute('aria-hidden', 'false');
-        } else {
-          stickyATC.classList.remove('is-active');
-          stickyATC.setAttribute('aria-hidden', 'true');
-        }
-      });
-    }, { threshold: 0 });
-
-    observer.observe(buyBtn);
-  });
-</script>

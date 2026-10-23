@@ -650,9 +650,9 @@
     </div>
 
     {% render 'product-media-modal', variant_images: variant_images %}
-    {% render 'sticky-add-to-cart', product: product, section: section %}
-    {%- comment -%} Petssify: Mobile Sticky Add to Cart (Prototype Match) {%- endcomment -%}
+    {%- comment -%} Petssify: High-Conversion Sticky Add to Cart (Desktop & Mobile) {%- endcomment -%}
     {% render 'petssify-sticky-atc', product: product %}
+    <script src="{{ 'petssify-pdp.js' | asset_url }}" defer="defer"></script>
 
     {% assign popups = section.blocks | where: 'type', 'popup' %}
     {%- for block in popups -%}

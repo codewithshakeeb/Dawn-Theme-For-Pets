@@ -761,110 +761,766 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ==========================================================================
-   PDP Specific Styling (Spec 3.x)
+   PDP Specific Styling & Typography Normalization (Phase 2 & Spec 2.x)
    ========================================================================== */
+body {
+  letter-spacing: 0 !important;
+}
+
 .product__title h1 {
-  font-size: clamp(24px, 3vw, 32px) !important;
-  font-weight: 800 !important;
+  font-family: var(--font-heading) !important;
+  font-size: clamp(24px, 2.5vw, 32px) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
   color: var(--color-primary) !important;
   line-height: 1.25 !important;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-.product-inventory-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 16px;
+/* Price Normalization */
+.price,
+.price--large,
+.price .price-item {
+  letter-spacing: 0 !important;
 }
 
-.product-inventory-status.in-stock {
-  background-color: var(--color-success-bg);
-  color: var(--color-success);
-  border: 1px solid #BBF7D0;
-}
-
-.product-inventory-status.out-of-stock {
-  background-color: var(--color-danger-bg);
-  color: var(--color-danger);
-  border: 1px solid #FECACA;
-}
-
-.product-inventory-status .status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: currentColor;
-}
-
-/* Petssify Promise Card */
-.petssify-promise-box {
-  background: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  padding: 16px;
-  margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.petssify-promise-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--color-text-main);
-}
-
-.petssify-promise-item svg {
-  flex-shrink: 0;
-  color: var(--color-accent);
-  margin-top: 2px;
-}
-
-/* Clean Accordions */
-.product__accordion .accordion__title {
+.price--large .price-item--sale,
+.price--large .price-item--regular {
   font-family: var(--font-heading) !important;
-  font-size: 15px !important;
+  font-size: 28px !important;
   font-weight: 700 !important;
   color: var(--color-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+
+.price--large .price-item--regular.price-item--last {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
 }
 
 /* ==========================================================================
-   Mobile Sticky Add to Cart (PDP)
+   Desktop & Mobile Gallery (Spec 2.1)
+   56% Media / 44% Buy Box sticky split
    ========================================================================== */
-.petssify-sticky-atc {
+@media screen and (min-width: 990px) {
+  .product--medium:not(.product--no-media) .product__media-wrapper {
+    max-width: 56% !important;
+    width: calc(56% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+    position: sticky !important;
+    top: 96px !important;
+    align-self: flex-start !important;
+  }
+
+  .product--medium:not(.product--no-media) .product__info-wrapper {
+    max-width: 44% !important;
+    width: calc(44% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+  }
+}
+
+.product__media-item .media {
+  border-radius: 12px !important;
+  background-color: #F8FAFC !important;
+  overflow: hidden !important;
+}
+
+.product__media-item img {
+  object-fit: contain !important;
+}
+
+/* Vertical / Modern Thumbnail Rail */
+.thumbnail-list__item {
+  width: 72px !important;
+  height: 72px !important;
+}
+
+.thumbnail {
+  border-radius: 8px !important;
+  border: 1.5px solid #E2E8F0 !important;
+  background: #F8FAFC !important;
+  transition: all var(--transition-fast) !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.thumbnail[aria-current="true"] {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 1px var(--color-primary) !important;
+}
+
+/* ==========================================================================
+   Primary Add-to-Cart Button
+   ========================================================================== */
+.petssify-main-atc-btn {
+  min-height: 54px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.petssify-main-atc-btn:hover:not([disabled]) {
+  background-color: #081845 !important;
+}
+
+.petssify-main-atc-btn[disabled] {
+  background-color: #E2E8F0 !important;
+  color: #94A3B8 !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   Dynamic Stock Status, Scarcity & Delivery Estimator (Spec 2.3)
+   ========================================================================== */
+.petssify-inventory-wrapper {
+  margin: 8px 0 16px 0;
+}
+
+.petssify-stock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 6px 14px;
+  border-radius: 9999px;
+}
+
+.petssify-stock-pill--in-stock {
+  background-color: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.petssify-stock-pill--out-of-stock {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.petssify-stock-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10B981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+}
+
+.petssify-stock-dot--red {
+  background-color: #EF4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+}
+
+.petssify-stock-scarcity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #D97706;
+  margin-top: 6px;
+}
+
+.petssify-switch-variant-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.petssify-switch-variant-link:hover {
+  color: var(--color-accent);
+}
+
+.petssify-delivery-estimate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #475569;
+  margin-top: 8px;
+}
+
+.petssify-delivery-estimate svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.petssify-delivery-estimate strong {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   3-Column Trust Row (Spec 2.2 #10)
+   ========================================================================== */
+.petssify-trust-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 18px 0;
+}
+
+.petssify-trust-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.petssify-trust-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.petssify-trust-content {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.petssify-trust-heading {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: capitalize;
+}
+
+.petssify-trust-subtext {
+  font-size: 11px;
+  color: #64748B;
+}
+
+@media screen and (max-width: 600px) {
+  .petssify-trust-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+}
+
+/* ==========================================================================
+   Guaranteed Safe & Secure Checkout + Petssify Promise Card (Spec 2.2 #12)
+   ========================================================================== */
+.petssify-buybox-guarantee {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.petssify-payment-security {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.petssify-payment-security-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.petssify-payment-security-header svg {
+  color: var(--color-primary);
+}
+
+.petssify-payment-badges-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.petssify-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  padding: 3px 6px;
+  height: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.petssify-promise-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.petssify-promise-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.petssify-promise-card__shield {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.petssify-promise-card__title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.petssify-promise-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.petssify-promise-card__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.petssify-promise-card__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ECFDF5;
+  color: #059669;
+}
+
+.petssify-promise-card__text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.petssify-promise-card__text strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Details Tabs Section & Lifestyle Split (Spec 2.5)
+   ========================================================================== */
+.petssify-details-section {
+  padding: 56px 0;
+  border-top: 1px solid #E2E8F0;
+}
+
+.petssify-details-container {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 48px;
+  align-items: start;
+}
+
+@media screen and (max-width: 989px) {
+  .petssify-details-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .petssify-details-section {
+    padding: 36px 0;
+  }
+}
+
+.petssify-tabs-nav {
+  display: flex;
+  border-bottom: 2px solid #E2E8F0;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.petssify-tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.petssify-tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.petssify-tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.petssify-tab-btn.is-active {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.petssify-tab-btn.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
+.petssify-tab-panel {
+  padding-top: 24px;
+}
+
+.petssify-tab-panel[hidden] {
+  display: none;
+}
+
+.petssify-panel-benefits {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #F8FAFC;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+}
+
+.petssify-benefits-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 10px 0;
+}
+
+.petssify-benefits-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.petssify-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.petssify-benefit-icon {
+  color: #10B981;
+  display: flex;
+  align-items: center;
+}
+
+.petssify-specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.petssify-specs-table tr {
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.petssify-specs-table th {
+  text-align: left;
+  padding: 12px 16px 12px 0;
+  font-weight: 600;
+  color: var(--color-primary);
+  width: 35%;
+}
+
+.petssify-specs-table td {
+  padding: 12px 0;
+  color: #475569;
+}
+
+.petssify-shipping-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.petssify-shipping-card {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+}
+
+.petssify-shipping-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.petssify-shipping-subtitle {
+  margin: 0 0 4px 0;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.petssify-shipping-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.petssify-lifestyle-image-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  aspect-ratio: 1 / 1;
+}
+
+.petssify-lifestyle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Accordion styling for mobile */
+.mobile-only {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  .petssify-tabs-nav {
+    display: none;
+  }
+  .mobile-only {
+    display: flex;
+  }
+  .petssify-accordion-header {
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #E2E8F0;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-primary);
+    cursor: pointer;
+    margin: 0;
+  }
+  .petssify-tab-panel {
+    padding-top: 0;
+    display: block !important;
+  }
+  .petssify-tab-panel .petssify-panel-content {
+    display: none;
+    padding: 16px 0;
+  }
+  .petssify-tab-panel.is-accordion-open .petssify-panel-content {
+    display: block;
+  }
+  .petssify-tab-panel.is-accordion-open .petssify-accordion-chevron {
+    transform: rotate(180deg);
+  }
+  .petssify-accordion-chevron {
+    transition: transform var(--transition-fast);
+  }
+}
+
+/* ==========================================================================
+   Consolidated Sticky Add-to-Cart Bar (Spec 2.4)
+   ========================================================================== */
+.petssify-sticky-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 99;
+  z-index: 100;
   background: #FFFFFF;
-  border-top: 1px solid var(--color-border);
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
-  padding: 12px 16px;
+  border-top: 1px solid #E2E8F0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  padding: 10px 0;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+}
+
+.petssify-sticky-bar.is-visible {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.petssify-sticky-bar__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+}
+
+.petssify-sticky-bar__product {
+  display: flex;
+  align-items: center;
   gap: 12px;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
+  min-width: 0;
 }
 
-.petssify-sticky-atc.is-active {
-  transform: translateY(0);
+.petssify-sticky-bar__thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  flex-shrink: 0;
 }
 
-@media screen and (min-width: 750px) {
-  .petssify-sticky-atc {
+.petssify-sticky-bar__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.petssify-sticky-bar__details {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.petssify-sticky-bar__title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.petssify-sticky-bar__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.petssify-sticky-bar__variant {
+  color: #64748B;
+}
+
+.petssify-sticky-bar__price {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.petssify-sticky-bar__compare-price {
+  font-size: 12px;
+  color: #94A3B8;
+  margin-left: 4px;
+}
+
+.petssify-sticky-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.petssify-sticky-bar__select {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #FFFFFF;
+  color: var(--color-primary);
+  max-width: 220px;
+}
+
+.petssify-sticky-bar__button {
+  height: 48px;
+  padding: 0 24px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+}
+
+.petssify-sticky-bar__button--notify {
+  background: #FEF2F2 !important;
+  color: #991B1B !important;
+  border: 1px solid #FECACA !important;
+}
+
+@media screen and (max-width: 749px) {
+  .petssify-sticky-bar__select-wrap {
     display: none;
   }
+  .petssify-sticky-bar__title {
+    max-width: 140px;
+  }
+  .petssify-sticky-bar__button {
+    padding: 0 16px !important;
+    font-size: 13px !important;
+    height: 44px;
+  }
+}
+
+.petssify-hidden {
+  display: none !important;
 }
 
 /* ==========================================================================
