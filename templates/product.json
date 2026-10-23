@@ -158,17 +158,6 @@
       "type": "petssify-details-tabs",
       "settings": {}
     },
-    "custom_liquid_38U7cF": {
-      "type": "custom-liquid",
-      "disabled": true,
-      "name": "t:sections.custom-liquid.presets.name",
-      "settings": {
-        "custom_liquid": "{% if product.metafields.custom.product_benefits != blank %}\n  <div class=\"product-benefits\">\n    <p>{{ product.metafields.custom.product_benefits }}</p>\n  </div>\n{% endif %}",
-        "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
-    },
     "17683278085186f09e": {
       "type": "apps",
       "blocks": {
