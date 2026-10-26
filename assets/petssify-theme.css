@@ -383,15 +383,16 @@ h1, h2, h3, h4, h5, h6,
   fill: #CBD5E1;
 }
 
-/* Top-Right Lavender Pill Badge ("Kit & Save" matching reference image) */
+/* ==========================================================================
+   Petssify Dynamic Badges Component (6-position, dynamic colors, rounded)
+   ========================================================================== */
+.petssify-badge,
 .petssify-product-card__badge-top-right {
   position: absolute;
-  top: 10px;
-  right: 10px;
   z-index: 3;
-  background-color: #C5BAFD;
-  color: #1E1B4B;
-  font-family: var(--font-body-family, 'Inter', sans-serif);
+  background-color: var(--petssify-badge-bg, #C4B5FD);
+  color: var(--petssify-badge-color, #17143B);
+  font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -404,6 +405,44 @@ h1, h2, h3, h4, h5, h6,
   text-transform: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   pointer-events: none;
+  white-space: nowrap;
+  max-width: calc(100% - 20px);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* 6 Supported Badge Positions */
+.petssify-badge--top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.petssify-badge--top-center {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.petssify-badge--top-right,
+.petssify-product-card__badge-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.petssify-badge--bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.petssify-badge--bottom-center {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.petssify-badge--bottom-right {
+  bottom: 10px;
+  right: 10px;
 }
 
 /* Top-Left Sold Out Badge */
@@ -428,6 +467,11 @@ h1, h2, h3, h4, h5, h6,
   color: #FFFFFF;
   box-shadow: 0 1px 4px rgba(100, 116, 139, 0.25);
   pointer-events: none;
+}
+
+/* Offset promo badge if sold out badge is also top-left */
+.petssify-product-card--sold-out .petssify-badge--top-left {
+  top: 36px;
 }
 
 /* Card Content Body */
@@ -474,32 +518,87 @@ h1, h2, h3, h4, h5, h6,
   outline-offset: 2px;
 }
 
-/* Star Rating */
+/* ==========================================================================
+   Petssify 5-Star Rating Component (SVG stars, fractional fill, review count)
+   ========================================================================== */
+.petssify-rating,
 .petssify-product-card__rating {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  margin-bottom: 6px;
+  gap: 5px;
+  margin: 2px 0 6px 0;
   position: relative;
   z-index: 2;
+  line-height: 1;
+  vertical-align: middle;
 }
 
-.petssify-product-card__star {
-  color: #F5A623;
-  font-size: 13px;
+.petssify-rating__stars {
+  position: relative;
+  display: inline-flex;
+  width: 72px;
+  height: 13px;
+  flex-shrink: 0;
   line-height: 1;
 }
 
-.petssify-product-card__rating-value {
-  font-weight: 700;
-  color: var(--color-primary);
-  font-size: 12px;
+.petssify-rating__stars-bg {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 72px;
+  height: 13px;
+  color: #E2E8F0;
 }
 
+.petssify-rating__stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  height: 13px;
+}
+
+.petssify-rating__stars-fill-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 72px;
+  height: 13px;
+  color: var(--petssify-star-color, #F59E0B);
+}
+
+.petssify-rating__star-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.petssify-rating__value,
+.petssify-product-card__rating-value {
+  font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.01em;
+  margin-left: 1px;
+}
+
+.petssify-rating__count,
 .petssify-product-card__rating-count {
-  color: var(--color-text-muted);
-  font-size: 12px;
+  font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  color: #6B7280;
+  letter-spacing: 0;
+}
+
+.petssify-product-card__star {
+  color: var(--petssify-star-color, #F59E0B);
+  font-size: 13px;
+  line-height: 1;
 }
 
 /* Price Row (Strikethrough + Orange-Red Sale + Save Pill) */

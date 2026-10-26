@@ -1,0 +1,102 @@
+{%- comment -%}
+  Petssify 5-Star Rating Component
+  Renders five visible SVG star icons (with precise fractional fill support),
+  followed by the numerical score and review count: ★★★★★ 5.0 (1).
+
+  Accepts:
+  - product: {Object} Product Liquid object (optional, defaults to card_product)
+  - card_product: {Object} Alias for product
+  - rating_value: {Number} Direct numeric rating override (optional)
+  - rating_count: {Number} Direct review count override (optional)
+  - star_color: {String} Direct star color override (optional, defaults to theme setting)
+  - class: {String} Additional CSS class names (optional)
+
+  Supported Review Data Sources:
+  1. Standard Shopify reviews metafield:
+     product.metafields.reviews.rating.value (rating & scale_max), product.metafields.reviews.rating_count.value
+  2. Judge.me app metafield:
+     product.metafields.judgeme.badge (data-score or data-average-rating, data-number-of-reviews)
+  3. Custom rating metafields:
+     product.metafields.custom.rating, product.metafields.custom.review_count / reviews_count
+{%- endcomment -%}
+
+{%- liquid
+  assign target_product = product | default: card_product
+
+  assign val = rating_value
+  assign cnt = rating_count
+
+  if val == nil and target_product != blank
+    if target_product.metafields.reviews.rating.value != blank
+      assign val = target_product.metafields.reviews.rating.value.rating | times: 1.0
+      assign cnt = target_product.metafields.reviews.rating_count.value | default: target_product.metafields.reviews.rating_count | plus: 0
+    elsif target_product.metafields.reviews.rating != blank
+      assign val = target_product.metafields.reviews.rating | times: 1.0
+      assign cnt = target_product.metafields.reviews.rating_count | plus: 0
+    elsif target_product.metafields.judgeme.badge != blank
+      assign jm_badge = target_product.metafields.judgeme.badge
+      if jm_badge contains "data-score='"
+        assign val = jm_badge | split: "data-score='" | last | split: "'" | first | times: 1.0
+      elsif jm_badge contains "data-average-rating='"
+        assign val = jm_badge | split: "data-average-rating='" | last | split: "'" | first | times: 1.0
+      endif
+      if jm_badge contains "data-number-of-reviews='"
+        assign cnt = jm_badge | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
+      endif
+    elsif target_product.metafields.custom.rating != blank
+      assign val = target_product.metafields.custom.rating.value | default: target_product.metafields.custom.rating | times: 1.0
+      assign cnt = target_product.metafields.custom.review_count.value | default: target_product.metafields.custom.review_count | default: target_product.metafields.custom.reviews_count | default: 1 | plus: 0
+    endif
+  endif
+-%}
+
+{%- if val != nil and cnt > 0 and val > 0 -%}
+  {%- liquid
+    assign score = val | at_most: 5.0 | at_least: 0.0
+    assign fill_percent = score | times: 100.0 | divided_by: 5.0 | round: 1
+    assign score_rounded = score | round: 1
+    assign score_str = score_rounded | append: ''
+    unless score_str contains '.'
+      assign score_str = score_str | append: '.0'
+    endunless
+
+    assign color_star = star_color
+    if color_star == blank
+      assign color_star = settings.star_rating_color | default: '#F59E0B'
+    endif
+
+    if cnt == 1
+      assign review_word = 'review'
+    else
+      assign review_word = 'reviews'
+    endif
+  -%}
+
+  <div
+    class="petssify-rating{% if class != blank %} {{ class }}{% endif %}"
+    role="img"
+    aria-label="Rated {{ score_str }} out of 5 stars based on {{ cnt }} {{ review_word }}"
+    style="--petssify-star-color: {{ color_star }};"
+  >
+    <div class="petssify-rating__stars" aria-hidden="true">
+      <div class="petssify-rating__stars-bg">
+        {%- for i in (1..5) -%}
+          <svg class="petssify-rating__star-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+        {%- endfor -%}
+      </div>
+      <div class="petssify-rating__stars-fill" style="width: {{ fill_percent }}%;">
+        <div class="petssify-rating__stars-fill-inner">
+          {%- for i in (1..5) -%}
+            <svg class="petssify-rating__star-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+    <span class="petssify-rating__value" aria-hidden="true">{{ score_str }}</span>
+    <span class="petssify-rating__count" aria-hidden="true">({{ cnt }})</span>
+  </div>
+{%- endif -%}

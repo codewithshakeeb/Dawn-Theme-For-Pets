@@ -1451,5 +1451,76 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Product Badges & Ratings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product Card Badges"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_background",
+        "label": "Default badge background color",
+        "default": "#C4B5FD"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_text_color",
+        "label": "Default badge text color",
+        "default": "#17143B"
+      },
+      {
+        "type": "select",
+        "id": "product_badge_position",
+        "label": "Default badge position",
+        "options": [
+          {
+            "value": "top-left",
+            "label": "Top left"
+          },
+          {
+            "value": "top-center",
+            "label": "Top center"
+          },
+          {
+            "value": "top-right",
+            "label": "Top right"
+          },
+          {
+            "value": "bottom-left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom-center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom-right",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "top-right"
+      },
+      {
+        "type": "paragraph",
+        "content": "Individual products can override badge text, colors, and position using custom product metafields (custom.badge_text, custom.badge_background, custom.badge_text_color, custom.badge_position) or product tags (e.g. badge:Kit & Save)."
+      },
+      {
+        "type": "header",
+        "content": "Product Card Ratings"
+      },
+      {
+        "type": "color",
+        "id": "star_rating_color",
+        "label": "Star rating color",
+        "default": "#F59E0B"
+      },
+      {
+        "type": "paragraph",
+        "content": "Ratings are dynamically pulled from standard Shopify product reviews or Judge.me metafields. Five visible stars with fractional fill and review count are rendered only when real reviews exist."
+      }
+    ]
   }
 ]

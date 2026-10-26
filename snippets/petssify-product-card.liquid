@@ -34,7 +34,7 @@
   endif
 
   if show_rating == nil
-    assign show_rating = false
+    assign show_rating = true
   endif
 
   if target_product and target_product != empty
@@ -55,28 +55,6 @@
     assign product_form_id = 'petssify-quick-add-' | append: section_id | append: '-' | append: target_product.id
     assign featured_media = target_product.featured_media
     assign secondary_media = target_product.media[1] | default: target_product.images[1]
-
-    comment
-      Top-Right Badge Logic: "Kit & Save" or dynamic tag/metafield
-    endcomment
-    assign top_right_badge = target_product.metafields.custom.badge | default: target_product.metafields.custom.pill_label | default: target_product.metafields.custom.kit_badge
-    if top_right_badge == blank
-      for tag in target_product.tags
-        if tag contains 'badge:'
-          assign top_right_badge = tag | split: 'badge:' | last | strip
-          break
-        elsif tag == 'Kit & Save' or tag == 'kit & save' or tag == 'Kit'
-          assign top_right_badge = 'Kit & Save'
-          break
-        endif
-      endfor
-    endif
-    if top_right_badge == blank
-      assign p_title_lower = target_product.title | downcase
-      if p_title_lower contains 'kit' or p_title_lower contains 'bundle' or p_title_lower contains 'set' or on_sale
-        assign top_right_badge = 'Kit & Save'
-      endif
-    endif
 
     comment
       Subtitle / Kit Descriptor Line Logic
@@ -120,12 +98,8 @@
         </span>
       {%- endif -%}
 
-      {%- comment -%} Top-Right Lavender Pill Badge ("Kit & Save") {%- endcomment -%}
-      {%- if top_right_badge != blank and is_available -%}
-        <span class="petssify-product-card__badge-top-right" aria-label="{{ top_right_badge | escape }}">
-          {{ top_right_badge }}
-        </span>
-      {%- endif -%}
+      {%- comment -%} Dynamic Product Badge (Metafields, Tags, Positions) {%- endcomment -%}
+      {%- render 'petssify-badge', product: target_product -%}
 
       {%- comment -%} 1:1 Aspect Ratio Media Container {%- endcomment -%}
       <div class="petssify-product-card__media-inner">
@@ -246,33 +220,9 @@
         </a>
       </h3>
 
-      {%- comment -%} Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
+      {%- comment -%} 5-Star Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
       {%- if show_rating -%}
-        {%- liquid
-          assign rating_value = nil
-          assign rating_count = 0
-
-          if target_product.metafields.reviews.rating.value != blank
-            assign rating_value = target_product.metafields.reviews.rating.value.rating | round: 1
-            assign rating_count = target_product.metafields.reviews.rating_count.value | default: 0
-          elsif target_product.metafields.judgeme.badge != blank
-            assign jm_badge = target_product.metafields.judgeme.badge
-            if jm_badge contains "data-score='"
-              assign rating_value = jm_badge | split: "data-score='" | last | split: "'" | first | times: 1.0 | round: 1
-            endif
-            if jm_badge contains "data-number-of-reviews='"
-              assign rating_count = jm_badge | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
-            endif
-          endif
-        -%}
-
-        {%- if rating_count > 0 and rating_value != nil -%}
-          <div class="petssify-product-card__rating" aria-label="{{ rating_value }} out of 5 stars ({{ rating_count }} reviews)">
-            <span class="petssify-product-card__star" aria-hidden="true">★</span>
-            <span class="petssify-product-card__rating-value">{{ rating_value }}</span>
-            <span class="petssify-product-card__rating-count">({{ rating_count }})</span>
-          </div>
-        {%- endif -%}
+        {%- render 'petssify-rating', product: target_product -%}
       {%- endif -%}
 
       {%- comment -%} Price Row (Compare At + Orange-Red Sale + Save $X.XX Badge) {%- endcomment -%}
@@ -317,7 +267,7 @@
   {%- comment -%} Placeholder Card for Empty/Onboarding States {%- endcomment -%}
   <div class="petssify-product-card petssify-product-card--placeholder">
     <div class="petssify-product-card__media-wrap">
-      <span class="petssify-product-card__badge-top-right">Kit & Save</span>
+      {%- render 'petssify-badge', badge_text: 'Kit & Save' -%}
       <div class="petssify-product-card__media-inner">
         {%- assign placeholder_name = placeholder_image | default: 'product-1' -%}
         {{ placeholder_name | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
