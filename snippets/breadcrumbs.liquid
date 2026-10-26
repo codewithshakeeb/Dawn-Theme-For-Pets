@@ -1,176 +1,103 @@
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <div class="page-width">
-    <ol class="breadcrumbs__list">
+<div class="page-width petssify-breadcrumbs-wrapper">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
 
-      <!-- HOME -->
-      <li class="breadcrumbs__item">
-        <a href="{{ routes.root_url }}">Home</a>
-      </li>
-
-      {% case request.page_type %}
-
-        <!-- ========================= -->
-        <!-- PRODUCT PAGE -->
-        <!-- ========================= -->
-        {% when 'product' %}
-
-          {%- comment -%} Petssify: Intelligent collection context & cross-species guard (Spec 3.5) {%- endcomment -%}
-          {% assign breadcrumb_collection = null %}
-          {% if collection != blank %}
-            {% assign ctx_handle = collection.handle | downcase %}
-            {% unless ctx_handle == 'frontpage'
-              or ctx_handle contains 'home'
-              or ctx_handle == 'all'
-              or ctx_handle contains 'all-products'
-              or ctx_handle contains 'best-seller'
-              or ctx_handle contains 'best_seller'
-              or ctx_handle contains 'sale'
-              or ctx_handle contains 'accessories'
-              or ctx_handle contains 'featured'
-            %}
-              {% assign breadcrumb_collection = collection %}
-            {% endunless %}
-          {% endif %}
-
-          {% unless breadcrumb_collection %}
-            {% for product_collection in product.collections %}
-              {% assign collection_handle = product_collection.handle | downcase %}
-              {% unless collection_handle == 'frontpage'
-                or collection_handle contains 'home'
-                or collection_handle == 'all'
-                or collection_handle contains 'all-products'
-                or collection_handle contains 'best-seller'
-                or collection_handle contains 'best_seller'
-                or collection_handle contains 'sale'
-                or collection_handle contains 'accessories'
-                or collection_handle contains 'featured'
-              %}
-                {% assign has_cat_tag = false %}
-                {% if product.tags contains 'cat' or product.title contains 'Cat' %}
-                  {% assign has_cat_tag = true %}
-                {% endif %}
-
-                {% assign has_dog_tag = false %}
-                {% if product.tags contains 'dog' or product.title contains 'Dog' %}
-                  {% assign has_dog_tag = true %}
-                {% endif %}
-
-                {% if has_dog_tag and has_cat_tag == false and collection_handle contains 'cat' %}
-                  {% continue %}
-                {% endif %}
-                {% if has_cat_tag and has_dog_tag == false and collection_handle contains 'dog' %}
-                  {% continue %}
-                {% endif %}
-                {% assign breadcrumb_collection = product_collection %}
-                {% break %}
-              {% endunless %}
-            {% endfor %}
+    {% case request.page_type %}
+      {% when 'product' %}
+        {% assign breadcrumb_collection = null %}
+        {% if collection != blank %}
+          {% assign ctx_handle = collection.handle | downcase %}
+          {% unless ctx_handle == 'frontpage'
+            or ctx_handle contains 'home'
+            or ctx_handle == 'all'
+            or ctx_handle contains 'all-products'
+            or ctx_handle contains 'best-seller'
+            or ctx_handle contains 'best_seller'
+            or ctx_handle contains 'sale'
+            or ctx_handle contains 'accessories'
+            or ctx_handle contains 'featured'
+          %}
+            {% assign breadcrumb_collection = collection %}
           {% endunless %}
+        {% endif %}
 
+        {% unless breadcrumb_collection %}
+          {% for product_collection in product.collections %}
+            {% assign collection_handle = product_collection.handle | downcase %}
+            {% unless collection_handle == 'frontpage'
+              or collection_handle contains 'home'
+              or collection_handle == 'all'
+              or collection_handle contains 'all-products'
+              or collection_handle contains 'best-seller'
+              or collection_handle contains 'best_seller'
+              or collection_handle contains 'sale'
+              or collection_handle contains 'accessories'
+              or collection_handle contains 'featured'
+            %}
+              {% assign has_cat_tag = false %}
+              {% if product.tags contains 'cat' or product.title contains 'Cat' %}
+                {% assign has_cat_tag = true %}
+              {% endif %}
 
-          {% if breadcrumb_collection != blank %}
+              {% assign has_dog_tag = false %}
+              {% if product.tags contains 'dog' or product.title contains 'Dog' %}
+                {% assign has_dog_tag = true %}
+              {% endif %}
 
-            <li class="breadcrumbs__separator" aria-hidden="true">
-              ›
-            </li>
+              {% if has_dog_tag and has_cat_tag == false and collection_handle contains 'cat' %}
+                {% continue %}
+              {% endif %}
+              {% if has_cat_tag and has_dog_tag == false and collection_handle contains 'dog' %}
+                {% continue %}
+              {% endif %}
+              {% assign breadcrumb_collection = product_collection %}
+              {% break %}
+            {% endunless %}
+          {% endfor %}
+        {% endunless %}
 
-            <li class="breadcrumbs__item">
-              <a href="{{ breadcrumb_collection.url }}">
-                {{ breadcrumb_collection.title }}
-              </a>
-            </li>
+        {% if breadcrumb_collection != blank %}
+          <span aria-hidden="true">/</span>
+          <a href="{{ breadcrumb_collection.url }}">
+            {{ breadcrumb_collection.title }}
+          </a>
+        {% endif %}
 
-          {% endif %}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">
+          {{ product.title }}
+        </span>
 
+      {% when 'collection' %}
+        {% if collection %}
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">
+            {{ collection.title }}
+          </span>
+        {% endif %}
 
-          <!-- CURRENT PRODUCT -->
+      {% when 'page' %}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">
+          {{ page.title }}
+        </span>
 
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
+      {% when 'blog' %}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">
+          {{ blog.title }}
+        </span>
 
-          <li class="breadcrumbs__item breadcrumbs__item--current">
-            <span aria-current="page">
-              {{ product.title }}
-            </span>
-          </li>
+      {% when 'article' %}
+        <span aria-hidden="true">/</span>
+        <a href="{{ blog.url }}">
+          {{ blog.title }}
+        </a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">
+          {{ article.title }}
+        </span>
 
-
-        <!-- ========================= -->
-        <!-- COLLECTION PAGE -->
-        <!-- ========================= -->
-        {% when 'collection' %}
-
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
-
-          <li class="breadcrumbs__item breadcrumbs__item--current">
-            <span aria-current="page">
-              {{ collection.title }}
-            </span>
-          </li>
-
-
-        <!-- ========================= -->
-        <!-- PAGE -->
-        <!-- ========================= -->
-        {% when 'page' %}
-
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
-
-          <li class="breadcrumbs__item breadcrumbs__item--current">
-            <span aria-current="page">
-              {{ page.title }}
-            </span>
-          </li>
-
-
-        <!-- ========================= -->
-        <!-- BLOG -->
-        <!-- ========================= -->
-        {% when 'blog' %}
-
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
-
-          <li class="breadcrumbs__item breadcrumbs__item--current">
-            <span aria-current="page">
-              {{ blog.title }}
-            </span>
-          </li>
-
-
-        <!-- ========================= -->
-        <!-- ARTICLE -->
-        <!-- ========================= -->
-        {% when 'article' %}
-
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
-
-          <li class="breadcrumbs__item">
-            <a href="{{ blog.url }}">
-              {{ blog.title }}
-            </a>
-          </li>
-
-          <li class="breadcrumbs__separator" aria-hidden="true">
-            ›
-          </li>
-
-          <li class="breadcrumbs__item breadcrumbs__item--current">
-            <span aria-current="page">
-              {{ article.title }}
-            </span>
-          </li>
-
-      {% endcase %}
-
-    </ol>
-  </div>
-</nav>
+    {% endcase %}
+  </nav>
+</div>

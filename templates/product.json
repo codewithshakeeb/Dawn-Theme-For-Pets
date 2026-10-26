@@ -98,21 +98,19 @@
         },
         "collapsible_tab_dXRwym": {
           "type": "collapsible_tab",
-          "disabled": true,
           "settings": {
-            "heading": "Product Description",
-            "icon": "clipboard",
-            "content": "{{ product.description }}",
+            "heading": "Description",
+            "icon": "none",
+            "content": "",
             "page": ""
           }
         },
         "collapsible_tab_NXcnAr": {
           "type": "collapsible_tab",
-          "disabled": true,
           "settings": {
-            "heading": "Shipping & Returns",
+            "heading": "Refund, Return & Shipping Policy",
             "icon": "truck",
-            "content": "<p><strong>Shipping Time:</strong> Orders process in 1–2 business days; tracked US delivery takes 5–8 business days (Free over $50).<br><strong>Return Window:</strong> Returns are accepted within 30 days of delivery for unused items in original packaging.</p>",
+            "content": "<p><strong>Shipping Policy</strong></p><ul><li><strong>Free Standard Shipping:</strong> Complimentary on all orders over $50 across the continental US.</li><li><strong>Fast Order Processing:</strong> Packed and dispatched within 1–2 business days.</li><li><strong>Tracked Delivery:</strong> Expected delivery in 5–8 business days with live shipment tracking.</li></ul><p><strong>Refund &amp; Return Policy</strong></p><ul><li><strong>30-Day Money-Back Guarantee:</strong> 30-day easy returns on unused items in original packaging.</li><li><strong>Fast &amp; Easy Process:</strong> Contact our team at support@petssify.com for instant prepaid return assistance.</li><li><strong>Prompt Refunds:</strong> Full refund processed to your original payment method within 3–5 business days of return receipt.</li></ul>",
             "page": ""
           }
         },
@@ -132,7 +130,9 @@
         "quantity_selector",
         "buy_buttons",
         "custom_liquid_trust_row",
-        "custom_liquid_xgN7Mk"
+        "custom_liquid_xgN7Mk",
+        "collapsible_tab_dXRwym",
+        "collapsible_tab_NXcnAr"
       ],
       "custom_css": [
         ".product-form__input--pill input[type=\"radio\"]:checked + label {background-color: #00205b !important;}"
@@ -156,6 +156,7 @@
     },
     "petssify_details_tabs": {
       "type": "petssify-details-tabs",
+      "disabled": true,
       "settings": {}
     },
     "17683278085186f09e": {
