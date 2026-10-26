@@ -86,15 +86,24 @@
 -%}
 
 {%- if target_product and target_product != empty -%}
+  {%- assign show_sale_badge = settings.show_sale_badge -%}
+  {%- if show_sale_badge == nil -%}
+    {%- assign show_sale_badge = true -%}
+  {%- endif -%}
+
   <div
-    class="petssify-product-card{% if is_available == false %} petssify-product-card--sold-out{% endif %}{% if horizontal_class %} petssify-product-card--horizontal{% endif %}"
+    class="petssify-product-card{% if is_available == false %} petssify-product-card--sold-out{% endif %}{% if on_sale %} petssify-product-card--on-sale{% endif %}{% if horizontal_class %} petssify-product-card--horizontal{% endif %}"
     data-product-id="{{ target_product.id }}"
   >
     <div class="petssify-product-card__media-wrap">
-      {%- comment -%} Out of stock badge {%- endcomment -%}
+      {%- comment -%} Out of stock or Sale badge {%- endcomment -%}
       {%- if is_available == false -%}
-        <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="Sold out">
-          Sold out
+        <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="{{ 'products.product.sold_out' | t | default: 'Sold out' }}">
+          {{ 'products.product.sold_out' | t | default: 'Sold out' }}
+        </span>
+      {%- elsif on_sale and show_sale_badge -%}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="{{ 'products.product.on_sale' | t | default: 'Sale' }}">
+          {{ 'products.product.on_sale' | t | default: 'Sale' }}
         </span>
       {%- endif -%}
 
@@ -267,6 +276,7 @@
   {%- comment -%} Placeholder Card for Empty/Onboarding States {%- endcomment -%}
   <div class="petssify-product-card petssify-product-card--placeholder">
     <div class="petssify-product-card__media-wrap">
+      <span class="petssify-product-card__badge petssify-product-card__badge--sale">Sale</span>
       {%- render 'petssify-badge', badge_text: 'Kit & Save' -%}
       <div class="petssify-product-card__media-inner">
         {%- assign placeholder_name = placeholder_image | default: 'product-1' -%}

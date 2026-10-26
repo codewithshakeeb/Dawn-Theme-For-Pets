@@ -450,6 +450,9 @@
       "product_badge_background": "#C4B5FD",
       "product_badge_text_color": "#17143B",
       "product_badge_position": "top-right",
+      "show_sale_badge": true,
+      "sale_badge_background": "#FF4500",
+      "sale_badge_text_color": "#FFFFFF",
       "star_rating_color": "#F59E0B",
       "sections": {
         "main-password-header": {

@@ -1509,6 +1509,28 @@
       },
       {
         "type": "header",
+        "content": "Sale Badge"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sale_badge",
+        "label": "Show Sale badge on discounted products",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "sale_badge_background",
+        "label": "Sale badge background color",
+        "default": "#FF4500"
+      },
+      {
+        "type": "color",
+        "id": "sale_badge_text_color",
+        "label": "Sale badge text color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
         "content": "Product Card Ratings"
       },
       {

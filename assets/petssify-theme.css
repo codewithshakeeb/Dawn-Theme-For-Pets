@@ -445,17 +445,18 @@ h1, h2, h3, h4, h5, h6,
   right: 10px;
 }
 
-/* Top-Left Sold Out Badge */
+/* Top-Left Badges (Sold Out & Sale) */
 .petssify-product-card__badge,
-.petssify-product-card__badge--sold-out {
+.petssify-product-card__badge--sold-out,
+.petssify-product-card__badge--sale {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 3;
-  font-family: var(--font-body-family, 'Inter', sans-serif);
-  font-weight: 600;
+  font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   padding: 4px 9px;
   border-radius: 4px;
   line-height: 1.2;
@@ -463,14 +464,24 @@ h1, h2, h3, h4, h5, h6,
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  background-color: #94A3B8;
-  color: #FFFFFF;
-  box-shadow: 0 1px 4px rgba(100, 116, 139, 0.25);
   pointer-events: none;
 }
 
-/* Offset promo badge if sold out badge is also top-left */
-.petssify-product-card--sold-out .petssify-badge--top-left {
+.petssify-product-card__badge--sold-out {
+  background-color: #94A3B8;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(100, 116, 139, 0.25);
+}
+
+.petssify-product-card__badge--sale {
+  background-color: var(--petssify-sale-badge-bg, #FF4500);
+  color: var(--petssify-sale-badge-color, #FFFFFF);
+  box-shadow: 0 1px 4px rgba(255, 69, 0, 0.25);
+}
+
+/* Offset promo badge if sold out or sale badge is also at top-left */
+.petssify-product-card--sold-out .petssify-badge--top-left,
+.petssify-product-card--on-sale .petssify-badge--top-left {
   top: 36px;
 }
 
