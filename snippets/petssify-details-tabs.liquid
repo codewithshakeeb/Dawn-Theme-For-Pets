@@ -1,0 +1,255 @@
+{%- comment -%}
+  Petssify: Below-the-Fold Details Tabs & Lifestyle Split (Spec 2.5)
+  Tabs: Details | Materials & Specs | Size & Fit | Shipping & Returns
+  Desktop: Left tab content, Right lifestyle/feature media with 12px radius.
+  Mobile: Responsive accessible accordion.
+{%- endcomment -%}
+
+{%- liquid
+  assign lifestyle_image = nil
+  if product.media.size > 1
+    assign lifestyle_image = product.media.last
+    for media in product.media offset: 1
+      if media.media_type == 'image' and media.id != product.selected_or_first_available_variant.featured_media.id
+        assign lifestyle_image = media
+        break
+      endif
+    endfor
+  else
+    assign lifestyle_image = product.featured_media
+  endif
+-%}
+
+<section id="PetssifyDetailsSection" class="petssify-details-section page-width" aria-label="Product Information and Specifications">
+  <div class="petssify-details-container">
+    
+    <!-- Left Column: Tabs Header & Tab Panels -->
+    <div class="petssify-details-main">
+      <!-- Desktop Tab Bar -->
+      <div class="petssify-tabs-nav" role="tablist" aria-label="Product Information Tabs">
+        <button
+          type="button"
+          role="tab"
+          id="petssify-tab-details"
+          aria-selected="true"
+          aria-controls="petssify-panel-details"
+          class="petssify-tab-btn is-active"
+          tabindex="0"
+        >
+          Details
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="petssify-tab-specs"
+          aria-selected="false"
+          aria-controls="petssify-panel-specs"
+          class="petssify-tab-btn"
+          tabindex="-1"
+        >
+          Materials &amp; Specs
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="petssify-tab-size"
+          aria-selected="false"
+          aria-controls="petssify-panel-size"
+          class="petssify-tab-btn"
+          tabindex="-1"
+        >
+          Size &amp; Fit
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="petssify-tab-shipping"
+          aria-selected="false"
+          aria-controls="petssify-panel-shipping"
+          class="petssify-tab-btn"
+          tabindex="-1"
+        >
+          Shipping &amp; Returns
+        </button>
+      </div>
+
+      <!-- Tab 1: Details -->
+      <div
+        id="petssify-panel-details"
+        role="tabpanel"
+        aria-labelledby="petssify-tab-details"
+        class="petssify-tab-panel is-active"
+      >
+        <h3 class="petssify-accordion-header mobile-only" data-target="petssify-panel-details" aria-expanded="true">
+          <span>Details</span>
+          <svg class="petssify-accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h3>
+        <div class="petssify-panel-content">
+          {%- if product.metafields.custom.key_benefits.value != blank -%}
+            <div class="petssify-panel-benefits">
+              <h4 class="petssify-benefits-title">Key Features &amp; Benefits</h4>
+              <ul class="petssify-benefits-list" role="list">
+                {%- for benefit in product.metafields.custom.key_benefits.value -%}
+                  <li class="petssify-benefit-item">
+                    <span class="petssify-benefit-icon" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span>{{ benefit }}</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="petssify-description-rte rte">
+            {{ product.description }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Materials & Specs -->
+      <div
+        id="petssify-panel-specs"
+        role="tabpanel"
+        aria-labelledby="petssify-tab-specs"
+        class="petssify-tab-panel"
+        hidden
+      >
+        <h3 class="petssify-accordion-header mobile-only" data-target="petssify-panel-specs" aria-expanded="false">
+          <span>Materials &amp; Specs</span>
+          <svg class="petssify-accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h3>
+        <div class="petssify-panel-content">
+          {%- if product.metafields.custom.specs.value != blank -%}
+            <div class="petssify-specs-table-wrapper">
+              {{ product.metafields.custom.specs.value }}
+            </div>
+          {%- else -%}
+            <table class="petssify-specs-table">
+              <tbody>
+                <tr>
+                  <th>Product Type</th>
+                  <td>{{ product.type | default: 'Pet Grooming & Care Essential' }}</td>
+                </tr>
+                <tr>
+                  <th>Target Pet</th>
+                  <td>Dogs &amp; Cats of all breeds and sizes</td>
+                </tr>
+                <tr>
+                  <th>Materials</th>
+                  <td>Stainless steel precision pins, medical-grade TPR grip, durable ABS housing</td>
+                </tr>
+                <tr>
+                  <th>Safety Standards</th>
+                  <td>100% BPA-Free, Non-toxic, Rounded safety teeth (skin-friendly)</td>
+                </tr>
+                <tr>
+                  <th>Care Instructions</th>
+                  <td>Rinse blades under warm water; wipe clean with soft dry cloth after each use</td>
+                </tr>
+                <tr>
+                  <th>Origin &amp; Quality</th>
+                  <td>Inspected, verified, and shipped from our US partner fulfillment network</td>
+                </tr>
+              </tbody>
+            </table>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Tab 3: Size & Fit -->
+      <div
+        id="petssify-panel-size"
+        role="tabpanel"
+        aria-labelledby="petssify-tab-size"
+        class="petssify-tab-panel"
+        hidden
+      >
+        <h3 class="petssify-accordion-header mobile-only" data-target="petssify-panel-size" aria-expanded="false">
+          <span>Size &amp; Fit</span>
+          <svg class="petssify-accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h3>
+        <div class="petssify-panel-content">
+          {%- if product.metafields.custom.size_guide.value != blank -%}
+            <div class="petssify-size-content">
+              {{ product.metafields.custom.size_guide.value }}
+            </div>
+          {%- else -%}
+            <div class="petssify-size-guide-default">
+              <h4 class="petssify-size-title">Sizing &amp; Pet Compatibility</h4>
+              <p>Designed with an ergonomic contoured grip suitable for everyday grooming on small, medium, and large pets:</p>
+              <ul class="petssify-size-list">
+                <li><strong>Small Pets (under 20 lbs):</strong> Use gentle short strokes around neck and legs.</li>
+                <li><strong>Medium Pets (20–50 lbs):</strong> Excellent for medium coats, double coats, and shedding undercoats.</li>
+                <li><strong>Large Pets (over 50 lbs):</strong> Ergonomic handle minimizes hand fatigue during extended deshedding sessions.</li>
+              </ul>
+              <p class="petssify-size-note"><em>Need personalized sizing help? Contact our pet care team at <a href="mailto:support@petssify.com">support@petssify.com</a>.</em></p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Tab 4: Shipping & Returns -->
+      <div
+        id="petssify-panel-shipping"
+        role="tabpanel"
+        aria-labelledby="petssify-tab-shipping"
+        class="petssify-tab-panel"
+        hidden
+      >
+        <h3 class="petssify-accordion-header mobile-only" data-target="petssify-panel-shipping" aria-expanded="false">
+          <span>Shipping &amp; Returns</span>
+          <svg class="petssify-accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h3>
+        <div class="petssify-panel-content">
+          <div class="petssify-shipping-details">
+            <div class="petssify-shipping-card">
+              <div class="petssify-shipping-icon" aria-hidden="true">🚚</div>
+              <div>
+                <h4 class="petssify-shipping-subtitle">Tracked US Shipping</h4>
+                <p>
+                  <strong>Processing Time:</strong> Orders process within <strong>1–2 business days</strong>.<br>
+                  <strong>Delivery Window:</strong> Tracked US delivery takes <strong>5–8 business days</strong> via USPS / UPS.<br>
+                  <strong>Shipping Cost:</strong> <strong>FREE</strong> on orders over $50. Flat $4.95 for orders under $50.
+                </p>
+              </div>
+            </div>
+
+            <div class="petssify-shipping-card">
+              <div class="petssify-shipping-icon" aria-hidden="true">🛡️</div>
+              <div>
+                <h4 class="petssify-shipping-subtitle">30-Day Money-Back Guarantee</h4>
+                <p>
+                  We stand behind every Petssify product with our 100% satisfaction guarantee. Returns are accepted within <strong>30 days of delivery</strong> for unused items in original packaging.<br>
+                  To start an easy US return or exchange, simply email <a href="mailto:support@petssify.com">support@petssify.com</a> with your order number.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Lifestyle / Feature Image -->
+    {%- if lifestyle_image != blank -%}
+      {%- assign lifestyle_alt = lifestyle_image.alt | default: product.title | escape -%}
+      <div class="petssify-details-media">
+        <div class="petssify-lifestyle-image-frame">
+          {{
+            lifestyle_image
+            | image_url: width: 1000
+            | image_tag:
+              loading: 'lazy',
+              widths: '360, 540, 720, 900, 1000',
+              sizes: '(min-width: 1024px) 480px, 100vw',
+              alt: lifestyle_alt,
+              class: 'petssify-lifestyle-img'
+          }}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>

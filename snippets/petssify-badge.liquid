@@ -1,0 +1,109 @@
+{%- comment -%}
+  Petssify Dynamic Badge Component
+  Renders a customizable, accessible promotional or status badge on product cards.
+
+  Accepts:
+  - product: {Object} Product Liquid object (optional, defaults to card_product)
+  - card_product: {Object} Alias for product
+  - badge_text: {String} Manual badge text override (optional)
+  - badge_background: {String} Manual background color override (optional)
+  - badge_text_color: {String} Manual text color override (optional)
+  - badge_position: {String} Manual position override (top-left, top-center, top-right, bottom-left, bottom-center, bottom-right)
+  - class: {String} Additional CSS class names (optional)
+
+  Shopify Product Metafields supported:
+  - custom.badge_text (Single-line text)
+  - custom.badge_background (Color)
+  - custom.badge_text_color (Color)
+  - custom.badge_position (Single-line text or choice)
+  Fallback metafields:
+  - custom.badge, custom.pill_label, custom.kit_badge
+  Tag support:
+  - "badge:Your Text" or "Kit & Save"
+{%- endcomment -%}
+
+{%- liquid
+  assign target_product = product | default: card_product
+
+  assign label = badge_text
+  if label == blank and target_product != blank
+    assign label = target_product.metafields.custom.badge_text.value | default: target_product.metafields.custom.badge_text
+    if label == blank
+      assign label = target_product.metafields.custom.badge.value | default: target_product.metafields.custom.badge
+    endif
+    if label == blank
+      assign label = target_product.metafields.custom.pill_label.value | default: target_product.metafields.custom.pill_label
+    endif
+    if label == blank
+      assign label = target_product.metafields.custom.kit_badge.value | default: target_product.metafields.custom.kit_badge
+    endif
+    if label == blank
+      for tag in target_product.tags
+        if tag contains 'badge:'
+          assign label = tag | split: 'badge:' | last | strip
+          break
+        elsif tag == 'Kit & Save' or tag == 'kit & save' or tag == 'Kit'
+          assign label = 'Kit & Save'
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign label = label | strip
+-%}
+
+{%- if label != blank -%}
+  {%- liquid
+    assign bg = badge_background
+    if bg == blank and target_product != blank
+      assign bg = target_product.metafields.custom.badge_background.value | default: target_product.metafields.custom.badge_background
+    endif
+    if bg == blank
+      assign bg = settings.product_badge_background | default: '#C4B5FD'
+    endif
+
+    assign color = badge_text_color
+    if color == blank and target_product != blank
+      assign color = target_product.metafields.custom.badge_text_color.value | default: target_product.metafields.custom.badge_text_color
+    endif
+    if color == blank
+      assign color = settings.product_badge_text_color | default: '#17143B'
+    endif
+
+    assign pos_raw = badge_position
+    if pos_raw == blank and target_product != blank
+      assign pos_raw = target_product.metafields.custom.badge_position.value | default: target_product.metafields.custom.badge_position
+    endif
+    if pos_raw == blank
+      assign pos_raw = settings.product_badge_position | default: 'top-right'
+    endif
+
+    assign pos = pos_raw | downcase | strip | replace: ' ', '-' | replace: '_', '-'
+
+    case pos
+      when 'top-left'
+        assign pos_class = 'petssify-badge--top-left'
+      when 'top-center'
+        assign pos_class = 'petssify-badge--top-center'
+      when 'top-right'
+        assign pos_class = 'petssify-badge--top-right'
+      when 'bottom-left'
+        assign pos_class = 'petssify-badge--bottom-left'
+      when 'bottom-center'
+        assign pos_class = 'petssify-badge--bottom-center'
+      when 'bottom-right'
+        assign pos_class = 'petssify-badge--bottom-right'
+      else
+        assign pos_class = 'petssify-badge--top-right'
+    endcase
+  -%}
+
+  <span
+    class="petssify-badge {{ pos_class }}{% if class != blank %} {{ class }}{% endif %}"
+    style="--petssify-badge-bg: {{ bg }}; --petssify-badge-color: {{ color }};"
+    aria-label="{{ label | escape }}"
+  >
+    {{ label }}
+  </span>
+{%- endif -%}

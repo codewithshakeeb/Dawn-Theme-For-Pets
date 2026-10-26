@@ -1,0 +1,64 @@
+{%- comment -%}
+  Sticky "Add to cart" bar — shows once the real Add to Cart button scrolls out of view.
+  Usage: {% render 'sticky-add-to-cart', product: product, section: section %}
+{%- endcomment -%}
+
+{%- if section.settings.enable_sticky_add_to_cart -%}
+  {{ 'sticky-add-to-cart.css' | asset_url | stylesheet_tag }}
+
+  <sticky-add-to-cart
+    class="sticky-add-to-cart color-{{ section.settings.color_scheme }}"
+    data-section="{{ section.id }}"
+  >
+    <div class="sticky-add-to-cart__bar page-width" data-stuck="false">
+      {%- if product.featured_media -%}
+        {%- assign sticky_image_alt = product.title | escape -%}
+        <div class="sticky-add-to-cart__image">
+          {{
+            product.featured_media
+            | image_url: width: 100
+            | image_tag: loading: 'lazy', alt: sticky_image_alt, widths: '100'
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="sticky-add-to-cart__info">
+        <p class="sticky-add-to-cart__title">{{ product.title | escape }}</p>
+        <p class="sticky-add-to-cart__variant" data-sticky-variant-title>
+          {{ product.selected_or_first_available_variant.title | escape }}
+        </p>
+        <div class="sticky-add-to-cart__price" data-sticky-price></div>
+      </div>
+
+     <button
+        type="button"
+        class="sticky-add-to-cart__button button"
+        data-sticky-add-to-cart-button
+        {% unless product.selected_or_first_available_variant.available %}
+          disabled
+        {% endunless %}
+      >
+        <span class="svg-wrapper">
+          {{- 'icon-cart.svg' | inline_asset_content -}}
+        </span>
+        <span class="visually-hidden">
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </span>
+      </button>
+    </div>
+
+    <script type="application/json" data-sticky-variants>
+      [
+        {%- for variant in product.variants -%}
+          {"id": {{ variant.id }}, "title": {{ variant.title | json }}}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    </script>
+  </sticky-add-to-cart>
+
+  <script src="{{ 'sticky-add-to-cart.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

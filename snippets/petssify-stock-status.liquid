@@ -1,0 +1,72 @@
+{%- comment -%}
+  Petssify: Fully Dynamic Stock Status Snippet (Spec 2.3)
+  Rendered inside the product form region so Dawn's variant-change re-render updates it.
+{%- endcomment -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div id="Inventory-{{ section.id }}" class="petssify-inventory-wrapper" role="status">
+  {%- if current_variant.available -%}
+    <div class="petssify-stock-pill petssify-stock-pill--in-stock">
+      <span class="petssify-stock-dot" aria-hidden="true"></span>
+      <span class="petssify-stock-text">In stock — ships within 1–2 business days</span>
+    </div>
+
+    {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= 5 -%}
+      <div class="petssify-stock-scarcity">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>Only {{ current_variant.inventory_quantity }} left — order soon</span>
+      </div>
+    {%- endif -%}
+
+    <div class="petssify-delivery-estimate">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="1" y="3" width="15" height="13"></rect>
+        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+        <circle cx="5.5" cy="18.5" r="2.5"></circle>
+        <circle cx="18.5" cy="18.5" r="2.5"></circle>
+      </svg>
+      <span>Estimated delivery: <strong class="petssify-delivery-date-range">Calculating...</strong></span>
+    </div>
+
+  {%- else -%}
+    {%- assign has_other_available = false -%}
+    {%- assign first_available_variant = nil -%}
+    {%- for v in product.variants -%}
+      {%- if v.available -%}
+        {%- assign has_other_available = true -%}
+        {%- if first_available_variant == nil -%}
+          {%- assign first_available_variant = v -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="petssify-stock-pill petssify-stock-pill--out-of-stock">
+      <span class="petssify-stock-dot petssify-stock-dot--red" aria-hidden="true"></span>
+      <span class="petssify-stock-text">
+        {%- if has_other_available -%}
+          This option is sold out — available soon
+        {%- else -%}
+          Out of stock — available soon
+        {%- endif -%}
+      </span>
+    </div>
+
+    {%- if has_other_available and first_available_variant != nil -%}
+      <div class="petssify-stock-switch-row">
+        <button
+          type="button"
+          class="petssify-switch-variant-link"
+          data-target-variant-id="{{ first_available_variant.id }}"
+          onclick="window.petssifySelectVariant && window.petssifySelectVariant('{{ first_available_variant.id }}')"
+        >
+          Choose another option ({{ first_available_variant.title }}) →
+        </button>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>

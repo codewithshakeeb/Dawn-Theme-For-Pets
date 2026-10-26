@@ -1,0 +1,268 @@
+{%- comment -%}
+  PETSSIFY — Global Schema.org Structured Data
+  Purpose:
+  - Organization
+  - WebSite
+  - BreadcrumbList
+  - General Product FAQs
+
+  Product/ProductGroup schema is NOT generated here.
+  Shopify native product structured data remains the primary product source.
+{%- endcomment -%}
+
+
+{%- comment -%}
+  ==============================
+  ORGANIZATION
+  ==============================
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": {{ shop.url | append: "#organization" | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }}
+  {%- if shop.brand.logo != blank -%}
+  ,
+  "logo": {
+    "@type": "ImageObject",
+    "url": {{ shop.brand.logo | image_url: width: 500 | prepend: 'https:' | json }}
+  }
+  {%- endif -%}
+}
+</script>
+
+
+{%- comment -%}
+  ==============================
+  WEBSITE
+  ==============================
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": {{ shop.url | append: "#website" | json }},
+  "url": {{ shop.url | json }},
+  "name": {{ shop.name | json }},
+  "publisher": {
+    "@id": {{ shop.url | append: "#organization" | json }}
+  }
+}
+</script>
+
+
+{%- comment -%}
+  ==============================
+  BREADCRUMB
+  ==============================
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": {{ canonical_url | append: "#breadcrumb" | json }},
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ shop.url | append: routes.root_url | json }}
+    }
+    {%- if collection != blank -%}
+    ,
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ collection.title | json }},
+      "item": {{ shop.url | append: collection.url | json }}
+    }
+    {%- endif -%}
+    ,
+    {
+      "@type": "ListItem",
+      "position": {% if collection != blank %}3{% else %}2{% endif %},
+      "name": {{ product.title | json }},
+      "item": {{ canonical_url | json }}
+    }
+  ]
+}
+</script>
+
+
+{%- comment -%}
+  ==============================
+  GENERAL PRODUCT FAQ
+  ==============================
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": {{ canonical_url | append: "#faq" | json }},
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should I consider before buying this pet product?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Before purchasing, review the product's size, dimensions, materials, specifications, compatibility, intended use, and any weight or usage limitations listed on this product page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this product suitable for my pet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Suitability depends on your pet's type, size, weight, needs, and the intended use of the product. Please review the product specifications and description before ordering."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are product specifications available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Available product specifications, features, materials, dimensions, sizes, compatibility information, and other important details are provided on the product page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this product available in different options or variants?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Product options vary by item. When available, different sizes, colors, styles, or other variants can be selected directly on the product page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Petssify ship pet products within the United States?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Petssify ships orders within the United States. Please check the product page and current shipping policy for the latest delivery information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does shipping take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Delivery times can vary depending on the product and destination. Please refer to the product page and Petssify's current shipping policy for the latest shipping information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I return a product if it isn't right for my pet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Eligible purchases may be returned according to Petssify's current refund and return policy. Please review the policy for the latest eligibility requirements and instructions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I find reviews for this product?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When customer reviews are available, they are displayed on the product page and relate to the specific product being viewed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I get help choosing a pet product?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Review the product description, specifications, available variants, and customer reviews. If you need additional assistance, contact Petssify through the customer support information provided on the website."
+      }
+    }
+  ]
+}
+</script>
+
+
+{%- elsif request.page_type == 'collection' -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": {{ canonical_url | append: "#breadcrumb" | json }},
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ shop.url | append: routes.root_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ collection.title | json }},
+      "item": {{ canonical_url | json }}
+    }
+  ]
+}
+</script>
+
+
+{%- elsif request.page_type == 'article' -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": {{ canonical_url | append: "#breadcrumb" | json }},
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ shop.url | append: routes.root_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ blog.title | json }},
+      "item": {{ shop.url | append: blog.url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ article.title | json }},
+      "item": {{ canonical_url | json }}
+    }
+  ]
+}
+</script>
+
+
+{%- elsif request.page_type == 'page' -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": {{ canonical_url | append: "#breadcrumb" | json }},
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ shop.url | append: routes.root_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ page.title | json }},
+      "item": {{ canonical_url | json }}
+    }
+  ]
+}
+</script>
+
+{%- endif -%}

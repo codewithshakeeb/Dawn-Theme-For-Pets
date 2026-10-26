@@ -1,0 +1,211 @@
+{
+  "sections": {
+    "custom_liquid_cFdme7": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_GnFnak": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "custom_liquid_K4KpCE": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% if product.metafields.custom.products_features != blank %}\n  <div class=\"products-features\">\n    <p>{{ product.metafields.custom.products_features }}</p>\n  </div>\n{% endif %}"
+          }
+        },
+        "custom_liquid_k8nVae": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'petssify-stock-status', product: product %}"
+          }
+        },
+        "custom_liquid_74meCg": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<p class=\"tf-shipping-text\"><a href=\"/policies/shipping-policy\" class=\"tf-shipping-link\">Shipping</a> calculated at checkout.</p>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "square"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "custom_liquid_gMxHBy": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": ""
+          }
+        },
+        "custom_liquid_MBLjgk": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": ""
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "custom_liquid_trust_row": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'petssify-trust-row' %}"
+          }
+        },
+        "custom_liquid_xgN7Mk": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'petssify-promise-card' %}"
+          }
+        },
+        "custom_liquid_r6L9z3": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": ""
+          }
+        },
+        "collapsible_tab_dXRwym": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Product Description",
+            "icon": "clipboard",
+            "content": "{{ product.description }}",
+            "page": ""
+          }
+        },
+        "collapsible_tab_NXcnAr": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Shipping & Returns",
+            "icon": "truck",
+            "content": "<p><strong>Shipping Time:</strong> Orders process in 1–2 business days; tracked US delivery takes 5–8 business days (Free over $50).<br><strong>Return Window:</strong> Returns are accepted within 30 days of delivery for unused items in original packaging.</p>",
+            "page": ""
+          }
+        },
+        "description_cGynfA": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_GnFnak",
+        "price",
+        "custom_liquid_K4KpCE",
+        "custom_liquid_k8nVae",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "custom_liquid_trust_row",
+        "custom_liquid_xgN7Mk"
+      ],
+      "custom_css": [
+        ".product-form__input--pill input[type=\"radio\"]:checked + label {background-color: #00205b !important;}"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "enable_sticky_add_to_cart": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 16,
+        "padding_bottom": 12
+      }
+    },
+    "petssify_details_tabs": {
+      "type": "petssify-details-tabs",
+      "settings": {}
+    },
+    "17683278085186f09e": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_9Rd9j7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "other_products_reviews"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_9Rd9j7"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "custom_css": [
+        ".card__information {text-align: left !important;}",
+        ".card-information {text-align: left !important;}"
+      ],
+      "settings": {
+        "heading": "<strong>You May Also Like</strong>",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "padding_top": 16,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "custom_liquid_cFdme7",
+    "main",
+    "petssify_details_tabs",
+    "17683278085186f09e",
+    "related-products"
+  ]
+}

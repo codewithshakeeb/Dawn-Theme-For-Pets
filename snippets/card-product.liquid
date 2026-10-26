@@ -1,0 +1,42 @@
+{% comment %}
+  Petssify: Single Source of Truth Wrapper
+  Delegates all card rendering to snippets/petssify-product-card.liquid
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - media_aspect_ratio: {String} Size of the product image card (optional)
+  - image_shape: {String} Image mask (optional)
+  - show_secondary_image: {Boolean} Show secondary image on hover (optional)
+  - show_vendor: {Boolean} Show vendor (optional)
+  - show_rating: {Boolean} Show rating (optional)
+  - extend_height: {Boolean} Card height extends to available space (optional)
+  - lazy_load: {Boolean} Image lazy loaded (optional)
+  - skip_styles: {Boolean} Skip styles (optional)
+  - quick_add: {Boolean|String} Show quick add button (optional)
+  - section_id: {String} Section ID
+  - horizontal_class: {Boolean} Horizontal layout (optional)
+  - horizontal_quick_add: {Boolean} Horizontal quick add (optional)
+  - placeholder_image: {String} Placeholder image string (optional)
+{% endcomment %}
+
+{%- liquid
+  assign quick_add_flag = true
+  if quick_add == 'none' or quick_add == false
+    assign quick_add_flag = false
+  endif
+
+  assign rating_flag = true
+  if show_rating == false
+    assign rating_flag = false
+  endif
+-%}
+
+{% render 'petssify-product-card',
+  product: card_product,
+  lazy_load: lazy_load,
+  show_quick_add: quick_add_flag,
+  show_rating: rating_flag,
+  section_id: section_id,
+  horizontal_class: horizontal_class,
+  placeholder_image: placeholder_image
+%}

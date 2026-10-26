@@ -1,0 +1,45 @@
+# Petssify Custom Shopify robots.txt.liquid — AI & Search Engine Optimized
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+  {%- if group.user_agent.value == '*' -%}
+Disallow: /collections/*+*
+Disallow: /collections/*%2B*
+Disallow: /collections/*?filter*
+Disallow: /collections/*?sort_by*
+Allow: /collections/all$
+Allow: /products/
+Allow: /collections/
+  {%- endif -%}
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://petssify.com/sitemap.xml

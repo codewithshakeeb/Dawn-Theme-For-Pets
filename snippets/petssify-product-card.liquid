@@ -1,0 +1,300 @@
+{%- comment -%}
+  Petssify Product Card (Single Source of Truth Component)
+  Updated to match Editorial Wild One / Walk Kit Reference Design:
+  - Clean borderless flat card layout with seamless background
+  - 1:1 aspect ratio media on soft neutral studio backdrop (#F6F6F6)
+  - Lavender top-right pill badge ("Kit & Save" or dynamic badge)
+  - Editorial serif typography (Lora / Georgia) for product title
+  - Price row: Strikethrough compare price + Bold orange-red sale price + "Save $X.XX" pill
+  - Contextual kit/subtitle line ("Includes Harness, Leash, and Poop Bag Carrier")
+  - Smooth desktop hover quick-add overlay preserving clean rest state
+  - Accessible stretched-link pattern with no nested anchor violations
+
+  Parameters:
+  - product: {Object} Product Liquid object (optional, falls back to card_product)
+  - card_product: {Object} Product Liquid object (optional alias)
+  - lazy_load: {Boolean} Image loading lazy or eager. Default: true
+  - show_quick_add: {Boolean} Show the action button. Default: true
+  - show_rating: {Boolean} Show star rating. Default: false
+  - image_sizes: {String} Responsive image sizes attribute (optional)
+  - section_id: {String} Section ID for unique form IDs (optional)
+  - horizontal_class: {Boolean} Horizontal layout modifier for PDP pairs-well-with blocks (optional)
+  - placeholder_image: {String} Placeholder image string when product is blank
+{%- endcomment -%}
+
+{%- liquid
+  assign target_product = product | default: card_product
+
+  if lazy_load == nil
+    assign lazy_load = true
+  endif
+
+  if show_quick_add == nil
+    assign show_quick_add = true
+  endif
+
+  if show_rating == nil
+    assign show_rating = true
+  endif
+
+  if target_product and target_product != empty
+    assign current_variant = target_product.selected_or_first_available_variant | default: target_product.variants.first
+    assign compare_at_price = current_variant.compare_at_price | default: target_product.compare_at_price_max
+    assign price = current_variant.price | default: target_product.price_min
+    assign is_available = target_product.available
+
+    assign on_sale = false
+    if compare_at_price > price and is_available
+      assign discount_pct = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
+      if discount_pct >= 1
+        assign on_sale = true
+        assign savings_amount = compare_at_price | minus: price
+      endif
+    endif
+
+    assign product_form_id = 'petssify-quick-add-' | append: section_id | append: '-' | append: target_product.id
+    assign featured_media = target_product.featured_media
+    assign secondary_media = target_product.media[1] | default: target_product.images[1]
+
+    comment
+      Subtitle / Kit Descriptor Line Logic
+    endcomment
+    assign card_subtitle = target_product.metafields.custom.subtitle | default: target_product.metafields.descriptors.subtitle | default: target_product.metafields.custom.kit_includes | default: target_product.metafields.custom.includes
+    if card_subtitle == blank
+      assign p_title_lower = target_product.title | downcase
+      if p_title_lower contains 'cushioned harness' or p_title_lower contains 'waterproof leash'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'step-in harness' and p_title_lower contains 'rope leash'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'collar' and p_title_lower contains 'leash'
+        assign card_subtitle = 'Pick your collar, leash, & poop bag carrier'
+      elsif p_title_lower contains 'step-in' or p_title_lower contains 'lightweight' or p_title_lower contains 'size'
+        assign card_subtitle = 'Choose Your Size, Colors & Poop Bag Carrier'
+      elsif p_title_lower contains 'walk kit' or p_title_lower contains 'harness'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'slow feeder' or p_title_lower contains 'bowl'
+        assign card_subtitle = 'Food-grade silicone slow feeding mat'
+      elsif p_title_lower contains 'fountain' or p_title_lower contains 'water'
+        assign card_subtitle = 'Stainless steel fountain with multi-stage filter'
+      elsif target_product.metafields.custom.short_description != blank
+        assign card_subtitle = target_product.metafields.custom.short_description
+      elsif target_product.description != blank
+        assign card_subtitle = target_product.description | strip_html | truncatewords: 7
+      endif
+    endif
+  endif
+-%}
+
+{%- if target_product and target_product != empty -%}
+  {%- assign show_sale_badge = settings.show_sale_badge -%}
+  {%- if show_sale_badge == nil -%}
+    {%- assign show_sale_badge = true -%}
+  {%- endif -%}
+
+  <div
+    class="petssify-product-card{% if is_available == false %} petssify-product-card--sold-out{% endif %}{% if on_sale %} petssify-product-card--on-sale{% endif %}{% if horizontal_class %} petssify-product-card--horizontal{% endif %}"
+    data-product-id="{{ target_product.id }}"
+  >
+    <div class="petssify-product-card__media-wrap">
+      {%- comment -%} Out of stock or Sale badge {%- endcomment -%}
+      {%- if is_available == false -%}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="{{ 'products.product.sold_out' | t | default: 'Sold out' }}">
+          {{ 'products.product.sold_out' | t | default: 'Sold out' }}
+        </span>
+      {%- elsif on_sale and show_sale_badge -%}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="{{ 'products.product.on_sale' | t | default: 'Sale' }}">
+          {{ 'products.product.on_sale' | t | default: 'Sale' }}
+        </span>
+      {%- endif -%}
+
+      {%- comment -%} Dynamic Product Badge (Metafields, Tags, Positions) {%- endcomment -%}
+      {%- render 'petssify-badge', product: target_product -%}
+
+      {%- comment -%} 1:1 Aspect Ratio Media Container {%- endcomment -%}
+      <div class="petssify-product-card__media-inner">
+        {%- if featured_media != blank -%}
+          {%- capture default_sizes -%}
+            (min-width: 1200px) 280px, (min-width: 750px) calc((100vw - 60px) / 4), calc((100vw - 36px) / 2)
+          {%- endcapture -%}
+          {%- assign img_sizes = image_sizes | default: default_sizes -%}
+
+          <img
+            srcset="
+              {%- if featured_media.width >= 165 -%}{{ featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if featured_media.width >= 360 -%}{{ featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if featured_media.width >= 540 -%}{{ featured_media | image_url: width: 540 }} 540w,{%- endif -%}
+              {%- if featured_media.width >= 720 -%}{{ featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if featured_media.width >= 940 -%}{{ featured_media | image_url: width: 940 }} 940w,{%- endif -%}
+              {{ featured_media | image_url }} {{ featured_media.width }}w
+            "
+            src="{{ featured_media | image_url: width: 540 }}"
+            sizes="{{ img_sizes }}"
+            alt="{{ featured_media.alt | default: target_product.title | escape }}"
+            class="petssify-product-card__image petssify-product-card__image--primary"
+            {% if lazy_load == false %}
+              loading="eager"
+              fetchpriority="high"
+            {% else %}
+              loading="lazy"
+              decoding="async"
+            {% endif %}
+            width="{{ featured_media.width | default: 540 }}"
+            height="{{ featured_media.height | default: 540 }}"
+          >
+
+          {%- if secondary_media != blank -%}
+            <img
+              srcset="
+                {%- if secondary_media.width >= 165 -%}{{ secondary_media | image_url: width: 165 }} 165w,{%- endif -%}
+                {%- if secondary_media.width >= 360 -%}{{ secondary_media | image_url: width: 360 }} 360w,{%- endif -%}
+                {%- if secondary_media.width >= 540 -%}{{ secondary_media | image_url: width: 540 }} 540w,{%- endif -%}
+                {%- if secondary_media.width >= 720 -%}{{ secondary_media | image_url: width: 720 }} 720w,{%- endif -%}
+                {{ secondary_media | image_url }} {{ secondary_media.width }}w
+              "
+              src="{{ secondary_media | image_url: width: 540 }}"
+              sizes="{{ img_sizes }}"
+              alt="{{ secondary_media.alt | default: target_product.title | escape }}"
+              class="petssify-product-card__image petssify-product-card__image--secondary"
+              loading="lazy"
+              decoding="async"
+              width="{{ secondary_media.width | default: 540 }}"
+              height="{{ secondary_media.height | default: 540 }}"
+              aria-hidden="true"
+            >
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Smooth Hover Quick Add Overlay {%- endcomment -%}
+      {%- if show_quick_add -%}
+        <div class="petssify-product-card__hover-action">
+          {%- if is_available == false -%}
+            <button
+              type="button"
+              class="petssify-quick-add__btn button is-sold-out"
+              disabled
+              aria-disabled="true"
+            >
+              Sold out
+            </button>
+          {%- elsif target_product.variants.size > 1 -%}
+            <a
+              href="{{ target_product.url }}"
+              class="petssify-quick-add__btn button button--secondary petssify-quick-add__btn--options"
+            >
+              Choose options
+            </a>
+          {%- else -%}
+            <product-form data-section-id="{{ section_id }}">
+              {%- form 'product',
+                target_product,
+                id: product_form_id,
+                class: 'petssify-product-card__form',
+                novalidate: 'novalidate',
+                data-type: 'add-to-cart-form'
+              -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ current_variant.id }}"
+                  class="product-variant-id"
+                >
+                <button
+                  id="{{ product_form_id }}-submit"
+                  type="submit"
+                  name="add"
+                  class="petssify-quick-add__btn button button--secondary"
+                  aria-haspopup="dialog"
+                  aria-live="polite"
+                >
+                  <span class="petssify-quick-add__text">Add to Cart</span>
+                  <div class="loading__spinner hidden">
+                    {%- render 'loading-spinner' -%}
+                  </div>
+                </button>
+              {%- endform -%}
+            </product-form>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="petssify-product-card__content">
+      {%- comment -%} Editorial Serif Product Title with Stretched Link {%- endcomment -%}
+      <h3 class="petssify-product-card__title">
+        <a href="{{ target_product.url }}" class="petssify-product-card__link">
+          {{ target_product.title | escape }}
+        </a>
+      </h3>
+
+      {%- comment -%} 5-Star Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
+      {%- if show_rating -%}
+        {%- render 'petssify-rating', product: target_product -%}
+      {%- endif -%}
+
+      {%- comment -%} Price Row (Compare At + Orange-Red Sale + Save $X.XX Badge) {%- endcomment -%}
+      <div class="petssify-product-card__price-row">
+        {%- if target_product.price_varies -%}
+          <span class="petssify-product-card__price-current">
+            From {{ target_product.price_min | money }}
+          </span>
+          {%- if on_sale and compare_at_price > price -%}
+            <span class="petssify-product-card__save-badge">
+              Save {{ savings_amount | money }}
+            </span>
+          {%- endif -%}
+        {%- else -%}
+          {%- if on_sale and compare_at_price > price -%}
+            <s class="petssify-product-card__price-compare">
+              {{ compare_at_price | money_without_trailing_zeros }}
+            </s>
+            <span class="petssify-product-card__price-current petssify-product-card__price-current--sale">
+              {{ price | money }}
+            </span>
+            <span class="petssify-product-card__save-badge">
+              Save {{ savings_amount | money }}
+            </span>
+          {%- else -%}
+            <span class="petssify-product-card__price-current">
+              {{ price | money }}
+            </span>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Subtitle / What's Included Line {%- endcomment -%}
+      {%- if card_subtitle != blank -%}
+        <div class="petssify-product-card__subtitle">
+          {{ card_subtitle }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  {%- comment -%} Placeholder Card for Empty/Onboarding States {%- endcomment -%}
+  <div class="petssify-product-card petssify-product-card--placeholder">
+    <div class="petssify-product-card__media-wrap">
+      <span class="petssify-product-card__badge petssify-product-card__badge--sale">Sale</span>
+      {%- render 'petssify-badge', badge_text: 'Kit & Save' -%}
+      <div class="petssify-product-card__media-inner">
+        {%- assign placeholder_name = placeholder_image | default: 'product-1' -%}
+        {{ placeholder_name | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
+      </div>
+    </div>
+    <div class="petssify-product-card__content">
+      <h3 class="petssify-product-card__title">
+        <span class="petssify-product-card__link">Cushioned Harness + Waterproof Leash Walk Kit</span>
+      </h3>
+      <div class="petssify-product-card__price-row">
+        <s class="petssify-product-card__price-compare">$105</s>
+        <span class="petssify-product-card__price-current petssify-product-card__price-current--sale">$98.00</span>
+        <span class="petssify-product-card__save-badge">Save $7.00</span>
+      </div>
+      <div class="petssify-product-card__subtitle">
+        Includes Harness, Leash, and Poop Bag Carrier
+      </div>
+    </div>
+  </div>
+{%- endif -%}

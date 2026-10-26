@@ -1,0 +1,131 @@
+{%- comment -%}
+  Petssify Category Circles ("Who are you shopping for?")
+  Matches Base44 Prototype (Spec 2.4)
+  Clean alt texts with "- Petssify -" suffix stripped out.
+{%- endcomment -%}
+
+<div class="petssify-categories page-width section-{{ section.id }}-padding" style="padding-top: 48px; padding-bottom: 24px;">
+  {%- if section.settings.heading != blank -%}
+    <div style="text-align: center; margin-bottom: 32px;">
+      <h2 style="font-family: var(--font-heading); font-size: clamp(24px, 3vw, 32px); font-weight: 800; color: var(--color-primary); margin: 0 0 8px 0;">
+        {{ section.settings.heading }}
+      </h2>
+      {%- if section.settings.subheading != blank -%}
+        <p style="font-size: 15px; color: var(--color-text-muted); margin: 0;">
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: flex-start;">
+    {%- for block in section.blocks -%}
+      {%- assign collection = block.settings.collection -%}
+      {%- assign title = block.settings.title | default: collection.title -%}
+      {%- assign clean_title = title | remove: '- Petssify -' | remove: 'Petssify -' | remove: 'Petssify' | strip -%}
+      {%- assign image = block.settings.image | default: collection.featured_image -%}
+      {%- assign url = block.settings.url | default: collection.url -%}
+
+      <a
+        href="{{ url }}"
+        class="petssify-cat-circle"
+        {{ block.shopify_attributes }}
+        style="display: flex; flex-direction: column; align-items: center; text-decoration: none; width: clamp(100px, 14vw, 150px); transition: transform var(--transition-normal);"
+      >
+        <div style="width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden; border: 2px solid var(--color-border); background: var(--color-bg-subtle); margin-bottom: 12px; box-shadow: var(--shadow-sm); transition: all var(--transition-normal);">
+          {%- if image != blank -%}
+            <img
+              src="{{ image | image_url: width: 300 }}"
+              alt="{{ clean_title | escape }}"
+              loading="lazy"
+              width="300"
+              height="300"
+              style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+            >
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <span style="font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--color-primary); text-align: center; line-height: 1.3;">
+          {{ clean_title }}
+        </span>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  .petssify-cat-circle:hover div {
+    border-color: var(--color-accent) !important;
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-3px);
+  }
+  .petssify-cat-circle:hover img {
+    transform: scale(1.06);
+  }
+  .petssify-cat-circle:hover span {
+    color: var(--color-accent) !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Category Circles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Who are you shopping for?"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Explore curated essentials tailored by category and species"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Item",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Label (optional)"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Custom URL (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Circles",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
