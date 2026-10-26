@@ -1,23 +1,21 @@
 {%- comment -%}
   Petssify Product Card (Single Source of Truth Component)
-  Matches Base44 Prototype & Reference UI:
-  - 12px rounded container with subtle border (#E2E8F0) and smooth hover lift
-  - 1:1 square media container, object-fit contain, white background
-  - Smooth secondary image reveal on hover (@media (hover: hover))
-  - Single top-left badge pill: coral "-XX% OFF" on sale or slate "Sold out"
-  - Strict 2-line title clamping with aligned row height
-  - Star ratings only rendered when reviews exist (>0 reviews)
-  - Price row: bold navy sale price, strikethrough muted compare-at, "From $X" for variant ranges
-  - Action button: single-variant AJAX Add to Cart, multi-variant "Choose options", disabled "Sold out"
-  - Semantic stretched-link pattern with no nested anchor violations
-  - Accessible tap targets (>= 44px) & high-contrast focus rings
+  Updated to match Editorial Wild One / Walk Kit Reference Design:
+  - Clean borderless flat card layout with seamless background
+  - 1:1 aspect ratio media on soft neutral studio backdrop (#F6F6F6)
+  - Lavender top-right pill badge ("Kit & Save" or dynamic badge)
+  - Editorial serif typography (Lora / Georgia) for product title
+  - Price row: Strikethrough compare price + Bold orange-red sale price + "Save $X.XX" pill
+  - Contextual kit/subtitle line ("Includes Harness, Leash, and Poop Bag Carrier")
+  - Smooth desktop hover quick-add overlay preserving clean rest state
+  - Accessible stretched-link pattern with no nested anchor violations
 
   Parameters:
   - product: {Object} Product Liquid object (optional, falls back to card_product)
   - card_product: {Object} Product Liquid object (optional alias)
   - lazy_load: {Boolean} Image loading lazy or eager. Default: true
   - show_quick_add: {Boolean} Show the action button. Default: true
-  - show_rating: {Boolean} Show star rating. Default: true
+  - show_rating: {Boolean} Show star rating. Default: false
   - image_sizes: {String} Responsive image sizes attribute (optional)
   - section_id: {String} Section ID for unique form IDs (optional)
   - horizontal_class: {Boolean} Horizontal layout modifier for PDP pairs-well-with blocks (optional)
@@ -36,7 +34,7 @@
   endif
 
   if show_rating == nil
-    assign show_rating = true
+    assign show_rating = false
   endif
 
   if target_product and target_product != empty
@@ -50,12 +48,62 @@
       assign discount_pct = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
       if discount_pct >= 1
         assign on_sale = true
+        assign savings_amount = compare_at_price | minus: price
       endif
     endif
 
     assign product_form_id = 'petssify-quick-add-' | append: section_id | append: '-' | append: target_product.id
     assign featured_media = target_product.featured_media
     assign secondary_media = target_product.media[1] | default: target_product.images[1]
+
+    comment
+      Top-Right Badge Logic: "Kit & Save" or dynamic tag/metafield
+    endcomment
+    assign top_right_badge = target_product.metafields.custom.badge | default: target_product.metafields.custom.pill_label | default: target_product.metafields.custom.kit_badge
+    if top_right_badge == blank
+      for tag in target_product.tags
+        if tag contains 'badge:'
+          assign top_right_badge = tag | split: 'badge:' | last | strip
+          break
+        elsif tag == 'Kit & Save' or tag == 'kit & save' or tag == 'Kit'
+          assign top_right_badge = 'Kit & Save'
+          break
+        endif
+      endfor
+    endif
+    if top_right_badge == blank
+      assign p_title_lower = target_product.title | downcase
+      if p_title_lower contains 'kit' or p_title_lower contains 'bundle' or p_title_lower contains 'set' or on_sale
+        assign top_right_badge = 'Kit & Save'
+      endif
+    endif
+
+    comment
+      Subtitle / Kit Descriptor Line Logic
+    endcomment
+    assign card_subtitle = target_product.metafields.custom.subtitle | default: target_product.metafields.descriptors.subtitle | default: target_product.metafields.custom.kit_includes | default: target_product.metafields.custom.includes
+    if card_subtitle == blank
+      assign p_title_lower = target_product.title | downcase
+      if p_title_lower contains 'cushioned harness' or p_title_lower contains 'waterproof leash'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'step-in harness' and p_title_lower contains 'rope leash'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'collar' and p_title_lower contains 'leash'
+        assign card_subtitle = 'Pick your collar, leash, & poop bag carrier'
+      elsif p_title_lower contains 'step-in' or p_title_lower contains 'lightweight' or p_title_lower contains 'size'
+        assign card_subtitle = 'Choose Your Size, Colors & Poop Bag Carrier'
+      elsif p_title_lower contains 'walk kit' or p_title_lower contains 'harness'
+        assign card_subtitle = 'Includes Harness, Leash, and Poop Bag Carrier'
+      elsif p_title_lower contains 'slow feeder' or p_title_lower contains 'bowl'
+        assign card_subtitle = 'Food-grade silicone slow feeding mat'
+      elsif p_title_lower contains 'fountain' or p_title_lower contains 'water'
+        assign card_subtitle = 'Stainless steel fountain with multi-stage filter'
+      elsif target_product.metafields.custom.short_description != blank
+        assign card_subtitle = target_product.metafields.custom.short_description
+      elsif target_product.description != blank
+        assign card_subtitle = target_product.description | strip_html | truncatewords: 7
+      endif
+    endif
   endif
 -%}
 
@@ -65,14 +113,17 @@
     data-product-id="{{ target_product.id }}"
   >
     <div class="petssify-product-card__media-wrap">
-      {%- comment -%} Top-Left Single Status Badge Pill {%- endcomment -%}
+      {%- comment -%} Out of stock badge {%- endcomment -%}
       {%- if is_available == false -%}
         <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="Sold out">
           Sold out
         </span>
-      {%- elsif on_sale -%}
-        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="{{ discount_pct }} percent off">
-          -{{ discount_pct }}% OFF
+      {%- endif -%}
+
+      {%- comment -%} Top-Right Lavender Pill Badge ("Kit & Save") {%- endcomment -%}
+      {%- if top_right_badge != blank and is_available -%}
+        <span class="petssify-product-card__badge-top-right" aria-label="{{ top_right_badge | escape }}">
+          {{ top_right_badge }}
         </span>
       {%- endif -%}
 
@@ -80,7 +131,7 @@
       <div class="petssify-product-card__media-inner">
         {%- if featured_media != blank -%}
           {%- capture default_sizes -%}
-            (min-width: 1200px) 280px, (min-width: 750px) calc((100vw - 60px) / 3), calc((100vw - 36px) / 2)
+            (min-width: 1200px) 280px, (min-width: 750px) calc((100vw - 60px) / 4), calc((100vw - 36px) / 2)
           {%- endcapture -%}
           {%- assign img_sizes = image_sizes | default: default_sizes -%}
 
@@ -132,66 +183,10 @@
           {{ 'product-1' | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
         {%- endif -%}
       </div>
-    </div>
 
-    <div class="petssify-product-card__content">
-      {%- comment -%} 2-Line Clamped Title with Stretched Link {%- endcomment -%}
-      <h3 class="petssify-product-card__title">
-        <a href="{{ target_product.url }}" class="petssify-product-card__link">
-          {{ target_product.title | escape }}
-        </a>
-      </h3>
-
-      {%- comment -%} Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
-      {%- if show_rating -%}
-        {%- liquid
-          assign rating_value = nil
-          assign rating_count = 0
-
-          if target_product.metafields.reviews.rating.value != blank
-            assign rating_value = target_product.metafields.reviews.rating.value.rating | round: 1
-            assign rating_count = target_product.metafields.reviews.rating_count.value | default: 0
-          elsif target_product.metafields.judgeme.badge != blank
-            assign jm_badge = target_product.metafields.judgeme.badge
-            if jm_badge contains "data-score='"
-              assign rating_value = jm_badge | split: "data-score='" | last | split: "'" | first | times: 1.0 | round: 1
-            endif
-            if jm_badge contains "data-number-of-reviews='"
-              assign rating_count = jm_badge | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
-            endif
-          endif
-        -%}
-
-        {%- if rating_count > 0 and rating_value != nil -%}
-          <div class="petssify-product-card__rating" aria-label="{{ rating_value }} out of 5 stars ({{ rating_count }} reviews)">
-            <span class="petssify-product-card__star" aria-hidden="true">★</span>
-            <span class="petssify-product-card__rating-value">{{ rating_value }}</span>
-            <span class="petssify-product-card__rating-count">({{ rating_count }})</span>
-          </div>
-        {%- endif -%}
-      {%- endif -%}
-
-      {%- comment -%} Price Row {%- endcomment -%}
-      <div class="petssify-product-card__price-row">
-        {%- if target_product.price_varies -%}
-          <span class="petssify-product-card__price-current">
-            From {{ target_product.price_min | money }}
-          </span>
-        {%- else -%}
-          <span class="petssify-product-card__price-current">
-            {{ price | money }}
-          </span>
-          {%- if on_sale and compare_at_price > price -%}
-            <s class="petssify-product-card__price-compare">
-              {{ compare_at_price | money }}
-            </s>
-          {%- endif -%}
-        {%- endif -%}
-      </div>
-
-      {%- comment -%} Action Button / Quick Add Row {%- endcomment -%}
+      {%- comment -%} Smooth Hover Quick Add Overlay {%- endcomment -%}
       {%- if show_quick_add -%}
-        <div class="petssify-product-card__action">
+        <div class="petssify-product-card__hover-action">
           {%- if is_available == false -%}
             <button
               type="button"
@@ -242,11 +237,87 @@
         </div>
       {%- endif -%}
     </div>
+
+    <div class="petssify-product-card__content">
+      {%- comment -%} Editorial Serif Product Title with Stretched Link {%- endcomment -%}
+      <h3 class="petssify-product-card__title">
+        <a href="{{ target_product.url }}" class="petssify-product-card__link">
+          {{ target_product.title | escape }}
+        </a>
+      </h3>
+
+      {%- comment -%} Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
+      {%- if show_rating -%}
+        {%- liquid
+          assign rating_value = nil
+          assign rating_count = 0
+
+          if target_product.metafields.reviews.rating.value != blank
+            assign rating_value = target_product.metafields.reviews.rating.value.rating | round: 1
+            assign rating_count = target_product.metafields.reviews.rating_count.value | default: 0
+          elsif target_product.metafields.judgeme.badge != blank
+            assign jm_badge = target_product.metafields.judgeme.badge
+            if jm_badge contains "data-score='"
+              assign rating_value = jm_badge | split: "data-score='" | last | split: "'" | first | times: 1.0 | round: 1
+            endif
+            if jm_badge contains "data-number-of-reviews='"
+              assign rating_count = jm_badge | split: "data-number-of-reviews='" | last | split: "'" | first | plus: 0
+            endif
+          endif
+        -%}
+
+        {%- if rating_count > 0 and rating_value != nil -%}
+          <div class="petssify-product-card__rating" aria-label="{{ rating_value }} out of 5 stars ({{ rating_count }} reviews)">
+            <span class="petssify-product-card__star" aria-hidden="true">★</span>
+            <span class="petssify-product-card__rating-value">{{ rating_value }}</span>
+            <span class="petssify-product-card__rating-count">({{ rating_count }})</span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%} Price Row (Compare At + Orange-Red Sale + Save $X.XX Badge) {%- endcomment -%}
+      <div class="petssify-product-card__price-row">
+        {%- if target_product.price_varies -%}
+          <span class="petssify-product-card__price-current">
+            From {{ target_product.price_min | money }}
+          </span>
+          {%- if on_sale and compare_at_price > price -%}
+            <span class="petssify-product-card__save-badge">
+              Save {{ savings_amount | money }}
+            </span>
+          {%- endif -%}
+        {%- else -%}
+          {%- if on_sale and compare_at_price > price -%}
+            <s class="petssify-product-card__price-compare">
+              {{ compare_at_price | money_without_trailing_zeros }}
+            </s>
+            <span class="petssify-product-card__price-current petssify-product-card__price-current--sale">
+              {{ price | money }}
+            </span>
+            <span class="petssify-product-card__save-badge">
+              Save {{ savings_amount | money }}
+            </span>
+          {%- else -%}
+            <span class="petssify-product-card__price-current">
+              {{ price | money }}
+            </span>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Subtitle / What's Included Line {%- endcomment -%}
+      {%- if card_subtitle != blank -%}
+        <div class="petssify-product-card__subtitle">
+          {{ card_subtitle }}
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 {%- else -%}
   {%- comment -%} Placeholder Card for Empty/Onboarding States {%- endcomment -%}
   <div class="petssify-product-card petssify-product-card--placeholder">
     <div class="petssify-product-card__media-wrap">
+      <span class="petssify-product-card__badge-top-right">Kit & Save</span>
       <div class="petssify-product-card__media-inner">
         {%- assign placeholder_name = placeholder_image | default: 'product-1' -%}
         {{ placeholder_name | placeholder_svg_tag: 'petssify-product-card__placeholder' }}
@@ -254,15 +325,15 @@
     </div>
     <div class="petssify-product-card__content">
       <h3 class="petssify-product-card__title">
-        <span class="petssify-product-card__link">Example Product Title</span>
+        <span class="petssify-product-card__link">Cushioned Harness + Waterproof Leash Walk Kit</span>
       </h3>
       <div class="petssify-product-card__price-row">
-        <span class="petssify-product-card__price-current">$19.99</span>
+        <s class="petssify-product-card__price-compare">$105</s>
+        <span class="petssify-product-card__price-current petssify-product-card__price-current--sale">$98.00</span>
+        <span class="petssify-product-card__save-badge">Save $7.00</span>
       </div>
-      <div class="petssify-product-card__action">
-        <button type="button" class="petssify-quick-add__btn button button--secondary" disabled>
-          Add to Cart
-        </button>
+      <div class="petssify-product-card__subtitle">
+        Includes Harness, Leash, and Poop Bag Carrier
       </div>
     </div>
   </div>
