@@ -1696,6 +1696,8 @@ body {
    Collection & Facets Styling (Prototype Match)
    ========================================================================== */
 .facets__summary {
+  display: inline-flex !important;
+  align-items: center !important;
   font-family: var(--font-heading) !important;
   font-size: 13px !important;
   font-weight: 600 !important;
@@ -1704,7 +1706,37 @@ body {
   border: 1px solid var(--color-border) !important;
   border-radius: var(--radius-full) !important;
   padding: 8px 16px !important;
+  cursor: pointer !important;
+  outline: none !important;
+  box-shadow: none !important;
   transition: all var(--transition-fast);
+}
+
+.facets__summary:focus,
+.facets__summary:focus-visible,
+.facets__summary.focus-offset:focus,
+.facets__summary.focus-offset:focus-visible,
+.facets__summary.focused {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.facets__summary > div {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: auto !important;
+}
+
+.facets__summary .icon-caret,
+.facets__summary .svg-wrapper {
+  position: static !important;
+  margin: 0 !important;
+  margin-left: 6px !important;
+  width: 10px !important;
+  height: 6px !important;
+  flex-shrink: 0 !important;
+  transition: transform var(--transition-fast);
 }
 
 .facets__summary:hover {
@@ -1718,11 +1750,80 @@ body {
   border-color: var(--color-primary) !important;
 }
 
+.facets__disclosure[open] .facets__summary .icon-caret {
+  transform: rotate(180deg) !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+.facets .disclosure-has-popup[open] > summary + *,
+.disclosure-has-popup[open] > .facets__display,
 .facets__display {
+  z-index: 100 !important;
   border-radius: var(--radius-card) !important;
   box-shadow: var(--shadow-lg) !important;
   border: 1px solid var(--color-border) !important;
   background: #FFFFFF !important;
+}
+
+/* Collection Sorting dropdown styling & gap fix */
+.facet-filters__field .select {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+}
+
+.facet-filters__field .select__select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 8px 38px 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #00205B !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  outline: none !important;
+  line-height: 1.4 !important;
+  min-height: unset !important;
+  height: auto !important;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast) !important;
+}
+
+.facet-filters__field .select__select:hover {
+  border-color: #00205B !important;
+  background-color: #FFFFFF !important;
+}
+
+.facet-filters__field .select__select:focus,
+.facet-filters__field .select__select:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(0, 32, 91, 0.15) !important;
+  border-color: #00205B !important;
+}
+
+.facet-filters__field .select .svg-wrapper,
+.facet-filters__field .select .icon-caret {
+  position: absolute !important;
+  right: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+  width: 10px !important;
+  height: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.facet-filters__label {
+  margin-right: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1E293B !important;
 }
 
 .active-facets__button {
@@ -1881,5 +1982,132 @@ body {
   border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 600;
+}
+
+/* ==========================================================================
+   Product Accordion (Description & Policies) - Modern Card Style
+   ========================================================================== */
+.product__accordion.accordion {
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  background-color: #FFFFFF !important;
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.product__accordion.accordion:hover {
+  border-color: #CBD5E1 !important;
+}
+
+.product__accordion summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 16px 20px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  background: #FFFFFF !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.product__accordion summary:hover {
+  background-color: #F8FAFC !important;
+}
+
+.product__accordion details[open] > summary {
+  border-bottom: 1px solid #F1F5F9 !important;
+  background-color: #F8FAFC !important;
+}
+
+.product__accordion .summary__title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex: 1 !important;
+}
+
+.product__accordion .accordion__title {
+  font-family: var(--font-heading) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #00205B !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
+}
+
+.product__accordion summary .icon-caret,
+.product__accordion summary .svg-wrapper {
+  width: 12px !important;
+  height: 8px !important;
+  color: #64748B !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.25s ease !important;
+}
+
+.product__accordion details[open] > summary .icon-caret {
+  transform: rotate(180deg) !important;
+  color: #00205B !important;
+}
+
+.product__accordion .accordion__content {
+  padding: 18px 20px 22px 20px !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  color: #475569 !important;
+  background: #FFFFFF !important;
+}
+
+.product__accordion .accordion__content p {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+  line-height: 1.65 !important;
+}
+
+.product__accordion .accordion__content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Bulletproof List / Bullet Point Styling for RTE & Accordion Content
+   ========================================================================== */
+.rte ul,
+.product__accordion .accordion__content ul,
+.product__description ul,
+.accordion__content ul {
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  padding-left: 24px !important;
+  margin: 12px 0 16px !important;
+}
+
+.rte ol,
+.product__accordion .accordion__content ol,
+.product__description ol,
+.accordion__content ol {
+  list-style-type: decimal !important;
+  list-style-position: outside !important;
+  padding-left: 24px !important;
+  margin: 12px 0 16px !important;
+}
+
+.rte li,
+.product__accordion .accordion__content li,
+.product__description li,
+.accordion__content li {
+  display: list-item !important;
+  list-style: inherit !important;
+  margin-bottom: 8px !important;
+  line-height: 1.6 !important;
+  color: #475569 !important;
+}
+
+.rte li strong,
+.product__accordion .accordion__content li strong,
+.product__description li strong {
+  color: #0F172A !important;
 }
 

@@ -41,21 +41,12 @@
   <!-- ADDED FOR SEO: H1 Heading and Intro Copy -->
   <div class="page-width collection-header-wrapper">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="{{ routes.root_url }}">Home</a>
-
-    {% if collection %}
-      <span aria-hidden="true">/</span>
-      <a href="{{ collection.url }}">
-        {{ collection.title }}
-      </a>
-    {% endif %}
-
-    <span aria-hidden="true">/</span>
-
-    <span>
-      {{ product.title }}
-    </span>
-  </nav>
+      <a href="{{ routes.root_url }}">Home</a>
+      {% if collection %}
+        <span aria-hidden="true">/</span>
+        <span>{{ collection.title }}</span>
+      {% endif %}
+    </nav>
    
 
   </div>

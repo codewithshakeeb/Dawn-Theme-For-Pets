@@ -174,9 +174,9 @@
                 {{ block.settings.custom_liquid }}
               {%- when 'collapsible_tab' -%}
                 <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
-                  <details id="Details-{{ block.id }}-{{ section.id }}">
+                  <details id="Details-{{ block.id }}-{{ section.id }}" {% if block.settings.heading == 'Description' or block.settings.heading == 'Product Description' %}open{% endif %}>
                     <summary>
-                      <div class="summary__title product__description">
+                      <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
                         <h2 class="h4 accordion__title inline-richtext">
                           {{ block.settings.heading | default: block.settings.page.title | escape }}
@@ -185,7 +185,15 @@
                       {{- 'icon-caret.svg' | inline_asset_content -}}
                     </summary>
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                      {{ block.settings.content }}
+                      {%- if block.settings.heading == 'Description' or block.settings.heading == 'Product Description' -%}
+                        {%- if product.description != blank -%}
+                          {{ product.description }}
+                        {%- else -%}
+                          {{ block.settings.content }}
+                        {%- endif -%}
+                      {%- else -%}
+                        {{ block.settings.content }}
+                      {%- endif -%}
                       {{ block.settings.page.content }}
                     </div>
                   </details>
