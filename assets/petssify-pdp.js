@@ -1,47 +1,57 @@
 /**
  * Petssify PDP Client-Side Interactive Engine (assets/petssify-pdp.js)
- * High-performance, defer-loaded PDP logic:
- * - Intersection-driven Sticky Add-to-Cart with Drawer integration
- * - Dynamic Delivery Date Estimator (business days calculation)
- * - Accessible Tab / Accordion Switcher
- * - Live Variant Synchronization
- * - Native Share with Copy Link Fallback
+ * High-performance, non-blocking PDP logic:
+ * - Dynamic Delivery Date Estimator (capped business-days calculation, idempotent)
+ * - Accessible Tab / Mobile Accordion Switcher
+ * - Intersection-driven Sticky Add-to-Cart with Cart Drawer integration
+ * - Safe PubSub Variant Synchronization (no dangerous MutationObserver loops)
+ * - Native Web Share with Clipboard Fallback
  */
 
 (function () {
   'use strict';
 
+  let isSyncingVariant = false;
+  let lastSyncedVariantId = null;
+  let stickyAtcObserver = null;
+  let stickyFooterObserver = null;
+
   /* ==========================================================================
-     1. Delivery Date Estimator (1-2 days processing + 5-8 days transit, skipping weekends)
+     1. Delivery Date Estimator (1-2 days processing + 5-8 days transit)
      ========================================================================== */
   function calculateDeliveryDates() {
-    function addBusinessDays(startDate, daysToAdd) {
-      let current = new Date(startDate);
-      let added = 0;
-      while (added < daysToAdd) {
-        current.setDate(current.getDate() + 1);
-        const day = current.getDay();
-        if (day !== 0 && day !== 6) { // 0 = Sun, 6 = Sat
-          added++;
+    try {
+      function addBusinessDays(startDate, daysToAdd) {
+        const current = new Date(startDate);
+        let added = 0;
+        let safetyCount = 0;
+        while (added < daysToAdd && safetyCount < 30) {
+          safetyCount++;
+          current.setDate(current.getDate() + 1);
+          const day = current.getDay();
+          if (day !== 0 && day !== 6) { // 0 = Sun, 6 = Sat
+            added++;
+          }
         }
+        return current;
       }
-      return current;
+
+      const today = new Date();
+      const minDate = addBusinessDays(today, 6);
+      const maxDate = addBusinessDays(today, 10);
+
+      const options = { month: 'short', day: 'numeric' };
+      const formattedRange = `${minDate.toLocaleDateString('en-US', options)} – ${maxDate.toLocaleDateString('en-US', options)}`;
+
+      const deliveryContainers = document.querySelectorAll('.petssify-delivery-date-range');
+      deliveryContainers.forEach((el) => {
+        if (el.textContent !== formattedRange) {
+          el.textContent = formattedRange;
+        }
+      });
+    } catch (e) {
+      console.warn('[Petssify] Date calculation error:', e);
     }
-
-    const today = new Date();
-    // Min delivery: 1 business day processing + 5 business days transit = 6 business days
-    const minDate = addBusinessDays(today, 6);
-    // Max delivery: 2 business days processing + 8 business days transit = 10 business days
-    const maxDate = addBusinessDays(today, 10);
-
-    const options = { month: 'short', day: 'numeric' };
-    const minFormatted = minDate.toLocaleDateString('en-US', options);
-    const maxFormatted = maxDate.toLocaleDateString('en-US', options);
-
-    const deliveryContainers = document.querySelectorAll('.petssify-delivery-date-range');
-    deliveryContainers.forEach((el) => {
-      el.textContent = `${minFormatted} – ${maxFormatted}`;
-    });
   }
 
   /* ==========================================================================
@@ -57,6 +67,9 @@
 
     // Desktop Tab Click
     tabButtons.forEach((btn) => {
+      if (btn.dataset.initialized) return;
+      btn.dataset.initialized = 'true';
+
       btn.addEventListener('click', () => {
         const targetId = btn.getAttribute('aria-controls');
 
@@ -103,6 +116,9 @@
 
     // Mobile Accordion Toggle
     accordionHeaders.forEach((header) => {
+      if (header.dataset.initialized) return;
+      header.dataset.initialized = 'true';
+
       header.addEventListener('click', () => {
         const panel = header.closest('.petssify-tab-panel');
         if (!panel) return;
@@ -121,6 +137,11 @@
     const stickyBar = document.getElementById('PetssifyStickyBar');
     if (!stickyBar) return;
 
+    if (stickyBar.dataset.initialized === 'true') {
+      return;
+    }
+    stickyBar.dataset.initialized = 'true';
+
     const mainAtcButton = document.querySelector(
       '.product-form__submit, #ProductSubmitButton-' + stickyBar.dataset.productId
     ) || document.querySelector('.product-form__buttons');
@@ -134,20 +155,20 @@
     let isFooterVisible = false;
 
     function updateStickyVisibility() {
-      // Don't show if main ATC button is in view or footer is visible
       if (!isMainButtonVisible && !isFooterVisible) {
         stickyBar.classList.add('is-visible');
         stickyBar.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('petssify-sticky-bar-active');
       } else {
         stickyBar.classList.remove('is-visible');
         stickyBar.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('petssify-sticky-bar-active');
       }
     }
 
+    if (stickyAtcObserver) stickyAtcObserver.disconnect();
+    if (stickyFooterObserver) stickyFooterObserver.disconnect();
+
     if (mainAtcButton && 'IntersectionObserver' in window) {
-      const atcObserver = new IntersectionObserver(
+      stickyAtcObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             isMainButtonVisible = entry.isIntersecting && entry.boundingClientRect.top >= 0;
@@ -161,11 +182,11 @@
         },
         { threshold: 0 }
       );
-      atcObserver.observe(mainAtcButton);
+      stickyAtcObserver.observe(mainAtcButton);
     }
 
     if (footer && 'IntersectionObserver' in window) {
-      const footerObserver = new IntersectionObserver(
+      stickyFooterObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             isFooterVisible = entry.isIntersecting;
@@ -174,13 +195,17 @@
         },
         { threshold: 0.1 }
       );
-      footerObserver.observe(footer);
+      stickyFooterObserver.observe(footer);
     }
 
     // Variant Select Sync inside Sticky Bar
     if (selectEl) {
       selectEl.addEventListener('change', () => {
+        if (isSyncingVariant) return;
+
         const selectedOpt = selectEl.options[selectEl.selectedIndex];
+        if (!selectedOpt) return;
+
         const variantId = selectEl.value;
         const price = selectedOpt.dataset.price;
         const compareAt = selectedOpt.dataset.compareAt;
@@ -250,8 +275,7 @@
           // Update Dawn cart drawer or bubbles
           const cartDrawer = document.querySelector('cart-drawer');
           if (cartDrawer) {
-            // Fetch updated cart drawer section
-            const cartRes = await fetch(window.routes?.cart_url + '?section_id=cart-drawer');
+            const cartRes = await fetch((window.routes?.cart_url || '/cart') + '?section_id=cart-drawer');
             const cartHtml = await cartRes.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(cartHtml, 'text/html');
@@ -259,15 +283,17 @@
             if (newDrawerInner) {
               cartDrawer.innerHTML = newDrawerInner.innerHTML;
             }
-            cartDrawer.open();
+            if (typeof cartDrawer.open === 'function') {
+              cartDrawer.open();
+            }
           } else {
-            // Fallback: update cart count bubbles
             fetch('/cart.js')
               .then((r) => r.json())
               .then((c) => {
                 const countEls = document.querySelectorAll('.cart-count-bubble span:first-child');
                 countEls.forEach((el) => (el.textContent = c.item_count));
-              });
+              })
+              .catch(() => {});
           }
 
           setTimeout(() => {
@@ -276,7 +302,7 @@
             if (spinner) spinner.classList.add('petssify-hidden');
           }, 1500);
         } catch (err) {
-          console.error(err);
+          console.error('[Petssify] ATC error:', err);
           if (btnText) btnText.textContent = 'Error - Retry';
           addBtn.disabled = false;
           if (spinner) spinner.classList.add('petssify-hidden');
@@ -301,12 +327,16 @@
      4. Helper to Select a Specific Variant Programmatically
      ========================================================================== */
   window.petssifySelectVariant = function (variantId) {
+    if (!variantId) return;
+
     const radioInput = document.querySelector(
       `variant-selects input[data-option-value-id="${variantId}"], variant-selects input[value="${variantId}"]`
     );
     if (radioInput) {
-      radioInput.checked = true;
-      radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+      if (!radioInput.checked) {
+        radioInput.checked = true;
+        radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
       return;
     }
 
@@ -314,8 +344,10 @@
     if (selectEl) {
       for (let i = 0; i < selectEl.options.length; i++) {
         if (selectEl.options[i].value === String(variantId)) {
-          selectEl.selectedIndex = i;
-          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          if (selectEl.selectedIndex !== i) {
+            selectEl.selectedIndex = i;
+            selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          }
           return;
         }
       }
@@ -323,63 +355,94 @@
   };
 
   /* ==========================================================================
-     5. Sync Variant Updates from Dawn's Product-Info Section
+     5. Sync Variant Updates from Dawn (Clean PubSub + DOM Change Event)
      ========================================================================== */
-  function listenToVariantChanges() {
-    const productInfo = document.querySelector('product-info');
-    if (!productInfo) return;
+  function syncVariantState(variant) {
+    if (!variant || variant.id === lastSyncedVariantId) return;
+    lastSyncedVariantId = variant.id;
 
-    // Observe changes to the product form or price
-    const observer = new MutationObserver(() => {
-      const selectedVariantScript = productInfo.querySelector('[data-selected-variant]');
-      if (!selectedVariantScript) return;
+    isSyncingVariant = true;
+    try {
+      // Sync sticky bar select
+      const stickySelect = document.getElementById('PetssifyStickySelect');
+      if (stickySelect && stickySelect.value !== String(variant.id)) {
+        stickySelect.value = String(variant.id);
+      }
 
-      try {
-        const variant = JSON.parse(selectedVariantScript.textContent);
-        if (!variant) return;
+      const stickyVariantLabel = document.getElementById('PetssifyStickyVariantLabel');
+      if (stickyVariantLabel) {
+        stickyVariantLabel.textContent = variant.title;
+      }
 
-        // Sync sticky bar select
-        const stickySelect = document.getElementById('PetssifyStickySelect');
-        if (stickySelect && stickySelect.value !== String(variant.id)) {
-          stickySelect.value = String(variant.id);
-        }
-
-        const stickyVariantLabel = document.getElementById('PetssifyStickyVariantLabel');
-        if (stickyVariantLabel) {
-          stickyVariantLabel.textContent = variant.title;
-        }
-
-        const addBtn = document.getElementById('PetssifyStickyAddBtn');
-        const notifyBtn = document.getElementById('PetssifyStickyNotifyBtn');
-        if (addBtn && notifyBtn) {
-          if (variant.available) {
-            addBtn.classList.remove('petssify-hidden');
-            notifyBtn.classList.add('petssify-hidden');
-            addBtn.setAttribute('data-variant-id', variant.id);
-          } else {
-            addBtn.classList.add('petssify-hidden');
-            notifyBtn.classList.remove('petssify-hidden');
-          }
-        }
-
-        const notifyBlock = document.querySelector('.petssify-notify-me-block');
-        if (notifyBlock) {
-          if (variant.available) {
-            notifyBlock.classList.add('petssify-hidden');
-          } else {
-            notifyBlock.classList.remove('petssify-hidden');
-          }
-        }
-
+      const addBtn = document.getElementById('PetssifyStickyAddBtn');
+      const notifyBtn = document.getElementById('PetssifyStickyNotifyBtn');
+      if (addBtn && notifyBtn) {
         if (variant.available) {
-          calculateDeliveryDates();
+          addBtn.classList.remove('petssify-hidden');
+          notifyBtn.classList.add('petssify-hidden');
+          addBtn.setAttribute('data-variant-id', variant.id);
+        } else {
+          addBtn.classList.add('petssify-hidden');
+          notifyBtn.classList.remove('petssify-hidden');
         }
-      } catch (e) {
-        // Safe json parse guard
+      }
+
+      const notifyBlock = document.querySelector('.petssify-notify-me-block');
+      if (notifyBlock) {
+        if (variant.available) {
+          notifyBlock.classList.add('petssify-hidden');
+        } else {
+          notifyBlock.classList.remove('petssify-hidden');
+        }
+      }
+
+      if (variant.available) {
+        calculateDeliveryDates();
+      }
+    } catch (e) {
+      console.warn('[Petssify] Variant sync error:', e);
+    } finally {
+      isSyncingVariant = false;
+    }
+  }
+
+  function readSelectedVariantFromDOM() {
+    try {
+      const selectedVariantScript = document.querySelector('product-info [data-selected-variant]');
+      if (selectedVariantScript && selectedVariantScript.textContent) {
+        const variant = JSON.parse(selectedVariantScript.textContent);
+        if (variant) syncVariantState(variant);
+      }
+    } catch (e) {
+      // Safe fallback
+    }
+  }
+
+  function listenToVariantChanges() {
+    // 1. Dawn Native PubSub Event
+    if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined' && PUB_SUB_EVENTS.variantChange) {
+      subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+        const variant = event?.data?.variant;
+        if (variant) {
+          syncVariantState(variant);
+        } else {
+          setTimeout(readSelectedVariantFromDOM, 50);
+        }
+      });
+    }
+
+    // 2. Standard DOM change listener (debounced fallback)
+    document.addEventListener('change', (e) => {
+      const target = e.target;
+      if (!target) return;
+      if (
+        target.matches(
+          'variant-selects select, variant-selects input, variant-radios input, form[action*="/cart/add"] [name="id"]'
+        )
+      ) {
+        setTimeout(readSelectedVariantFromDOM, 60);
       }
     });
-
-    observer.observe(productInfo, { childList: true, subtree: true });
   }
 
   /* ==========================================================================
@@ -388,6 +451,9 @@
   function initShareButtons() {
     const shareBtns = document.querySelectorAll('.petssify-share-button');
     shareBtns.forEach((btn) => {
+      if (btn.dataset.initialized) return;
+      btn.dataset.initialized = 'true';
+
       btn.addEventListener('click', async () => {
         const url = window.location.href;
         const title = document.title;
@@ -413,19 +479,27 @@
   }
 
   /* ==========================================================================
-     7. DOM Ready Initialization
+     7. Initialization & Shopify Theme Editor Lifecycle
      ========================================================================== */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
-
   function initAll() {
     calculateDeliveryDates();
     initDetailsTabs();
     initStickyATC();
-    listenToVariantChanges();
     initShareButtons();
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initAll();
+      listenToVariantChanges();
+    });
+  } else {
+    initAll();
+    listenToVariantChanges();
+  }
+
+  // Shopify Theme Editor support
+  document.addEventListener('shopify:section:load', (e) => {
+    initAll();
+  });
 })();
