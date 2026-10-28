@@ -430,7 +430,7 @@
       }
     },
     "1764956211b0ded476": {
-      "type": "apps",
+      "type": "petssify-judgeme-reviews",
       "blocks": {
         "judge_me_reviews_cards_carousel_jU8kkq": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
@@ -452,18 +452,18 @@
             "reviews_shown": 4,
             "show_reviewer_name": true,
             "show_product_name": true,
-            "hide_arrows_mobile": true,
+            "hide_arrows_mobile": false,
             "arrows_position": "sides",
             "max_width": 1100,
             "corner_styling": "soft",
-            "header_text_color": "#000000",
-            "text_color": "#000000",
-            "card_color": "#f9f9f9",
-            "stars_color": "#00205b",
-            "arrows_color": "#000000",
+            "header_text_color": "#00205B",
+            "text_color": "#334155",
+            "card_color": "#FFFFFF",
+            "stars_color": "#00B67A",
+            "arrows_color": "#00205B",
             "transition_speed": 5,
             "header_text": "What Customers Say",
-            "show_average_rating": true,
+            "show_average_rating": false,
             "rating_display": "show_trust_badge"
           }
         }
@@ -471,12 +471,13 @@
       "block_order": [
         "judge_me_reviews_cards_carousel_jU8kkq"
       ],
-      "custom_css": [
-        ".page-width.scroll-trigger.animate--slide-in {padding-top: 30px; background: #f3f3f3;}",
-        ".jdgm-cards-carousel .jdgm-title {font-size: 29px !important; font-weight: 700 !important;}"
-      ],
       "settings": {
-        "include_margins": true
+        "top_heading": "Read reviews, care with confidence.",
+        "rating_score": "4.9/5",
+        "rating_count_text": "Based on verified pet parents",
+        "side_heading": "What our customers are saying",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "petssify_faq_section_kUdc8b": {

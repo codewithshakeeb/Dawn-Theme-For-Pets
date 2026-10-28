@@ -1,0 +1,501 @@
+{%- comment -%}
+  Petssify Judge.me Customer Reviews Section
+  - Reference-matched design:
+    - Top: Centered headline ("Read reviews, care with confidence.") & Verified Trust score
+    - 2-Column Split Layout:
+      - Left Sidebar: Big quotation mark icon, "What our customers are saying", Custom Arrow Navigation & Progress Line
+      - Right Carousel: Renders real Judge.me reviews dynamically from the backend (no hardcoded fake reviews)
+    - Speech-bubble card styling matching reference with customer avatars, star ratings, and review photos
+    - Syncs custom navigation arrows to Judge.me's native carousel controls
+{%- endcomment -%}
+
+<div
+  id="petssify-reviews-{{ section.id }}"
+  class="petssify-reviews-section section-{{ section.id }}-padding"
+  style="
+    --rev-pt: {{ section.settings.padding_top | default: 60 }}px;
+    --rev-pb: {{ section.settings.padding_bottom | default: 60 }}px;
+  "
+>
+  <div class="page-width">
+    <!-- 1. Top Centered Trust Header -->
+    <div class="petssify-reviews-top-header">
+      <h2 class="petssify-reviews-top-title">
+        {{ section.settings.top_heading | default: "Read reviews, care with confidence." }}
+      </h2>
+      <div class="petssify-reviews-trust-badge">
+        <span class="petssify-reviews-score">{{ section.settings.rating_score | default: "4.9/5" }}</span>
+        <div class="petssify-reviews-stars" aria-label="5 out of 5 stars">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#00B67A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="petssify-reviews-verified-label">Judge.me Verified</span>
+        <span class="petssify-reviews-count">{{ section.settings.rating_count_text | default: "Based on verified pet parents" }}</span>
+      </div>
+    </div>
+
+    <!-- 2. Main 2-Column Split Layout -->
+    <div class="petssify-reviews-layout">
+      <!-- Left Sidebar: Big Quote, Side Heading, Custom Nav Arrows & Progress Line -->
+      <div class="petssify-reviews-sidebar">
+        <div class="petssify-reviews-quote-icon" aria-hidden="true">
+          <svg width="52" height="42" viewBox="0 0 48 40" fill="none">
+            <path d="M12.8 0C5.7 0 0 5.7 0 12.8C0 23.2 8.4 34.6 21.3 40L24 35.2C15.6 31.6 11.2 24.8 10.7 18.1C11.7 18.5 12.9 18.8 14.1 18.8C19.7 18.8 24.3 14.2 24.3 8.5C24.3 3.8 20.5 0 15.7 0H12.8ZM36.5 0C29.5 0 23.7 5.7 23.7 12.8C23.7 23.2 32.1 34.6 45.1 40L47.7 35.2C39.3 31.6 34.9 24.8 34.4 18.1C35.5 18.5 36.6 18.8 37.9 18.8C43.4 18.8 48 14.2 48 8.5C48 3.8 44.2 0 39.5 0H36.5Z" fill="#CBD5E1"/>
+          </svg>
+        </div>
+
+        <h3 class="petssify-reviews-side-heading">
+          {{ section.settings.side_heading | default: "What our customers are saying" }}
+        </h3>
+
+        <!-- Custom Navigation: Arrows & Progress Line -->
+        <div class="petssify-reviews-nav">
+          <button
+            type="button"
+            class="petssify-rev-arrow petssify-rev-arrow--prev"
+            id="PetssifyRevPrev-{{ section.id }}"
+            aria-label="Previous review"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+
+          <div class="petssify-rev-progress-bar" aria-hidden="true">
+            <div class="petssify-rev-progress-thumb" id="PetssifyRevThumb-{{ section.id }}"></div>
+          </div>
+
+          <button
+            type="button"
+            class="petssify-rev-arrow petssify-rev-arrow--next"
+            id="PetssifyRevNext-{{ section.id }}"
+            aria-label="Next review"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Real Judge.me App Block Content -->
+      <div class="petssify-reviews-carousel-col" id="PetssifyRevCol-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          {% render block %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #petssify-reviews-{{ section.id }} {
+    padding-top: var(--rev-pt);
+    padding-bottom: var(--rev-pb);
+    background-color: #FAFAFA;
+  }
+
+  /* 1. Top Centered Trust Header */
+  .petssify-reviews-top-header {
+    text-align: center;
+    margin-bottom: clamp(32px, 4vw, 52px);
+  }
+
+  .petssify-reviews-top-title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(26px, 3.2vw, 40px);
+    font-weight: 800;
+    color: var(--color-primary, #00205B);
+    letter-spacing: -0.025em;
+    margin: 0 0 12px 0;
+    line-height: 1.15;
+  }
+
+  .petssify-reviews-trust-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 14px;
+    color: #475569;
+  }
+
+  .petssify-reviews-score {
+    font-weight: 800;
+    font-size: 16px;
+    color: #0F172A;
+  }
+
+  .petssify-reviews-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .petssify-reviews-verified-label {
+    font-weight: 700;
+    color: #00B67A;
+    background: #E8F8F0;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+  }
+
+  .petssify-reviews-count {
+    color: #64748B;
+  }
+
+  /* 2. Main 2-Column Split Layout */
+  .petssify-reviews-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  /* Left Sidebar */
+  .petssify-reviews-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .petssify-reviews-quote-icon {
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .petssify-reviews-side-heading {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 800;
+    color: var(--color-primary, #00205B);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 28px 0;
+  }
+
+  /* Custom Navigation Controls (Arrows + Progress Line) */
+  .petssify-reviews-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .petssify-rev-arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    color: #0F172A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .petssify-rev-arrow:hover {
+    background: var(--color-primary, #00205B);
+    color: #FFFFFF;
+    border-color: var(--color-primary, #00205B);
+    transform: scale(1.05);
+  }
+
+  .petssify-rev-progress-bar {
+    width: 90px;
+    height: 3px;
+    background: #E2E8F0;
+    border-radius: 9999px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .petssify-rev-progress-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 40%;
+    background: var(--color-primary, #00205B);
+    border-radius: 9999px;
+    transition: transform 0.25s ease-out;
+  }
+
+  /* Right Column: Judge.me Reviews Container */
+  .petssify-reviews-carousel-col {
+    min-width: 0;
+    position: relative;
+  }
+
+  /* =========================================================================
+     JUDGE.ME NATIVE CAROUSEL RE-STYLING (To Match Reference Image Cards)
+     ========================================================================= */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-title,
+  #petssify-reviews-{{ section.id }} .jdgm-all-reviews-rating {
+    display: none !important;
+  }
+
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #petssify-reviews-{{ section.id }} .jdgm-carousel {
+    display: flex !important;
+    gap: 20px !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+    padding: 10px 4px 24px !important;
+  }
+
+  #petssify-reviews-{{ section.id }} .jdgm-carousel::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Review Cards (Speech Bubble Style Matching Reference) */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 20px !important;
+    padding: 26px 24px 22px !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 32, 91, 0.05) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-width: 310px !important;
+    max-width: 360px !important;
+    scroll-snap-align: start !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    position: relative !important;
+  }
+
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 32px -4px rgba(0, 32, 91, 0.10) !important;
+  }
+
+  /* Review Body / Text */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__review-body {
+    font-family: var(--font-body, 'Inter', sans-serif) !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #334155 !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Review Title */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__review-title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    color: #00205B !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Green Stars matching reference */
+  #petssify-reviews-{{ section.id }} .jdgm-star {
+    color: #00B67A !important;
+    font-size: 16px !important;
+  }
+
+  /* Reviewer Info at the Bottom */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__reviewer-name {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+    font-weight: 700 !important;
+    font-size: 14.5px !important;
+    color: #0F172A !important;
+  }
+
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__product-title {
+    font-size: 12px !important;
+    color: #94A3B8 !important;
+  }
+
+  /* Customer Photo / Image Review Support */
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__review-image,
+  #petssify-reviews-{{ section.id }} .jdgm-carousel-item__photo {
+    border-radius: 12px !important;
+    object-fit: cover !important;
+    margin-bottom: 12px !important;
+    max-height: 180px !important;
+    width: 100% !important;
+  }
+
+  /* =========================================================================
+     MOBILE RESPONSIVENESS (< 768px)
+     ========================================================================= */
+  @media screen and (max-width: 767px) {
+    #petssify-reviews-{{ section.id }} {
+      padding-top: calc(var(--rev-pt) * 0.7);
+      padding-bottom: calc(var(--rev-pb) * 0.7);
+    }
+
+    .petssify-reviews-layout {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .petssify-reviews-sidebar {
+      align-items: center;
+      text-align: center;
+    }
+
+    .petssify-reviews-side-heading {
+      margin-bottom: 16px;
+    }
+
+    .petssify-reviews-quote-icon {
+      margin-bottom: 10px;
+    }
+
+    #petssify-reviews-{{ section.id }} .jdgm-carousel-item {
+      min-width: 280px !important;
+      max-width: 82vw !important;
+      padding: 22px 18px !important;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    function initReviewsControls() {
+      const section = document.getElementById('petssify-reviews-{{ section.id }}');
+      if (!section) return;
+
+      const prevBtn = section.querySelector('#PetssifyRevPrev-{{ section.id }}');
+      const nextBtn = section.querySelector('#PetssifyRevNext-{{ section.id }}');
+      const thumb = section.querySelector('#PetssifyRevThumb-{{ section.id }}');
+
+      // Helper to find Judge.me's scroll track or items
+      function getTrack() {
+        return section.querySelector('.jdgm-carousel') || section.querySelector('.jdgm-carousel__item-wrapper');
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          // Check if Judge.me has native arrows
+          const jdgmPrev = section.querySelector('.jdgm-carousel__arrow-prev') || section.querySelector('.jdgm-arrow-prev');
+          if (jdgmPrev) {
+            jdgmPrev.click();
+          } else {
+            const track = getTrack();
+            if (track) track.scrollBy({ left: -320, behavior: 'smooth' });
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          const jdgmNext = section.querySelector('.jdgm-carousel__arrow-next') || section.querySelector('.jdgm-arrow-next');
+          if (jdgmNext) {
+            jdgmNext.click();
+          } else {
+            const track = getTrack();
+            if (track) track.scrollBy({ left: 320, behavior: 'smooth' });
+          }
+        });
+      }
+
+      // Track progress thumb
+      const track = getTrack();
+      if (track && thumb) {
+        track.addEventListener('scroll', function() {
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          if (maxScroll <= 0) return;
+          const pct = Math.min(1, Math.max(0, track.scrollLeft / maxScroll));
+          thumb.style.transform = 'translateX(' + (pct * (90 * 0.6)) + 'px)';
+        }, { passive: true });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initReviewsControls);
+    } else {
+      initReviewsControls();
+    }
+
+    // Re-check after Judge.me finishes client-side rendering
+    setTimeout(initReviewsControls, 1500);
+    setTimeout(initReviewsControls, 3000);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_heading",
+      "label": "Top Heading",
+      "default": "Read reviews, care with confidence."
+    },
+    {
+      "type": "text",
+      "id": "rating_score",
+      "label": "Rating Score",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text",
+      "id": "rating_count_text",
+      "label": "Rating Subtext",
+      "default": "Based on verified pet parents"
+    },
+    {
+      "type": "text",
+      "id": "side_heading",
+      "label": "Side Heading",
+      "default": "What our customers are saying"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews"
+    }
+  ]
+}
+{% endschema %}
