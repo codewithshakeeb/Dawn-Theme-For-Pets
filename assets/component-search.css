@@ -32,13 +32,13 @@
 
 .search__button:focus-visible,
 .reset__button:focus-visible {
-  background-color: rgb(var(--color-background));
+  background-color: transparent;
   z-index: 4;
 }
 
 .search__button:focus,
 .reset__button:focus {
-  background-color: rgb(var(--color-background));
+  background-color: transparent;
   z-index: 4;
 }
 

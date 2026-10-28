@@ -413,7 +413,16 @@
       opacity: 0 !important;
     }
 
-    .header__search--mobile .search-modal .search__button {
+    .header__search--mobile .search-modal .search__button,
+    .header__search--mobile .search-modal .search__button:focus,
+    .header__search--mobile .search-modal .search__button:focus-visible,
+    .header__search--mobile .search-modal .search__button:hover,
+    .header__search--mobile .search-modal .search__button:active,
+    .header__search--mobile .search-modal .reset__button,
+    .header__search--mobile .search-modal .reset__button:focus,
+    .header__search--mobile .search-modal .reset__button:focus-visible,
+    .header__search--mobile .search-modal .reset__button:hover,
+    .header__search--mobile .search-modal .reset__button:active {
       position: absolute !important;
       right: 8px !important;
       top: 50% !important;
@@ -422,13 +431,32 @@
       height: 32px !important;
       border: none !important;
       background: transparent !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       color: #00205B !important;
-      z-index: 2 !important;
+      z-index: 5 !important;
       padding: 0 !important;
       cursor: pointer !important;
+    }
+
+    .header__search--mobile .search-modal .search__button svg,
+    .header__search--mobile .search-modal .search__button .svg-wrapper,
+    .header__search--mobile .search-modal .search__button .icon,
+    .header__search--mobile .search-modal .reset__button svg,
+    .header__search--mobile .search-modal .reset__button .svg-wrapper,
+    .header__search--mobile .search-modal .reset__button .icon {
+      color: #00205B !important;
+      fill: #00205B !important;
+      stroke: #00205B !important;
+      width: 20px !important;
+      height: 20px !important;
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
     .header__search--mobile .search-modal__close-button,
@@ -825,7 +853,12 @@
     onScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-      if ((this.predictiveSearch && this.predictiveSearch.isOpen) || (this.header && this.header.classList.contains('header--search-open')) || this.querySelector('details-modal.header__search details[open]')) return;
+      if (
+        (this.predictiveSearch && this.predictiveSearch.isOpen) ||
+        (this.header && (this.header.classList.contains('header--search-open') || this.header.classList.contains('header--menu-open') || this.header.classList.contains('menu-open'))) ||
+        this.querySelector('details-modal.header__search details[open]') ||
+        this.querySelector('#Details-menu-drawer-container[open]')
+      ) return;
 
       const isScrolled = scrollTop > 20;
       this.classList.toggle('header-wrapper--scrolled', isScrolled);
@@ -858,6 +891,11 @@
 
     hide() {
       if (this.headerIsAlwaysSticky) return;
+      if (
+        (this.header && (this.header.classList.contains('header--search-open') || this.header.classList.contains('header--menu-open') || this.header.classList.contains('menu-open'))) ||
+        this.querySelector('details-modal.header__search details[open]') ||
+        this.querySelector('#Details-menu-drawer-container[open]')
+      ) return;
       this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
       this.closeMenuDisclosure();
       this.closeSearchModal();

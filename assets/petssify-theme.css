@@ -3691,20 +3691,53 @@ details[open] .modal-overlay::after {
     justify-content: center !important;
   }
 
+  /* When Menu Drawer is open: Lock header bar at top: 0 with solid white background */
+  .header-wrapper:has(#Details-menu-drawer-container[open]),
+  .section-header:has(#Details-menu-drawer-container[open]),
+  .header-wrapper.menu-open,
+  .section-header.menu-open,
+  .header-wrapper.header--menu-open,
+  .section-header.header--menu-open,
+  header.header.header--menu-open,
+  body:has(#Details-menu-drawer-container[open]) .header-wrapper,
+  body:has(#Details-menu-drawer-container[open]) .section-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 68px !important;
+    z-index: 100000 !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    transform: none !important;
+  }
+
+  .shopify-section-header-hidden.menu-open,
+  .shopify-section-header-hidden.header--menu-open,
+  .shopify-section-header-hidden:has(#Details-menu-drawer-container[open]),
+  .shopify-section-header-hidden:has(.header__search--mobile details[open]),
+  .shopify-section-header-hidden:has(header.header.header--search-open) {
+    top: 0 !important;
+    transform: none !important;
+    position: fixed !important;
+  }
+
   .menu-drawer,
   .js .menu-drawer {
     position: fixed !important;
-    top: var(--header-bottom-position, 68px) !important;
+    top: 68px !important;
     left: 0 !important;
     width: 86vw !important;
     max-width: 360px !important;
-    height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
-    min-height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
+    height: calc(100dvh - 68px) !important;
+    min-height: calc(100dvh - 68px) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
     background: #ffffff !important;
     z-index: 99999 !important;
     box-shadow: 4px 0 28px rgba(0, 32, 91, 0.18) !important;
@@ -3736,10 +3769,10 @@ details[open] .modal-overlay::after {
   details#Details-menu-drawer-container[open] > summary::before {
     content: '' !important;
     position: fixed !important;
-    top: var(--header-bottom-position, 68px) !important;
+    top: 68px !important;
     left: 0 !important;
     width: 100vw !important;
-    height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
+    height: calc(100dvh - 68px) !important;
     background: rgba(0, 16, 48, 0.5) !important;
     backdrop-filter: blur(2px) !important;
     z-index: 99998 !important;
@@ -3750,10 +3783,17 @@ details[open] .modal-overlay::after {
     cursor: pointer !important;
   }
 
-  body.overflow-hidden {
+  /* Lock scrolling for both html and body whenever drawer or search is open */
+  html.overflow-hidden,
+  body.overflow-hidden,
+  html:has(#Details-menu-drawer-container[open]),
+  body:has(#Details-menu-drawer-container[open]),
+  html:has(header.header.header--search-open),
+  body:has(header.header.header--search-open) {
     overflow: hidden !important;
     height: 100% !important;
     touch-action: none !important;
+    -webkit-overflow-scrolling: auto !important;
   }
 }
 
@@ -3802,13 +3842,20 @@ details[open] .modal-overlay::after {
   }
 
   .header-wrapper:has(header.header.header--search-open),
-  .header-wrapper:has(.header__search--mobile details[open]) {
+  .header-wrapper:has(.header__search--mobile details[open]),
+  .section-header:has(header.header.header--search-open),
+  .section-header:has(.header__search--mobile details[open]),
+  body:has(header.header.header--search-open) .header-wrapper,
+  body:has(header.header.header--search-open) .section-header {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
+    height: 68px !important;
     z-index: 100000 !important;
     background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    transform: none !important;
   }
 
   .header__search--mobile details[open] .modal-overlay::after,
@@ -3822,6 +3869,8 @@ details[open] .modal-overlay::after {
     backdrop-filter: blur(4px) !important;
     z-index: 99998 !important;
     pointer-events: auto !important;
+    touch-action: none !important;
+    overscroll-behavior: none !important;
   }
 
   header.header.header--search-open .header__left-group,
@@ -3911,7 +3960,16 @@ details[open] .modal-overlay::after {
   }
 
   /* Magnifying Glass Submit Button Inside Pill on Right */
-  .header__search--mobile .search-modal .search__button {
+  .header__search--mobile .search-modal .search__button,
+  .header__search--mobile .search-modal .search__button:focus,
+  .header__search--mobile .search-modal .search__button:focus-visible,
+  .header__search--mobile .search-modal .search__button:hover,
+  .header__search--mobile .search-modal .search__button:active,
+  .header__search--mobile .search-modal .reset__button,
+  .header__search--mobile .search-modal .reset__button:focus,
+  .header__search--mobile .search-modal .reset__button:focus-visible,
+  .header__search--mobile .search-modal .reset__button:hover,
+  .header__search--mobile .search-modal .reset__button:active {
     position: absolute !important;
     right: 8px !important;
     top: 50% !important;
@@ -3920,6 +3978,7 @@ details[open] .modal-overlay::after {
     height: 32px !important;
     border: none !important;
     background: transparent !important;
+    background-color: transparent !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -3927,6 +3986,19 @@ details[open] .modal-overlay::after {
     z-index: 2 !important;
     padding: 0 !important;
     cursor: pointer !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .header__search--mobile .search-modal .search__button svg,
+  .header__search--mobile .search-modal .search__button .svg-wrapper,
+  .header__search--mobile .search-modal .reset__button svg,
+  .header__search--mobile .search-modal .reset__button .svg-wrapper {
+    color: #00205B !important;
+    fill: #00205B !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
   }
 
   /* Close Button Outside Input Pill on Right */

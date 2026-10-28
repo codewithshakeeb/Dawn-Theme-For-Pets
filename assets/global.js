@@ -561,13 +561,26 @@ class HeaderDrawer extends MenuDrawer {
   }
 
   openMenuDrawer(summaryElement) {
+    const isMobile = window.innerWidth <= 989;
     const headerWrapper = this.closest('.header-wrapper') || document.querySelector('.header-wrapper') || document.querySelector('.section-header');
     this.borderOffset =
       this.borderOffset || (this.closest('.header-wrapper') && this.closest('.header-wrapper').classList.contains('header-wrapper--border-bottom')) ? 1 : 0;
-    const headerBottom = headerWrapper ? Math.max(0, parseInt(headerWrapper.getBoundingClientRect().bottom - (this.borderOffset || 0))) : 68;
+    const headerBottom = isMobile ? 68 : (headerWrapper ? Math.max(0, parseInt(headerWrapper.getBoundingClientRect().bottom - (this.borderOffset || 0))) : 68);
     document.documentElement.style.setProperty('--header-bottom-position', `${headerBottom}px`);
     this.header = headerWrapper || document.querySelector('.section-header');
-    if (this.header) this.header.classList.add('menu-open');
+    if (this.header) {
+      this.header.classList.remove('shopify-section-header-hidden');
+      this.header.classList.add('menu-open');
+      this.header.classList.add('header--menu-open');
+    }
+    const sectionHeader = document.querySelector('.section-header');
+    if (sectionHeader) {
+      sectionHeader.classList.remove('shopify-section-header-hidden');
+      sectionHeader.classList.add('menu-open');
+      sectionHeader.classList.add('header--menu-open');
+    }
+    const headerEl = document.querySelector('header.header');
+    if (headerEl) headerEl.classList.add('header--menu-open');
 
     setTimeout(() => {
       this.mainDetailsToggle.classList.add('menu-opening');
@@ -576,13 +589,38 @@ class HeaderDrawer extends MenuDrawer {
     summaryElement.setAttribute('aria-expanded', true);
     window.addEventListener('resize', this.onResize);
     trapFocus(this.mainDetailsToggle, summaryElement);
+    document.documentElement.classList.add('overflow-hidden');
+    document.body.classList.add('overflow-hidden');
     document.body.classList.add(`overflow-hidden-${this.dataset.breakpoint}`);
+
+    this.onDrawerTouchMove = (e) => {
+      if (!e.target.closest('#menu-drawer')) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('touchmove', this.onDrawerTouchMove, { passive: false });
   }
 
   closeMenuDrawer(event, elementToFocus) {
     if (!elementToFocus) return;
     super.closeMenuDrawer(event, elementToFocus);
-    if (this.header) this.header.classList.remove('menu-open');
+    if (this.header) {
+      this.header.classList.remove('menu-open');
+      this.header.classList.remove('header--menu-open');
+    }
+    const sectionHeader = document.querySelector('.section-header');
+    if (sectionHeader) {
+      sectionHeader.classList.remove('menu-open');
+      sectionHeader.classList.remove('header--menu-open');
+    }
+    const headerEl = document.querySelector('header.header');
+    if (headerEl) headerEl.classList.remove('header--menu-open');
+    document.documentElement.classList.remove('overflow-hidden');
+    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove(`overflow-hidden-${this.dataset.breakpoint}`);
+    if (this.onDrawerTouchMove) {
+      document.removeEventListener('touchmove', this.onDrawerTouchMove);
+    }
     window.removeEventListener('resize', this.onResize);
   }
 

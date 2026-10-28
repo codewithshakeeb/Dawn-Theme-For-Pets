@@ -110,14 +110,34 @@
       var modal = document.currentScript.closest('details-modal');
       var d = modal?.querySelector('details');
       if (d) {
+        var onSearchTouchMove = function(e) {
+          if (!e.target.closest('.predictive-search') && !e.target.closest('input') && !e.target.closest('form')) {
+            e.preventDefault();
+          }
+        };
+
+        var cleanupSearch = function() {
+          var header = document.querySelector('header.header');
+          if (header) header.classList.remove('header--search-open');
+          document.documentElement.classList.remove('overflow-hidden');
+          document.body.classList.remove('overflow-hidden');
+          document.removeEventListener('touchmove', onSearchTouchMove);
+        };
+
         d.addEventListener('toggle', function() {
           var header = document.querySelector('header.header');
+          var sectionHeader = document.querySelector('.section-header');
+          var headerWrapper = document.querySelector('.header-wrapper');
           if (d.open) {
             var menuDrawer = document.getElementById('Details-menu-drawer-container');
             if (menuDrawer && menuDrawer.open) {
               menuDrawer.removeAttribute('open');
             }
+            if (sectionHeader) sectionHeader.classList.remove('shopify-section-header-hidden');
+            if (headerWrapper) headerWrapper.classList.remove('shopify-section-header-hidden');
+            document.documentElement.classList.add('overflow-hidden');
             document.body.classList.add('overflow-hidden');
+            document.addEventListener('touchmove', onSearchTouchMove, { passive: false });
             if (header) {
               header.classList.add('header--search-open');
               header.classList.remove('header--menu-open');
@@ -127,10 +147,7 @@
               if (input) input.focus();
             }, 60);
           } else {
-            document.body.classList.remove('overflow-hidden');
-            if (header) {
-              header.classList.remove('header--search-open');
-            }
+            cleanupSearch();
           }
         });
 
@@ -140,9 +157,7 @@
             e.preventDefault();
             e.stopPropagation();
             d.removeAttribute('open');
-            var header = document.querySelector('header.header');
-            if (header) header.classList.remove('header--search-open');
-            document.body.classList.remove('overflow-hidden');
+            cleanupSearch();
             var input = modal.querySelector('input.search__input');
             if (input) input.value = '';
           });
@@ -151,9 +166,7 @@
         modal.addEventListener('keyup', function(e) {
           if (e.key === 'Escape' && d.open) {
             d.removeAttribute('open');
-            var header = document.querySelector('header.header');
-            if (header) header.classList.remove('header--search-open');
-            document.body.classList.remove('overflow-hidden');
+            cleanupSearch();
           }
         });
       }
