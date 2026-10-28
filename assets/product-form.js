@@ -76,7 +76,9 @@ if (!customElements.get('product-form')) {
                 CartPerformance.measureFromMarker('add:wait-for-subscribers', startMarker);
               });
             this.error = false;
-            const quickAddModal = this.closest('quick-add-modal');
+            if (this.cart) {
+              this.cart.classList.remove('is-empty');
+            }
             if (quickAddModal) {
               document.body.addEventListener(
                 'modalClosed',

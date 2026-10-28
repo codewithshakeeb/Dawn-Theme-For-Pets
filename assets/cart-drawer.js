@@ -29,7 +29,10 @@ class CartDrawer extends HTMLElement {
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
-    // here the animation doesn't seem to always get triggered. A timeout seem to help
+    // Synchronize is-empty state with actual DOM contents
+    const hasEmptyInner = Boolean(this.querySelector('.drawer__inner-empty'));
+    this.classList.toggle('is-empty', hasEmptyInner);
+
     setTimeout(() => {
       this.classList.add('animate', 'active');
     });
@@ -37,11 +40,18 @@ class CartDrawer extends HTMLElement {
     this.addEventListener(
       'transitionend',
       () => {
-        const containerToTrapFocusOn = this.classList.contains('is-empty')
+        const hasEmpty = this.classList.contains('is-empty') || Boolean(this.querySelector('.drawer__inner-empty'));
+        const containerToTrapFocusOn = (hasEmpty
           ? this.querySelector('.drawer__inner-empty')
-          : document.getElementById('CartDrawer');
-        const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
-        trapFocus(containerToTrapFocusOn, focusElement);
+          : document.getElementById('CartDrawer')) || this.querySelector('.drawer__inner') || this;
+        const focusElement = this.querySelector('.drawer__close') || this.querySelector('.drawer__inner') || containerToTrapFocusOn;
+        if (containerToTrapFocusOn && typeof trapFocus === 'function') {
+          try {
+            trapFocus(containerToTrapFocusOn, focusElement);
+          } catch (e) {
+            console.warn('trapFocus safely handled:', e);
+          }
+        }
       },
       { once: true }
     );
@@ -71,8 +81,10 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
+    this.classList.remove('is-empty');
+    if (this.querySelector('.drawer__inner')) {
       this.querySelector('.drawer__inner').classList.remove('is-empty');
+    }
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
@@ -83,8 +95,12 @@ class CartDrawer extends HTMLElement {
       sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
     });
 
+    const hasEmptyInner = Boolean(this.querySelector('.drawer__inner-empty'));
+    this.classList.toggle('is-empty', hasEmptyInner);
+
     setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+      const overlay = this.querySelector('#CartDrawer-Overlay');
+      if (overlay) overlay.addEventListener('click', this.close.bind(this));
       this.open();
     });
   }
