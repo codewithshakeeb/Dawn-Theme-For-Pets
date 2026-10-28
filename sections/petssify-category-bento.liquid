@@ -1,0 +1,720 @@
+{%- comment -%}
+  Petssify Promotional Bento Banner Grid
+  - Inspired by reference design: 3 cards on top, 2 wide cards on bottom
+  - Rich photographic AI-generated assets with pet food, dog toys, healthy nutrition, grooming, cat care
+  - Desktop: 6-column bento grid (3 cards @ span 2 on row 1, 2 cards @ span 3 on row 2)
+  - Mobile: Smooth horizontal swipe carousel with 85vw peek width and active animated pill dots (or vertical stack)
+  - Full Shopify Theme Customizer integration with live text, links, buttons, and image pickers
+{%- endcomment -%}
+
+<div
+  id="petssify-bento-{{ section.id }}"
+  class="petssify-bento-section section-{{ section.id }}-padding"
+  style="
+    --bento-pt: {{ section.settings.padding_top | default: 48 }}px;
+    --bento-pb: {{ section.settings.padding_bottom | default: 48 }}px;
+  "
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="petssify-bento-header">
+        <h2 class="petssify-bento-title">
+          {{ section.settings.heading }}
+        </h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="petssify-bento-subtitle">
+            {{ section.settings.subheading }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div
+      class="petssify-bento-track petssify-bento-track--{{ section.settings.mobile_layout | default: 'carousel' }}"
+      id="PetssifyBentoTrack-{{ section.id }}"
+    >
+      {%- for block in section.blocks -%}
+        {%- assign fallback_img = '' -%}
+        {%- assign default_bg = '#00205B' -%}
+        {%- case forloop.index -%}
+          {%- when 1 -%}
+            {%- assign fallback_img = 'petssify-bento-1-food.jpg' | asset_url -%}
+            {%- assign default_bg = '#70B4E8' -%}
+          {%- when 2 -%}
+            {%- assign fallback_img = 'petssify-bento-2-dog.jpg' | asset_url -%}
+            {%- assign default_bg = '#14B8A6' -%}
+          {%- when 3 -%}
+            {%- assign fallback_img = 'petssify-bento-3-birds.jpg' | asset_url -%}
+            {%- assign default_bg = '#EAB308' -%}
+          {%- when 4 -%}
+            {%- assign fallback_img = 'petssify-bento-4-corgi.jpg' | asset_url -%}
+            {%- assign default_bg = '#D95D10' -%}
+          {%- when 5 -%}
+            {%- assign fallback_img = 'petssify-bento-5-cat.jpg' | asset_url -%}
+            {%- assign default_bg = '#6B21A8' -%}
+        {%- endcase -%}
+
+        {%- assign card_img = fallback_img -%}
+        {%- if block.settings.image != blank -%}
+          {%- assign card_img = block.settings.image | image_url: width: 1200 -%}
+        {%- endif -%}
+
+        {%- assign url = block.settings.url | default: '/collections/all' -%}
+
+        <a
+          href="{{ url }}"
+          class="petssify-bento-card petssify-bento-card--{{ forloop.index }}"
+          id="PetssifyBentoCard-{{ section.id }}-{{ forloop.index0 }}"
+          data-index="{{ forloop.index0 }}"
+          style="
+            background-color: {{ block.settings.bg_color | default: default_bg }};
+            background-image: url('{{ card_img }}');
+          "
+          {{ block.shopify_attributes }}
+          aria-label="{{ block.settings.title | strip_html | escape }}"
+        >
+          <!-- Subtle Left-Side Text Legibility Gradient -->
+          <div class="petssify-bento-overlay" aria-hidden="true"></div>
+
+          <!-- Content Wrapper -->
+          <div class="petssify-bento-content">
+            <!-- Tag / Badge / Kicker -->
+            {%- if block.settings.tag != blank -%}
+              {%- if forloop.index == 1 -%}
+                <!-- Speech bubble badge style for 50% Off -->
+                <div class="petssify-bento-speech-badge">
+                  <span class="petssify-bento-speech-text">{{ block.settings.tag }}</span>
+                </div>
+              {%- else -%}
+                <span class="petssify-bento-tag petssify-bento-tag--{{ forloop.index }}">
+                  {{ block.settings.tag }}
+                </span>
+              {%- endif -%}
+            {%- endif -%}
+
+            <!-- Main Heading -->
+            {%- if block.settings.title != blank -%}
+              <h3 class="petssify-bento-card-title">
+                {{ block.settings.title }}
+              </h3>
+            {%- endif -%}
+
+            <!-- Subtext / Details -->
+            {%- if block.settings.subtext != blank -%}
+              <p class="petssify-bento-card-subtext">
+                {{ block.settings.subtext }}
+              </p>
+            {%- endif -%}
+
+            <!-- CTA Button -->
+            {%- if block.settings.button_label != blank -%}
+              <span class="petssify-bento-btn petssify-bento-btn--{{ forloop.index }}">
+                {{ block.settings.button_label }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            {%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    <!-- Mobile Carousel Indicator Dots -->
+    {%- if section.blocks.size > 1 -%}
+      <div
+        class="petssify-bento-dots"
+        id="PetssifyBentoDots-{{ section.id }}"
+        aria-label="Slide indicators"
+      >
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="petssify-bento-dot{% if forloop.first %} active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            aria-label="Go to slide {{ forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  #petssify-bento-{{ section.id }} {
+    padding-top: var(--bento-pt);
+    padding-bottom: var(--bento-pb);
+  }
+
+  .petssify-bento-header {
+    text-align: center;
+    margin-bottom: clamp(24px, 3vw, 36px);
+  }
+
+  .petssify-bento-title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 800;
+    color: var(--color-primary, #00205B);
+    letter-spacing: -0.025em;
+    margin: 0 0 8px 0;
+  }
+
+  .petssify-bento-subtitle {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: clamp(14px, 1.4vw, 15px);
+    color: var(--color-text-muted, #64748B);
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* =========================================================================
+     DESKTOP BENTO GRID (6-Column Layout: 3 on Top Row, 2 on Bottom Row)
+     ========================================================================= */
+  .petssify-bento-track {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+  }
+
+  /* Row 1: 3 equal cards, each spanning 2 columns */
+  .petssify-bento-card--1,
+  .petssify-bento-card--2,
+  .petssify-bento-card--3 {
+    grid-column: span 2;
+    min-height: 290px;
+  }
+
+  /* Row 2: 2 wide cards, each spanning 3 columns */
+  .petssify-bento-card--4,
+  .petssify-bento-card--5 {
+    grid-column: span 3;
+    min-height: 310px;
+  }
+
+  /* Bento Card Surface */
+  .petssify-bento-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(24px, 2.5vw, 32px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1),
+                box-shadow 0.35s cubic-bezier(0.2, 0, 0.2, 1);
+    box-shadow: 0 4px 16px -2px rgba(0, 32, 91, 0.08);
+  }
+
+  @media (hover: hover) {
+    .petssify-bento-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 38px -6px rgba(0, 32, 91, 0.18);
+    }
+    .petssify-bento-card:hover .petssify-bento-btn {
+      transform: translateX(4px);
+    }
+  }
+
+  /* Left-side Text Legibility Gradient */
+  .petssify-bento-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    transition: background 0.3s ease;
+  }
+
+  @media (hover: hover) {
+    .petssify-bento-card:hover .petssify-bento-overlay {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.20) 60%, rgba(0, 0, 0, 0.04) 100%);
+    }
+  }
+
+  /* Content Wrapper */
+  .petssify-bento-content {
+    position: relative;
+    z-index: 2;
+    max-width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Speech Bubble Badge for Card 1 (50% Off) */
+  .petssify-bento-speech-badge {
+    background: #FFFFFF;
+    color: #EA580C;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-weight: 800;
+    font-size: 22px;
+    padding: 6px 14px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    margin-bottom: 12px;
+    position: relative;
+    letter-spacing: -0.02em;
+  }
+
+  .petssify-bento-speech-badge::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 18px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #FFFFFF;
+  }
+
+  /* Kicker / Tag Styles */
+  .petssify-bento-tag {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    display: inline-block;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .petssify-bento-tag--2 {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+
+  .petssify-bento-tag--4 {
+    color: #FEF08A;
+  }
+
+  .petssify-bento-tag--5 {
+    color: #FDE047;
+  }
+
+  /* Card Title */
+  .petssify-bento-card-title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(20px, 1.8vw, 28px);
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Subtext */
+  .petssify-bento-card-subtext {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: clamp(13px, 1vw, 14.5px);
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.4;
+    margin: 0 0 14px 0;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Pill Button */
+  .petssify-bento-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: 13.5px;
+    font-weight: 700;
+    background: #FFFFFF;
+    color: #00205B;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+    margin-top: 4px;
+  }
+
+  .petssify-bento-btn--2 {
+    background: #7E22CE;
+    color: #FFFFFF;
+  }
+
+  .petssify-bento-btn--4 {
+    background: #1E293B;
+    color: #FFFFFF;
+  }
+
+  .petssify-bento-btn--5 {
+    background: #FEF08A;
+    color: #581C87;
+  }
+
+  /* Mobile Dots (hidden on desktop) */
+  .petssify-bento-dots {
+    display: none;
+  }
+
+  /* =========================================================================
+     MOBILE VIEWPORTS (< 768px)
+     ========================================================================= */
+  @media screen and (max-width: 767px) {
+    #petssify-bento-{{ section.id }} {
+      padding-top: calc(var(--bento-pt) * 0.7);
+      padding-bottom: calc(var(--bento-pb) * 0.7);
+    }
+
+    .petssify-bento-header {
+      margin-bottom: 18px;
+      padding: 0 12px;
+    }
+
+    /* MODE 1: Horizontal Swipe Carousel */
+    .petssify-bento-track--carousel {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 14px;
+      padding: 6px 20px 14px;
+      margin: 0 -20px;
+    }
+
+    .petssify-bento-track--carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .petssify-bento-track--carousel .petssify-bento-card {
+      flex: 0 0 85vw;
+      max-width: 340px;
+      min-height: 270px;
+      scroll-snap-align: center;
+      padding: 22px 18px;
+      border-radius: 18px;
+    }
+
+    .petssify-bento-track--carousel .petssify-bento-content {
+      max-width: 75%;
+    }
+
+    .petssify-bento-track--carousel .petssify-bento-card-title {
+      font-size: 21px;
+    }
+
+    .petssify-bento-track--carousel .petssify-bento-card-subtext {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .petssify-bento-track--carousel .petssify-bento-btn {
+      font-size: 12.5px;
+      padding: 7px 15px;
+    }
+
+    /* Mobile Pill Dots */
+    .petssify-bento-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .petssify-bento-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: #CBD5E1;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: width 0.3s cubic-bezier(0.2, 0, 0.2, 1),
+                  background-color 0.3s ease;
+    }
+
+    .petssify-bento-dot.active {
+      width: 24px;
+      background: var(--color-primary, #00205B);
+    }
+
+    /* MODE 2: Stack Mode */
+    .petssify-bento-track--stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .petssify-bento-track--stack .petssify-bento-card {
+      min-height: 250px;
+      grid-column: auto;
+    }
+  }
+
+  /* Medium Tablets (768px - 1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .petssify-bento-track {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .petssify-bento-card--1,
+    .petssify-bento-card--2,
+    .petssify-bento-card--3,
+    .petssify-bento-card--4,
+    .petssify-bento-card--5 {
+      grid-column: span 1;
+      min-height: 260px;
+    }
+
+    .petssify-bento-card--5 {
+      grid-column: span 2;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    function initBentoCarousel() {
+      const track = document.getElementById('PetssifyBentoTrack-{{ section.id }}');
+      if (!track || !track.classList.contains('petssify-bento-track--carousel')) return;
+
+      const dotsContainer = document.getElementById('PetssifyBentoDots-{{ section.id }}');
+      if (!dotsContainer) return;
+      const dots = dotsContainer.querySelectorAll('.petssify-bento-dot');
+      const cards = track.querySelectorAll('.petssify-bento-card');
+      if (!dots.length || !cards.length) return;
+
+      // Click dot to navigate
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          const index = parseInt(dot.getAttribute('data-index'), 10);
+          if (cards[index]) {
+            cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        });
+      });
+
+      // Update dot on scroll
+      let timer = null;
+      track.addEventListener('scroll', function() {
+        if (timer) cancelAnimationFrame(timer);
+        timer = requestAnimationFrame(function() {
+          const trackCenter = track.scrollLeft + (track.clientWidth / 2);
+          let closestIndex = 0;
+          let minDistance = Infinity;
+
+          cards.forEach(function(card, idx) {
+            const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+            const dist = Math.abs(trackCenter - cardCenter);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestIndex = idx;
+            }
+          });
+
+          dots.forEach(function(d, idx) {
+            if (idx === closestIndex) {
+              d.classList.add('active');
+            } else {
+              d.classList.remove('active');
+            }
+          });
+        });
+      }, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBentoCarousel);
+    } else {
+      initBentoCarousel();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Pet Bento Promo Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Special Deals & Trending Categories"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Save on food, interactive toys, grooming essentials, and premium accessories"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Display"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Swipe Carousel with Peek (Recommended)"
+        },
+        {
+          "value": "stack",
+          "label": "Vertical Stack"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bento_card",
+      "name": "Bento Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Background Image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag / Badge",
+          "default": "50% Off"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pet Food & Accessories"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext",
+          "default": "Everything for your pet."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link",
+          "default": "/collections/all"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Fallback Background Color",
+          "default": "#70B4E8"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pet Bento Promo Grid",
+      "blocks": [
+        {
+          "type": "bento_card",
+          "settings": {
+            "tag": "50% Off",
+            "title": "Pet Food & Accessories",
+            "subtext": "Everything for your pet.",
+            "button_label": "Shop Food",
+            "url": "/collections/all",
+            "bg_color": "#70B4E8"
+          }
+        },
+        {
+          "type": "bento_card",
+          "settings": {
+            "tag": "FREE SHIPPING",
+            "title": "30% Sale Off",
+            "subtext": "Interactive toys & gear",
+            "button_label": "Shop Now",
+            "url": "/collections/toys",
+            "bg_color": "#14B8A6"
+          }
+        },
+        {
+          "type": "bento_card",
+          "settings": {
+            "tag": "HEALTHY FORMULA",
+            "title": "Pet Treats & Nutrition",
+            "subtext": "Daily nutritious rewards",
+            "button_label": "Explore Treats",
+            "url": "/collections/feeding",
+            "bg_color": "#EAB308"
+          }
+        },
+        {
+          "type": "bento_card",
+          "settings": {
+            "tag": "Dog Supplies",
+            "title": "25% Off Dog Care",
+            "subtext": "Grooming & coat care essentials",
+            "button_label": "Shop Grooming",
+            "url": "/collections/grooming-care",
+            "bg_color": "#D95D10"
+          }
+        },
+        {
+          "type": "bento_card",
+          "settings": {
+            "tag": "GIFT FOR PET",
+            "title": "Premium Cat Food",
+            "subtext": "Save up to 30%",
+            "button_label": "Shop Cat Care",
+            "url": "/collections/cat",
+            "bg_color": "#6B21A8"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -101,68 +101,77 @@
       }
     },
     "petssify_category_circles": {
-      "type": "petssify-category-circles",
+      "type": "petssify-category-bento",
       "blocks": {
-        "cat_1": {
-          "type": "category",
+        "bento_1": {
+          "type": "bento_card",
           "settings": {
-            "collection": "dogs",
-            "title": "Dogs",
-            "url": "/collections/dogs"
+            "tag": "50% Off",
+            "title": "Pet Food & Accessories",
+            "subtext": "Everything for your pet.",
+            "button_label": "Shop Food",
+            "url": "/collections/all",
+            "bg_color": "#70B4E8"
           }
         },
-        "cat_2": {
-          "type": "category",
+        "bento_2": {
+          "type": "bento_card",
           "settings": {
-            "collection": "cat",
-            "title": "Cats",
-            "url": "/collections/cat"
+            "tag": "FREE SHIPPING",
+            "title": "30% Sale Off",
+            "subtext": "Interactive toys & gear",
+            "button_label": "Shop Now",
+            "url": "/collections/toys",
+            "bg_color": "#14B8A6"
           }
         },
-        "cat_3": {
-          "type": "category",
+        "bento_3": {
+          "type": "bento_card",
           "settings": {
-            "collection": "grooming-care",
-            "title": "Grooming & Care",
-            "url": "/collections/grooming-care"
+            "tag": "Parrot Food",
+            "title": "Healthy Formula",
+            "subtext": "Nutritious daily blends",
+            "button_label": "Explore Treats",
+            "url": "/collections/feeding",
+            "bg_color": "#EAB308"
           }
         },
-        "cat_4": {
-          "type": "category",
+        "bento_4": {
+          "type": "bento_card",
           "settings": {
-            "collection": "feeding",
-            "title": "Feeding Essentials",
-            "url": "/collections/feeding"
+            "tag": "Dog Supplies",
+            "title": "25% Off Dog Care",
+            "subtext": "Grooming & coat care essentials",
+            "button_label": "Shop Grooming",
+            "url": "/collections/grooming-care",
+            "bg_color": "#D95D10"
           }
         },
-        "cat_5": {
-          "type": "category",
+        "bento_5": {
+          "type": "bento_card",
           "settings": {
-            "collection": "toys",
-            "title": "Interactive Toys",
-            "url": "/collections/toys"
-          }
-        },
-        "cat_6": {
-          "type": "category",
-          "settings": {
-            "collection": "collars-harnesses-leashes",
-            "title": "Collars & Leashes",
-            "url": "/collections/collars-harnesses-leashes"
+            "tag": "GIFT FOR PET",
+            "title": "Premium Cat Food",
+            "subtext": "Save up to 30%",
+            "button_label": "Shop Cat Care",
+            "url": "/collections/cat",
+            "bg_color": "#6B21A8"
           }
         }
       },
       "block_order": [
-        "cat_1",
-        "cat_2",
-        "cat_3",
-        "cat_4",
-        "cat_5",
-        "cat_6"
+        "bento_1",
+        "bento_2",
+        "bento_3",
+        "bento_4",
+        "bento_5"
       ],
       "settings": {
-        "heading": "Who are you shopping for?",
-        "subheading": "Explore curated essentials tailored by category and species"
+        "heading": "Special Offers & Trending Categories",
+        "subheading": "Explore curated essentials tailored by category and species",
+        "mobile_layout": "carousel",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "featured_collection": {
