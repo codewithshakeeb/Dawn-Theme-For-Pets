@@ -280,6 +280,170 @@
     .header__icon--account {
       display: inline-flex !important;
     }
+
+    /* When Hamburger Drawer is open: Hide the Search Icon in the header bar */
+    header.header.header--menu-open .header__search--mobile,
+    header.header:has(#Details-menu-drawer-container[open]) .header__search--mobile {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
+    }
+
+    /* When Search is open: Hide Logo, Account, Cart, and Hamburger Icon */
+    header.header.header--search-open .header__heading,
+    header.header.header--search-open .header__icons,
+    header.header.header--search-open header-drawer,
+    header.header:has(.header__search--mobile details[open]) .header__heading,
+    header.header:has(.header__search--mobile details[open]) .header__icons,
+    header.header:has(.header__search--mobile details[open]) header-drawer {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      pointer-events: none !important;
+      position: absolute !important;
+      left: -9999px !important;
+    }
+
+    /* When Search is open: expand header into full flex row */
+    header.header.header--search-open,
+    header.header:has(.header__search--mobile details[open]) {
+      display: flex !important;
+      align-items: center !important;
+      padding: 0 12px !important;
+      height: 68px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    header.header.header--search-open .header__left-group,
+    header.header:has(.header__search--mobile details[open]) .header__left-group,
+    header.header.header--search-open .header__search--mobile,
+    header.header:has(.header__search--mobile details[open]) .header__search--mobile,
+    header.header.header--search-open details-modal.header__search,
+    header.header:has(.header__search--mobile details[open]) details-modal.header__search,
+    header.header.header--search-open details-modal.header__search details[open],
+    header.header:has(.header__search--mobile details[open]) details-modal.header__search details[open] {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 1 1 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .header__search--mobile details[open] > summary.modal__toggle {
+      display: none !important;
+    }
+
+    .header__search--mobile details[open] > .search-modal {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      width: 100% !important;
+      height: 48px !important;
+      min-height: 48px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      display: flex !important;
+      align-items: center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      opacity: 1 !important;
+    }
+
+    .header__search--mobile .search-modal__content {
+      display: flex !important;
+      align-items: center !important;
+      width: 100% !important;
+      gap: 10px !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .header__search--mobile .search-modal__form,
+    .header__search--mobile form.search {
+      flex: 1 1 auto !important;
+      width: calc(100% - 48px) !important;
+      margin: 0 !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .header__search--mobile .search-modal .field {
+      width: 100% !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      margin: 0 !important;
+    }
+
+    .header__search--mobile .search-modal input.search__input,
+    .header__search--mobile .search-modal input.search__input.field__input {
+      width: 100% !important;
+      height: 44px !important;
+      padding: 0 44px 0 18px !important;
+      border-radius: 999px !important;
+      font-size: 15px !important;
+      border: 1.5px solid #00205B !important;
+      background: #FFFFFF !important;
+      color: #00205B !important;
+      box-sizing: border-box !important;
+    }
+
+    .header__search--mobile .search-modal .field__label {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+
+    .header__search--mobile .search-modal .search__button {
+      position: absolute !important;
+      right: 8px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      width: 32px !important;
+      height: 32px !important;
+      border: none !important;
+      background: transparent !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #00205B !important;
+      z-index: 2 !important;
+      padding: 0 !important;
+      cursor: pointer !important;
+    }
+
+    .header__search--mobile .search-modal__close-button,
+    .header__search--mobile .search-modal .search-modal__close-button {
+      position: static !important;
+      width: 38px !important;
+      height: 38px !important;
+      min-width: 38px !important;
+      min-height: 38px !important;
+      flex-shrink: 0 !important;
+      border-radius: 50% !important;
+      background: #F1F5F9 !important;
+      color: #00205B !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 0 0 0 auto !important;
+      transform: none !important;
+      padding: 0 !important;
+      z-index: 3 !important;
+      border: none !important;
+      cursor: pointer !important;
+    }
   }
 
   @media screen and (min-width: 990px) {

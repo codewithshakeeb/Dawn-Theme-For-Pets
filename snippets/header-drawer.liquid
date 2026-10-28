@@ -295,10 +295,19 @@
       var d = document.getElementById('Details-menu-drawer-container');
       if (d) {
         d.addEventListener('toggle', function() {
+          var header = document.querySelector('header.header');
           if (d.open) {
             document.querySelectorAll('details-modal.header__search details[open]').forEach(function(s) {
               s.removeAttribute('open');
             });
+            if (header) {
+              header.classList.add('header--menu-open');
+              header.classList.remove('header--search-open');
+            }
+          } else {
+            if (header) {
+              header.classList.remove('header--menu-open');
+            }
           }
           document.body.classList.toggle('overflow-hidden', d.open);
         });

@@ -107,17 +107,38 @@
   </details>
   <script>
     (function() {
-      var d = document.currentScript.closest('details-modal')?.querySelector('details');
+      var modal = document.currentScript.closest('details-modal');
+      var d = modal?.querySelector('details');
       if (d) {
         d.addEventListener('toggle', function() {
+          var header = document.querySelector('header.header');
           if (d.open) {
             var menuDrawer = document.getElementById('Details-menu-drawer-container');
             if (menuDrawer && menuDrawer.open) {
               menuDrawer.removeAttribute('open');
               document.body.classList.remove('overflow-hidden');
             }
+            if (header) {
+              header.classList.add('header--search-open');
+              header.classList.remove('header--menu-open');
+            }
+          } else {
+            if (header) {
+              header.classList.remove('header--search-open');
+            }
           }
         });
+
+        var closeBtn = modal.querySelector('.search-modal__close-button');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            d.removeAttribute('open');
+            var header = document.querySelector('header.header');
+            if (header) header.classList.remove('header--search-open');
+            document.body.classList.remove('overflow-hidden');
+          });
+        }
       }
     })();
   </script>
