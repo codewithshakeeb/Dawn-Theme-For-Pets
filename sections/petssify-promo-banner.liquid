@@ -1,0 +1,520 @@
+{%- comment -%}
+  Petssify Promo Banner Section
+  - Styled after high-converting pet food promotional banners
+  - Features golden retriever puppy & kibble bowl with cream & forest green typography
+  - 100% fluid and responsive across desktop, laptop, tablet, and mobile (down to 320px)
+  - Customizable in Shopify OS 2.0 Theme Editor
+{%- endcomment -%}
+
+{%- liquid
+  assign bg_color = section.settings.bg_color | default: '#144e2b'
+  assign text_color = section.settings.text_color | default: '#FFFFFF'
+  assign accent_color = section.settings.accent_color | default: '#FEF08A'
+  assign btn_bg = section.settings.btn_bg | default: '#FEF08A'
+  assign btn_text = section.settings.btn_text | default: '#134e2c'
+  assign radius = section.settings.border_radius | default: 24
+  assign pad_top = section.settings.padding_top | default: 36
+  assign pad_bottom = section.settings.padding_bottom | default: 36
+
+  assign default_desktop_img = 'petssify-promo-banner-desktop.jpg' | asset_url
+  assign default_mobile_img = 'petssify-promo-banner-mobile.jpg' | asset_url
+
+  assign desktop_img = default_desktop_img
+  if section.settings.image_desktop != blank
+    assign desktop_img = section.settings.image_desktop | image_url: width: 2000
+  endif
+
+  assign mobile_img = default_mobile_img
+  if section.settings.image_mobile != blank
+    assign mobile_img = section.settings.image_mobile | image_url: width: 900
+  elsif section.settings.image_desktop != blank
+    assign mobile_img = section.settings.image_desktop | image_url: width: 900
+  endif
+-%}
+
+<section
+  id="petssify-promo-{{ section.id }}"
+  class="petssify-promo-section section-{{ section.id }}-padding"
+  style="
+    --promo-bg: {{ bg_color }};
+    --promo-text: {{ text_color }};
+    --promo-accent: {{ accent_color }};
+    --promo-btn-bg: {{ btn_bg }};
+    --promo-btn-text: {{ btn_text }};
+    --promo-radius: {{ radius }}px;
+    --promo-pt: {{ pad_top }}px;
+    --promo-pb: {{ pad_bottom }}px;
+  "
+>
+  <div class="petssify-promo__container {% if section.settings.container_width == 'narrow' %}petssify-promo__container--narrow{% elsif section.settings.container_width == 'full' %}petssify-promo__container--full{% else %}page-width{% endif %}">
+    <div class="petssify-promo__card">
+      {%- if section.settings.card_link != blank -%}
+        <a href="{{ section.settings.card_link }}" class="petssify-promo__card-link" aria-label="{{ section.settings.heading | escape }} - {{ section.settings.subtext | escape }}"></a>
+      {%- endif -%}
+
+      <!-- Background Image Layer (Responsive Desktop & Mobile Art Direction) -->
+      <picture class="petssify-promo__picture">
+        <source media="(max-width: 749px)" srcset="{{ mobile_img }}">
+        <img
+          src="{{ desktop_img }}"
+          alt="{{ section.settings.heading | default: 'Special Offer 30% OFF' | escape }}"
+          loading="lazy"
+          width="1800"
+          height="540"
+          class="petssify-promo__img"
+        >
+      </picture>
+
+      <!-- Decorative Ambient Paw Watermark Overlay (CSS fallback) -->
+      <div class="petssify-promo__ambient-glow" aria-hidden="true"></div>
+
+      <!-- Live Promotional Typography & CTA Block -->
+      <div class="petssify-promo__content">
+        {%- if section.settings.subheading != blank -%}
+          <span class="petssify-promo__subheading">
+            {{ section.settings.subheading | escape }}
+          </span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="petssify-promo__heading">
+            {{ section.settings.heading | escape }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtext != blank -%}
+          <p class="petssify-promo__subtext">
+            {{ section.settings.subtext | escape }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a
+            href="{{ section.settings.button_link | default: '/collections/all' }}"
+            class="petssify-promo__btn"
+          >
+            <span class="petssify-promo__btn-text">{{ section.settings.button_label | escape }}</span>
+            {%- if section.settings.show_arrow -%}
+              <svg class="petssify-promo__arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #petssify-promo-{{ section.id }} {
+    padding-top: var(--promo-pt);
+    padding-bottom: var(--promo-pb);
+  }
+
+  .petssify-promo__container--narrow {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .petssify-promo__container--full {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .petssify-promo__card {
+    position: relative;
+    border-radius: var(--promo-radius);
+    background-color: var(--promo-bg);
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: 0 12px 32px -4px rgba(19, 78, 43, 0.22), 0 4px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 280px;
+    aspect-ratio: 3.4 / 1;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+  }
+
+  .petssify-promo__card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    text-indent: -9999px;
+  }
+
+  .petssify-promo__picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .petssify-promo__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+  }
+
+  .petssify-promo__ambient-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 50%, rgba(254, 240, 138, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Content area positioned strictly in the right open green zone */
+  .petssify-promo__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    max-width: 540px;
+    margin-left: auto;
+    padding: 24px 36px;
+    color: var(--promo-text);
+  }
+
+  .petssify-promo__subheading {
+    display: inline-block;
+    font-family: var(--font-heading-family, inherit);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.2;
+    color: var(--promo-accent);
+    margin: 0 0 6px 0;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+
+  .petssify-promo__heading {
+    margin: 0 0 6px 0;
+    font-family: var(--font-heading-family, inherit);
+    font-weight: 900;
+    font-size: clamp(34px, 4.4vw, 58px);
+    line-height: 1;
+    color: var(--promo-text);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  }
+
+  .petssify-promo__subtext {
+    margin: 0 0 20px 0;
+    font-family: var(--font-body-family, inherit);
+    font-weight: 600;
+    font-size: clamp(15px, 1.6vw, 22px);
+    line-height: 1.3;
+    color: var(--promo-accent);
+    letter-spacing: 0.2px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Pill-shaped button matching user reference */
+  .petssify-promo__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--promo-btn-bg);
+    color: var(--promo-btn-text);
+    font-family: var(--font-body-family, inherit);
+    font-weight: 800;
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 9999px;
+    padding: 12px 32px;
+    min-height: 44px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    cursor: pointer;
+    position: relative;
+    z-index: 4;
+    transition: transform 0.22s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.22s ease, background-color 0.2s ease;
+  }
+
+  .petssify-promo__btn:hover {
+    background-color: #FFF9C4;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  }
+
+  .petssify-promo__arrow-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    transition: transform 0.22s ease;
+  }
+
+  .petssify-promo__btn:hover .petssify-promo__arrow-icon {
+    transform: translateX(4px);
+  }
+
+  .petssify-promo__btn:focus-visible {
+    outline: 3px solid var(--promo-accent);
+    outline-offset: 3px;
+  }
+
+  /* Tablet Adjustments (750px - 989px) */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .petssify-promo__card {
+      min-height: 250px;
+      aspect-ratio: 3 / 1;
+    }
+    .petssify-promo__content {
+      width: 54%;
+      padding: 18px 24px;
+    }
+    .petssify-promo__subtext {
+      margin-bottom: 14px;
+    }
+    .petssify-promo__btn {
+      padding: 10px 24px;
+    }
+  }
+
+  /* Mobile Adjustments (< 750px down to 320px) */
+  @media screen and (max-width: 749px) {
+    .petssify-promo__card {
+      aspect-ratio: 4 / 5;
+      min-height: 450px;
+      max-height: 540px;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      border-radius: min(var(--promo-radius), 20px);
+    }
+
+    .petssify-promo__img {
+      object-position: top center;
+    }
+
+    .petssify-promo__content {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      margin-top: auto;
+      padding: 16px 20px 28px;
+    }
+
+    .petssify-promo__subheading {
+      font-size: clamp(18px, 5.2vw, 22px);
+      margin-bottom: 4px;
+    }
+
+    .petssify-promo__heading {
+      font-size: clamp(34px, 9.5vw, 46px);
+      margin-bottom: 4px;
+    }
+
+    .petssify-promo__subtext {
+      font-size: clamp(15px, 4.2vw, 18px);
+      margin-bottom: 16px;
+    }
+
+    .petssify-promo__btn {
+      min-height: 48px;
+      padding: 12px 30px;
+      font-size: 15px;
+      min-width: 180px;
+    }
+  }
+
+  /* Ultra-compact screens (<= 360px) */
+  @media screen and (max-width: 360px) {
+    .petssify-promo__card {
+      min-height: 420px;
+    }
+    .petssify-promo__content {
+      padding: 12px 14px 22px;
+    }
+    .petssify-promo__heading {
+      font-size: 30px;
+    }
+    .petssify-promo__btn {
+      padding: 10px 22px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Petssify Promo Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop Banner Image",
+      "info": "Leave blank to use default golden retriever puppy & kibble bowl on green (16:9 widescreen)."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Banner Image",
+      "info": "Leave blank to use default mobile portrait companion (4:5 / vertical)."
+    },
+    {
+      "type": "header",
+      "content": "Promotional Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Special Offer"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "30% OFF"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "on premium food"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action (Button)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show Arrow Next to Button Text",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "card_link",
+      "label": "Card Click URL (Optional)",
+      "info": "Make the entire banner clickable if desired."
+    },
+    {
+      "type": "header",
+      "content": "Colors & Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Banner Background Color",
+      "default": "#144e2b"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Subheading & Subtext Color",
+      "default": "#FEF08A"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background Color",
+      "default": "#FEF08A"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Button Text Color",
+      "default": "#134e2c"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Card Corner Radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Standard Page Width"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow Container"
+        },
+        {
+          "value": "full",
+          "label": "Full Width (Screen Edge-to-Edge)"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Petssify Promo Banner"
+    }
+  ]
+}
+{% endschema %}

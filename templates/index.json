@@ -231,6 +231,7 @@
         "text_AXP3Xt",
         "buttons_xDMU7k"
       ],
+      "disabled": true,
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "enable_image_overlay": true,
@@ -821,6 +822,26 @@
         "padding_top": 36,
         "padding_bottom": 12
       }
+    },
+    "petssify_promo_banner": {
+      "type": "petssify-promo-banner",
+      "settings": {
+        "subheading": "Special Offer",
+        "heading": "30% OFF",
+        "subtext": "on premium food",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all",
+        "show_arrow": true,
+        "bg_color": "#144e2b",
+        "text_color": "#FFFFFF",
+        "accent_color": "#FEF08A",
+        "btn_bg": "#FEF08A",
+        "btn_text": "#134e2c",
+        "border_radius": 24,
+        "container_width": "page-width",
+        "padding_top": 36,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
@@ -829,6 +850,7 @@
     "petssify_value_props",
     "petssify_category_circles",
     "featured_collection",
+    "petssify_promo_banner",
     "image_banner_hmxfwA",
     "featured_collection_r6qgFM",
     "image_banner_yRPrEf",
