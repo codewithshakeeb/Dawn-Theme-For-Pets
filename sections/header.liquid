@@ -48,7 +48,8 @@
 
   .list-menu--inline {
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   summary.list-menu__item {
@@ -96,6 +97,8 @@
     .header {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-left: 5rem;
+      padding-right: 5rem;
     }
   }
 {%- endstyle -%}
@@ -124,6 +127,21 @@
   {% endif %}
   class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
 >
+  <script>
+    (function() {
+      function syncHeaderScrolled() {
+        var hw = document.querySelector('.header-wrapper');
+        if (hw) {
+          var isScrolled = window.pageYOffset > 20;
+          hw.classList.toggle('header-wrapper--scrolled', isScrolled);
+          var sh = document.querySelector('.section-header');
+          if (sh) sh.classList.toggle('header-wrapper--scrolled', isScrolled);
+        }
+      }
+      window.addEventListener('scroll', syncHeaderScrolled, { passive: true });
+      syncHeaderScrolled();
+    })();
+  </script>
   {%- liquid
     assign social_links = false
     assign localization_forms = false
@@ -158,7 +176,7 @@
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
+          <div class="header__heading-logo-wrapper{% if section.settings.sticky_logo != blank %} header__heading-logo-wrapper--has-sticky{% endif %}">
             {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
             {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
             {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
@@ -167,7 +185,7 @@
               settings.logo
               | image_url: width: 600
               | image_tag:
-                class: 'header__heading-logo motion-reduce',
+                class: 'header__heading-logo header__heading-logo--default motion-reduce',
                 widths: widths,
                 height: logo_height,
                 width: settings.logo_width,
@@ -175,6 +193,24 @@
                 sizes: sizes,
                 preload: true
             }}
+            {%- if section.settings.sticky_logo != blank -%}
+              {%- assign sticky_logo_width = section.settings.sticky_logo_width | default: settings.logo_width -%}
+              {%- assign sticky_logo_height = sticky_logo_width | divided_by: section.settings.sticky_logo.aspect_ratio -%}
+              {% capture sticky_sizes %}(max-width: {{ sticky_logo_width | times: 2 }}px) 50vw, {{ sticky_logo_width }}px{% endcapture %}
+              {% capture sticky_widths %}{{ sticky_logo_width }}, {{ sticky_logo_width | times: 1.5 | round }}, {{ sticky_logo_width | times: 2 }}{% endcapture %}
+              {{
+                section.settings.sticky_logo
+                | image_url: width: 600
+                | image_tag:
+                  class: 'header__heading-logo header__heading-logo--sticky motion-reduce',
+                  widths: sticky_widths,
+                  height: sticky_logo_height,
+                  width: sticky_logo_width,
+                  alt: logo_alt,
+                  sizes: sticky_sizes,
+                  preload: false
+              }}
+            {%- endif -%}
           </div>
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
@@ -201,7 +237,7 @@
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
+          <div class="header__heading-logo-wrapper{% if section.settings.sticky_logo != blank %} header__heading-logo-wrapper--has-sticky{% endif %}">
             {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
             {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
             {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
@@ -210,7 +246,7 @@
               settings.logo
               | image_url: width: 600
               | image_tag:
-                class: 'header__heading-logo',
+                class: 'header__heading-logo header__heading-logo--default',
                 widths: widths,
                 height: logo_height,
                 width: settings.logo_width,
@@ -218,6 +254,24 @@
                 sizes: sizes,
                 preload: true
             }}
+            {%- if section.settings.sticky_logo != blank -%}
+              {%- assign sticky_logo_width = section.settings.sticky_logo_width | default: settings.logo_width -%}
+              {%- assign sticky_logo_height = sticky_logo_width | divided_by: section.settings.sticky_logo.aspect_ratio -%}
+              {% capture sticky_sizes %}(min-width: 750px) {{ sticky_logo_width }}px, 50vw{% endcapture %}
+              {% capture sticky_widths %}{{ sticky_logo_width }}, {{ sticky_logo_width | times: 1.5 | round }}, {{ sticky_logo_width | times: 2 }}{% endcapture %}
+              {{
+                section.settings.sticky_logo
+                | image_url: width: 600
+                | image_tag:
+                  class: 'header__heading-logo header__heading-logo--sticky',
+                  widths: sticky_widths,
+                  height: sticky_logo_height,
+                  width: sticky_logo_width,
+                  alt: logo_alt,
+                  sizes: sticky_sizes,
+                  preload: false
+              }}
+            {%- endif -%}
           </div>
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
@@ -338,6 +392,13 @@
         this.header.classList.add('shopify-section-header-sticky');
       }
 
+      this.updateScrolledState = () => {
+        const isScrolled = window.pageYOffset > 20;
+        this.classList.toggle('header-wrapper--scrolled', isScrolled);
+        if (this.header) this.header.classList.toggle('header-wrapper--scrolled', isScrolled);
+      };
+      this.updateScrolledState();
+
       this.currentScrollTop = 0;
       this.preventReveal = false;
       this.predictiveSearch = this.querySelector('predictive-search');
@@ -358,6 +419,9 @@
     disconnectedCallback() {
       this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
       window.removeEventListener('scroll', this.onScrollHandler);
+      if (this.updateScrolledState) {
+        window.removeEventListener('scroll', this.updateScrolledState);
+      }
     }
 
     createObserver() {
@@ -373,6 +437,10 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      const isScrolled = scrollTop > 20;
+      this.classList.toggle('header-wrapper--scrolled', isScrolled);
+      if (this.header) this.header.classList.toggle('header-wrapper--scrolled', isScrolled);
 
       if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
         this.header.classList.add('scrolled-past-header');
@@ -567,6 +635,22 @@
       ],
       "default": "on-scroll-up",
       "label": "t:sections.header.settings.sticky_header_type.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "sticky_logo",
+      "label": "Sticky Header Logo",
+      "info": "Upload an alternate logo (such as a light or transparent version) to display when the header is sticky."
+    },
+    {
+      "type": "range",
+      "id": "sticky_logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 180,
+      "unit": "px",
+      "label": "Sticky Logo Width"
     },
     {
       "type": "checkbox",

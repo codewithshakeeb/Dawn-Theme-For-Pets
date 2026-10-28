@@ -44,14 +44,16 @@
         </fieldset>
       {%- elsif picker_type == 'button' -%}
         <fieldset class="js product-form__input product-form__input--pill">
-          <legend class="form__label" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-            <span>{{ option.name }}</span>
+          <legend class="form__label petssify-variant-legend">
+            <span class="petssify-variant-legend__title">
+              {{ option.name }}: <span class="petssify-variant-selected-val" data-selected-value>{{ option.selected_value }}</span>
+            </span>
             {%- assign opt_name_down = option.name | downcase -%}
             {%- if opt_name_down contains 'size' -%}
               <button
                 type="button"
                 onclick="openSizeGuideModal()"
-                style="background: none; border: none; font-size: 12px; font-weight: 600; color: var(--color-accent); cursor: pointer; text-decoration: underline; padding: 0;"
+                class="petssify-size-guide-trigger"
               >
                 📏 Sizing Guide
               </button>

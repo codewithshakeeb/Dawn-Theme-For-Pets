@@ -16,12 +16,17 @@
   }
 {%- endstyle -%}
 
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient" style="padding-top: 18px; padding-bottom: 8px;">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     
     <div class="collection-hero__text-wrapper">
+      {%- comment -%} Petssify: Breadcrumbs placed directly above visual H1 {%- endcomment -%}
+      <div class="petssify-collection-breadcrumb" style="margin-bottom: 8px;">
+        {% render 'breadcrumbs', no_wrapper: true %}
+      </div>
+
       {%- comment -%} Petssify: Clean H1 without "Collection: " prefix (Spec 4.1) {%- endcomment -%}
-      <h1 class="collection-hero__title" style="font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; color: var(--color-primary); line-height: 1.2; margin: 0 0 8px 0;">
+      <h1 class="collection-hero__title" style="font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; color: var(--color-primary); line-height: 1.2; margin: 0 0 8px 0;">
         {{- collection.title | escape -}}
       </h1>
 

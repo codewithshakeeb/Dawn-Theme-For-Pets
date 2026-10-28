@@ -1,0 +1,862 @@
+{% comment %}
+  Petssify 3D Bento Hero Section — Card-Top Ledge Anchor Architecture
+  - Fixes pet collision, floating paw gap, and excessive vertical height
+  - Every pet is anchored directly to `top: 0` of its own Bento Card
+  - 100% customizable via Shopify Theme Editor (% width & % paw-ledge sliders)
+{% endcomment %}
+
+<section
+  id="petssify-hero-{{ section.id }}"
+  class="ps-hero-section"
+  style="
+    --ps-upper-bg: {{ section.settings.upper_bg_color | default: '#EDF4FD' }};
+    --ps-heading-color: {{ section.settings.heading_color | default: '#00205B' }};
+    --ps-side-bg: {{ section.settings.side_cards_bg_color | default: '#ADC8ED' }};
+    --ps-side-text: {{ section.settings.side_cards_text_color | default: '#FFFFFF' }};
+    --ps-center-bg: {{ section.settings.center_card_bg_color | default: '#00205B' }};
+    --ps-center-text: {{ section.settings.center_card_text_color | default: '#FFFFFF' }};
+    --ps-accent: {{ section.settings.accent_orange_color | default: '#FF7A29' }};
+    --ps-h1-desktop: {{ section.settings.heading_size_desktop | default: 104 }}px;
+    --ps-h1-mobile: {{ section.settings.heading_size_mobile | default: 42 }}px;
+    --ps-stage-space: {{ section.settings.upper_stage_space | default: 340 }}px;
+    --ps-left-w: {{ section.settings.left_pet_width_pct | default: 72 }};
+    --ps-left-ledge: {{ section.settings.left_pet_ledge_pct | default: 78 }};
+    --ps-left-w-pct: {{ section.settings.left_pet_width_pct | default: 72 }}%;
+    --ps-left-ledge-pct: -{{ section.settings.left_pet_ledge_pct | default: 78 }}%;
+    --ps-center-w: {{ section.settings.center_pet_width_pct | default: 84 }};
+    --ps-center-ledge: {{ section.settings.center_pet_ledge_pct | default: 66 }};
+    --ps-center-w-pct: {{ section.settings.center_pet_width_pct | default: 84 }}%;
+    --ps-center-ledge-pct: -{{ section.settings.center_pet_ledge_pct | default: 66 }}%;
+    --ps-right-w: {{ section.settings.right_pet_width_pct | default: 70 }};
+    --ps-right-ledge: {{ section.settings.right_pet_ledge_pct | default: 68 }};
+    --ps-right-w-pct: {{ section.settings.right_pet_width_pct | default: 70 }}%;
+    --ps-right-ledge-pct: -{{ section.settings.right_pet_ledge_pct | default: 68 }}%;
+    --ps-max-w: {{ section.settings.container_max_width | default: '1680px' }};
+  "
+>
+  <!-- ZONE A: Upper Mint-White Canvas & Giant 2-Line Headline -->
+  <div class="ps-hero-upper">
+    <div class="ps-hero-container">
+      <div class="ps-hero-headline-box">
+        <h1 class="ps-hero-title">
+          {% if section.settings.heading_line_1 != blank %}
+            <span class="ps-title-line ps-title-line--1">{{ section.settings.heading_line_1 | escape }}</span>
+          {% endif %}
+          {% if section.settings.heading_line_2 != blank %}
+            <span class="ps-title-line ps-title-line--2">{{ section.settings.heading_line_2 | escape }}</span>
+          {% endif %}
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE B: 3-Column Bottom Bento Bar With Pets Anchored Directly to `top: 0` of Each Card -->
+  <div class="ps-bento-bar-outer">
+    <div class="ps-bento-grid">
+
+      <!-- CARD 1: LEFT SOCIAL PROOF CARD + LEFT PEEKING PUPPY -->
+      <div class="ps-bento-card ps-bento-card--side ps-bento-card--left {% unless section.settings.show_side_pets_on_mobile %}ps-hide-side-pet-mobile{% endunless %}">
+        <div class="ps-pet-wrap ps-pet-wrap--left">
+          {% if section.settings.left_pet_image != blank %}
+            {{
+              section.settings.left_pet_image
+              | image_url: width: 800
+              | image_tag:
+                loading: 'eager',
+                widths: '260, 380, 520, 800',
+                sizes: '(max-width: 767px) 42vw, (max-width: 1200px) 24vw, 340px',
+                alt: section.settings.left_pet_alt,
+                class: 'ps-pet-img'
+            }}
+          {% else %}
+            <div class="ps-pet-empty">Upload Left Pet PNG</div>
+          {% endif %}
+        </div>
+
+        <div class="ps-card-content">
+          <div class="ps-stat-inline">
+            {% if section.settings.left_stat_number != blank %}
+              <span class="ps-stat-big">{{ section.settings.left_stat_number | escape }}</span>
+            {% endif %}
+            <div class="ps-avatars">
+              {% if section.settings.left_avatar_1 != blank %}
+                {{
+                  section.settings.left_avatar_1
+                  | image_url: width: 100
+                  | image_tag:
+                    loading: 'lazy',
+                    width: 38,
+                    height: 38,
+                    alt: 'Happy customer',
+                    class: 'ps-avatar-circle'
+                }}
+              {% endif %}
+              {% if section.settings.left_avatar_2 != blank %}
+                {{
+                  section.settings.left_avatar_2
+                  | image_url: width: 100
+                  | image_tag:
+                    loading: 'lazy',
+                    width: 38,
+                    height: 38,
+                    alt: 'Happy pet',
+                    class: 'ps-avatar-circle'
+                }}
+              {% endif %}
+              {% if section.settings.left_badge_text != blank %}
+                <span class="ps-plus-circle">{{ section.settings.left_badge_text | escape }}</span>
+              {% endif %}
+            </div>
+          </div>
+          {% if section.settings.left_card_subtext != blank %}
+            <p class="ps-card-caption">{{ section.settings.left_card_subtext | newline_to_br }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CARD 2: CENTER DARK-GREEN CTA CARD + CENTER HERO GOLDEN RETRIEVER -->
+      <div class="ps-bento-card ps-bento-card--center">
+        <div class="ps-pet-wrap ps-pet-wrap--center">
+          {% if section.settings.center_pet_image != blank %}
+            {{
+              section.settings.center_pet_image
+              | image_url: width: 1100
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                widths: '340, 480, 680, 900, 1100',
+                sizes: '(max-width: 767px) 70vw, (max-width: 1200px) 32vw, 460px',
+                alt: section.settings.center_pet_alt,
+                class: 'ps-pet-img'
+            }}
+          {% else %}
+            <div class="ps-pet-empty">Upload Center Hero Pet PNG</div>
+          {% endif %}
+        </div>
+
+        <div class="ps-card-content">
+          {% if section.settings.center_card_heading != blank %}
+            <h2 class="ps-cta-heading">{{ section.settings.center_card_heading | newline_to_br }}</h2>
+          {% endif %}
+          {% if section.settings.cta_button_label != blank %}
+            <a href="{{ section.settings.cta_button_link | default: '/collections/all' }}" class="ps-cta-btn">
+              <span>{{ section.settings.cta_button_label | escape }}</span>
+              <span class="ps-cta-arrow" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.16669 10H15.8334M15.8334 10L10.8334 5M15.8334 10L10.8334 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CARD 3: RIGHT RATING CARD + RIGHT PEEKING CAT -->
+      <div class="ps-bento-card ps-bento-card--side ps-bento-card--right {% unless section.settings.show_side_pets_on_mobile %}ps-hide-side-pet-mobile{% endunless %}">
+        <div class="ps-pet-wrap ps-pet-wrap--right">
+          {% if section.settings.right_pet_image != blank %}
+            {{
+              section.settings.right_pet_image
+              | image_url: width: 800
+              | image_tag:
+                loading: 'eager',
+                widths: '260, 380, 520, 800',
+                sizes: '(max-width: 767px) 42vw, (max-width: 1200px) 24vw, 340px',
+                alt: section.settings.right_pet_alt,
+                class: 'ps-pet-img'
+            }}
+          {% else %}
+            <div class="ps-pet-empty">Upload Right Pet PNG</div>
+          {% endif %}
+        </div>
+
+        <div class="ps-card-content">
+          <div class="ps-stat-inline">
+            {% if section.settings.right_rating_value != blank %}
+              <span class="ps-stat-big">{{ section.settings.right_rating_value | escape }}</span>
+            {% endif %}
+            {% if section.settings.show_star_icon %}
+              <span class="ps-star-svg" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2.25L14.91 8.15L21.42 9.1L16.71 13.69L17.82 20.17L12 17.11L6.18 20.17L7.29 13.69L2.58 9.1L9.09 8.15L12 2.25Z"/>
+                </svg>
+              </span>
+            {% endif %}
+          </div>
+          {% if section.settings.right_card_subtext != blank %}
+            <p class="ps-card-caption">{{ section.settings.right_card_subtext | newline_to_br }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #petssify-hero-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+    background-color: var(--ps-upper-bg);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  #petssify-hero-{{ section.id }} *,
+  #petssify-hero-{{ section.id }} *::before,
+  #petssify-hero-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  /* ZONE A: Upper Stage (Reserved Height for Headline + Upper Torso/Head of Pets) */
+  #petssify-hero-{{ section.id }} .ps-hero-upper {
+    position: relative;
+    z-index: 1;
+    padding-top: clamp(24px, 3.5vw, 48px);
+    padding-bottom: clamp(230px, calc(var(--ps-stage-space) * 0.95), var(--ps-stage-space));
+  }
+
+  #petssify-hero-{{ section.id }} .ps-hero-container {
+    max-width: var(--ps-max-w);
+    margin: 0 auto;
+    padding: 0 clamp(16px, 3vw, 40px);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-hero-headline-box {
+    text-align: center;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-hero-title {
+    margin: 0;
+    color: var(--ps-heading-color);
+    font-family: inherit;
+    font-size: clamp(var(--ps-h1-mobile), 7.4vw, var(--ps-h1-desktop));
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-title-line {
+    display: block;
+    white-space: nowrap;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-title-line--2 {
+    margin-top: clamp(6px, 1vw, 14px);
+    word-spacing: clamp(10px, 1.6vw, 28px);
+  }
+
+  /* ZONE B: 3-Column Bottom Bento Bar */
+  #petssify-hero-{{ section.id }} .ps-bento-bar-outer {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--ps-side-bg) 0%,
+      var(--ps-side-bg) 33%,
+      var(--ps-center-bg) 33%,
+      var(--ps-center-bg) 67%,
+      var(--ps-side-bg) 67%,
+      var(--ps-side-bg) 100%
+    );
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-grid {
+    max-width: var(--ps-max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.14fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card {
+    position: relative;
+    overflow: visible;
+    min-height: 195px;
+    padding: 46px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--side {
+    background-color: var(--ps-side-bg);
+    color: var(--ps-side-text);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--left {
+    border-bottom-left-radius: 20px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--right {
+    border-bottom-right-radius: 20px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--center {
+    background-color: var(--ps-center-bg);
+    color: var(--ps-center-text);
+    z-index: 3; /* Center card & center dog sit above side pets so side pets never overlap center dog */
+  }
+
+  /* CARD-TOP LEDGE ANCHOR: Locks Pet Chest to `top: 0` of Card & Hangs Paws Onto Card */
+  #petssify-hero-{{ section.id }} .ps-pet-wrap {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    line-height: 0;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-pet-wrap--left {
+    width: var(--ps-left-w-pct, calc(var(--ps-left-w, 72) * 1%));
+    max-width: 340px;
+    transform: translate(-50%, var(--ps-left-ledge-pct, calc(-1% * var(--ps-left-ledge, 78))));
+  }
+
+  #petssify-hero-{{ section.id }} .ps-pet-wrap--center {
+    width: var(--ps-center-w-pct, calc(var(--ps-center-w, 84) * 1%));
+    max-width: 450px;
+    transform: translate(-50%, var(--ps-center-ledge-pct, calc(-1% * var(--ps-center-ledge, 72))));
+  }
+
+  #petssify-hero-{{ section.id }} .ps-pet-wrap--right {
+    width: var(--ps-right-w-pct, calc(var(--ps-right-w, 70) * 1%));
+    max-width: 340px;
+    transform: translate(-50%, var(--ps-right-ledge-pct, calc(-1% * var(--ps-right-ledge, 68))));
+  }
+
+  #petssify-hero-{{ section.id }} .ps-pet-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-pet-empty {
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px dashed #0B4619;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0B4619;
+    transform: translateY(-100%);
+  }
+
+  /* Card Text & CTA Content (Sits cleanly below the hanging paws) */
+  #petssify-hero-{{ section.id }} .ps-card-content {
+    position: relative;
+    z-index: 6;
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-stat-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-stat-big {
+    font-size: clamp(28px, 2.8vw, 44px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ps-side-text);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-avatars {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-avatar-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    margin-left: -10px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-avatar-circle:first-child {
+    margin-left: 0;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-plus-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--ps-center-bg);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: -10px;
+    border: 2px solid #ffffff;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-star-svg {
+    width: 32px;
+    height: 32px;
+    color: var(--ps-accent);
+    display: inline-flex;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-card-caption {
+    margin: 0;
+    font-size: clamp(13px, 1vw, 15px);
+    line-height: 1.4;
+    color: var(--ps-side-text);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-heading {
+    margin: 0 0 6px;
+    font-size: clamp(18px, 1.55vw, 24px);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ps-center-text);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background-color: var(--ps-accent);
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 7px 7px 7px 24px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 99, 2, 0.35);
+    color: #ffffff !important;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: var(--ps-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-arrow svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--ps-accent);
+  }
+
+  /* Tablet Breakpoint (768px - 1023px) */
+  @media screen and (max-width: 1023px) {
+    #petssify-hero-{{ section.id }} .ps-hero-upper {
+      padding-bottom: clamp(190px, 28vw, 290px);
+    }
+    #petssify-hero-{{ section.id }} .ps-bento-card {
+      min-height: 175px;
+      padding: 36px 12px 22px;
+    }
+  }
+
+  /* Mobile Breakpoint (< 768px) */
+  @media screen and (max-width: 767px) {
+    #petssify-hero-{{ section.id }} .ps-hero-upper {
+      padding-top: 20px;
+      padding-bottom: clamp(190px, 52vw, 270px);
+    }
+
+    #petssify-hero-{{ section.id }} .ps-title-line {
+      white-space: normal;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-title-line--2 {
+      word-spacing: normal;
+      margin-top: 4px;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bento-bar-outer {
+      background: none;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bento-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    /* Center Hero Dog + Dark-Green CTA Card Full-Width First on Mobile */
+    #petssify-hero-{{ section.id }} .ps-bento-card--center {
+      grid-column: 1 / -1;
+      order: 1;
+      min-height: 175px;
+      padding: 44px 20px 26px;
+      border-radius: 0;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-pet-wrap--center {
+      width: min(74vw, 300px);
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bento-card--left {
+      grid-column: 1 / 2;
+      order: 2;
+      min-height: 135px;
+      padding: 20px 10px;
+      border-right: 1px solid rgba(11, 70, 25, 0.1);
+      border-bottom-left-radius: 16px;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bento-card--right {
+      grid-column: 2 / 3;
+      order: 3;
+      min-height: 135px;
+      padding: 20px 10px;
+      border-bottom-right-radius: 16px;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-hide-side-pet-mobile .ps-pet-wrap {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Petssify 3D Bento Hero",
+  "tag": "section",
+  "class": "section-petssify-hero-bento",
+  "settings": [
+    {
+      "type": "header",
+      "content": "1. Headline & Stage Height"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Headline Line 1",
+      "default": "Everything"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Headline Line 2",
+      "default": "Your Pets Love"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading SEO Tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 52,
+      "max": 136,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Size (Desktop)",
+      "default": 104
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 32,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Size (Mobile)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "upper_stage_space",
+      "min": 180,
+      "max": 520,
+      "step": 5,
+      "unit": "px",
+      "label": "Headline to Bar Spacing",
+      "info": "Increase if dog head overlaps the heading text",
+      "default": 340
+    },
+    {
+      "type": "header",
+      "content": "2. Center Hero Dog (Width % & Paw Ledge %)"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_pet_image",
+      "label": "Center Hero Dog PNG",
+      "info": "Ideal: 1000x1000px 1:1 Transparent PNG"
+    },
+    {
+      "type": "text",
+      "id": "center_pet_alt",
+      "label": "Center Dog Alt Text",
+      "default": "Golden retriever peeking over Petssify hero banner"
+    },
+    {
+      "type": "range",
+      "id": "center_pet_width_pct",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Center Dog Width (% of Card)",
+      "info": "Keep <= 90% so paws stay cleanly inside center card",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "center_pet_ledge_pct",
+      "min": 45,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "label": "Center Dog Ledge / Overlap %",
+      "info": "Lower % = Dog sits lower on card, giving more heading clearance",
+      "default": 66
+    },
+    {
+      "type": "header",
+      "content": "3. Left Puppy (Width % & Paw Ledge %)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_pet_image",
+      "label": "Left Puppy PNG",
+      "info": "Ideal: 900x600px 3:2 Transparent PNG"
+    },
+    {
+      "type": "text",
+      "id": "left_pet_alt",
+      "label": "Left Puppy Alt Text",
+      "default": "Dachshund puppy peeking over left card"
+    },
+    {
+      "type": "range",
+      "id": "left_pet_width_pct",
+      "min": 40,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "label": "Left Puppy Width (% of Card)",
+      "info": "Default: 72% of left card width",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "left_pet_ledge_pct",
+      "min": 45,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "label": "Left Puppy Ledge / Overlap %",
+      "info": "Lower % = Paws hang deeper onto left card (Default: 78%)",
+      "default": 78
+    },
+    {
+      "type": "header",
+      "content": "4. Right Cat (Width % & Paw Ledge %)"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_pet_image",
+      "label": "Right Cat PNG",
+      "info": "Ideal: 800x800px 1:1 or 900x600px 3:2 Transparent PNG"
+    },
+    {
+      "type": "text",
+      "id": "right_pet_alt",
+      "label": "Right Cat Alt Text",
+      "default": "Ginger tabby cat peeking over right card"
+    },
+    {
+      "type": "range",
+      "id": "right_pet_width_pct",
+      "min": 40,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "label": "Right Cat Width (% of Card)",
+      "info": "Default: 70% of right card width",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "right_pet_ledge_pct",
+      "min": 45,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "label": "Right Cat Ledge / Overlap %",
+      "info": "Lower % = Paws hang deeper onto right card (Default: 68%)",
+      "default": 68
+    },
+    {
+      "type": "checkbox",
+      "id": "show_side_pets_on_mobile",
+      "label": "Show Left & Right Side Pets on Mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "5. Bottom Bento Cards Content"
+    },
+    {
+      "type": "text",
+      "id": "left_stat_number",
+      "label": "Left Stat Number",
+      "default": "98K+"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_avatar_1",
+      "label": "Customer Avatar 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_avatar_2",
+      "label": "Customer Avatar 2"
+    },
+    {
+      "type": "text",
+      "id": "left_badge_text",
+      "label": "Plus Badge Text",
+      "default": "+"
+    },
+    {
+      "type": "textarea",
+      "id": "left_card_subtext",
+      "label": "Left Card Description",
+      "default": "Happy Clients and Their Pets\nWho Love Our Products"
+    },
+    {
+      "type": "textarea",
+      "id": "center_card_heading",
+      "label": "Center Card Heading",
+      "default": "Best Products\nfor Your Pet"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_label",
+      "label": "CTA Button Label",
+      "default": "Explore Products"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "text",
+      "id": "right_rating_value",
+      "label": "Right Rating Number",
+      "default": "4.6"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_star_icon",
+      "label": "Show Star Icon",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "right_card_subtext",
+      "label": "Right Card Description",
+      "default": "Based on Reviews from Happy\nPet Owners Worldwide"
+    },
+    {
+      "type": "header",
+      "content": "6. Colors & Max Container Width"
+    },
+    {
+      "type": "color",
+      "id": "upper_bg_color",
+      "label": "Upper Stage Background",
+      "default": "#EDF4FD"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Headline Color",
+      "default": "#00205B"
+    },
+    {
+      "type": "color",
+      "id": "side_cards_bg_color",
+      "label": "Side Cards Background",
+      "default": "#ADC8ED"
+    },
+    {
+      "type": "color",
+      "id": "side_cards_text_color",
+      "label": "Side Cards Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "center_card_bg_color",
+      "label": "Center Card Background",
+      "default": "#00205B"
+    },
+    {
+      "type": "color",
+      "id": "center_card_text_color",
+      "label": "Center Card Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_orange_color",
+      "label": "CTA Button & Star Accent",
+      "default": "#FF7A29"
+    },
+    {
+      "type": "select",
+      "id": "container_max_width",
+      "label": "Max Stage Width on Ultra-Wide Screens",
+      "options": [
+        { "value": "1440px", "label": "Standard Wide (1440px)" },
+        { "value": "1680px", "label": "Wide Desktop (1680px)" },
+        { "value": "1920px", "label": "Ultra-Wide (1920px)" },
+        { "value": "100%", "label": "Full Bleed (100%)" }
+      ],
+      "default": "1680px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Petssify 3D Bento Hero"
+    }
+  ]
+}
+{% endschema %}

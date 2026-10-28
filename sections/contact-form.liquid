@@ -12,126 +12,452 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Scoped Petssify Contact Page Modern Layout */
+  #shopify-section-{{ section.id }} .petssify-contact-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 52px;
+    align-items: start;
+  }
+
+  /* Left Column: Support Info */
+  #shopify-section-{{ section.id }} .petssify-contact-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: #EEF2FF;
+    color: #4F46E5;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-title {
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 36px;
+    font-weight: 800;
+    color: #00205B;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-desc {
+    font-size: 15px;
+    color: #64748B;
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card:hover {
+    border-color: #CBD5E1;
+    transform: translateY(-1px);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: #EFF6FF;
+    color: #00205B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__content {
+    flex: 1;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__val {
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 4px 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__sub {
+    font-size: 13px;
+    color: #64748B;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #00205B;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-info-card__link:hover {
+    text-decoration: underline;
+  }
+
+  /* Right Column: Modern Form Card */
+  #shopify-section-{{ section.id }} .petssify-form-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 24px;
+    padding: 40px 36px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-form-header {
+    margin-bottom: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-form-header__title {
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 22px;
+    font-weight: 800;
+    color: #00205B;
+    margin: 0 0 6px 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-form-header__sub {
+    font-size: 14px;
+    color: #64748B;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-field-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-input-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-input-label .req {
+    color: #DC2626;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-input-control {
+    width: 100%;
+    height: 48px;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 14px;
+    color: #0F172A;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  #shopify-section-{{ section.id }} textarea.petssify-input-control {
+    height: auto;
+    min-height: 130px;
+    padding: 14px 16px;
+    resize: vertical;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-input-control:focus {
+    border-color: #00205B;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 32, 91, 0.1);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-submit {
+    width: 100%;
+    height: 52px;
+    background-color: #00205B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 32, 91, 0.2);
+    margin-top: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-contact-submit:hover {
+    background-color: #0B1F5C;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 32, 91, 0.28);
+  }
+
+  @media (max-width: 989px) {
+    #shopify-section-{{ section.id }} .petssify-contact-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-contact-title {
+      font-size: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-form-card {
+      padding: 28px 20px;
+      border-radius: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-field-row {
+      grid-template-columns: 1fr;
+    }
+  }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        {{ section.settings.heading }}
-      </h2>
-    {%- else -%}
-      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
-    {%- endif -%}
-    {%- liquid
-      assign contact_form_class = 'isolate'
-      if settings.animations_reveal_on_scroll
-        assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
-      endif
-    -%}
-    {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
-      {%- if form.posted_successfully? -%}
-        <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
-          {{- 'icon-success.svg' | inline_asset_content -}}
-          {{ 'templates.contact.form.post_success' | t }}
-        </h2>
-      {%- elsif form.errors -%}
-        <div class="form__message">
-          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
-            {{- 'icon-error.svg' | inline_asset_content -}}
-            {{ 'templates.contact.form.error_heading' | t }}
-          </h2>
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="petssify-contact-wrap">
+    <div class="petssify-contact-grid">
+
+      <!-- Left Column: Official Support Details & Reassurance -->
+      <div class="petssify-contact-info">
+        <div class="petssify-contact-badge">
+          💬 Support & Care
         </div>
-        <ul class="form-status-list caption-large" role="list">
-          <li>
-            <a href="#ContactForm-email" class="link">
-              {{ form.errors.translated_fields.email | capitalize }}
-              {{ form.errors.messages.email }}
-            </a>
-          </li>
-        </ul>
-      {%- endif -%}
-      <div class="contact__fields">
-        <div class="field">
-          <input
-            class="field__input"
-            autocomplete="name"
-            type="text"
-            id="ContactForm-name"
-            name="contact[{{ 'templates.contact.form.name' | t }}]"
-            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-            placeholder="{{ 'templates.contact.form.name' | t }}"
-          >
-          <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
-        </div>
-        <div class="field field--with-error">
-          <input
-            autocomplete="email"
-            type="email"
-            id="ContactForm-email"
-            class="field__input"
-            name="contact[email]"
-            spellcheck="false"
-            autocapitalize="off"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            aria-required="true"
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="ContactForm-email-error"
-            {% endif %}
-            placeholder="{{ 'templates.contact.form.email' | t }}"
-          >
-          <label class="field__label" for="ContactForm-email">
-            {{- 'templates.contact.form.email' | t }}
-            <span aria-hidden="true">*</span></label
-          >
-          {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-              <span class="form__message">
-                <span class="svg-wrapper">
-                  {{- 'icon-error.svg' | inline_asset_content -}}
-                </span>
-                {{- form.errors.translated_fields.email | capitalize }}
-                {{ form.errors.messages.email -}}
-              </span>
-            </small>
+
+        <h1 class="petssify-contact-title">
+          {%- if section.settings.heading != blank -%}
+            {{ section.settings.heading }}
+          {%- else -%}
+            Get in Touch with Petssify
           {%- endif -%}
+        </h1>
+
+        <p class="petssify-contact-desc">
+          Have a question about an order, our pet supplies, or delivery? Our dedicated pet care team is always happy to help you and your pet.
+        </p>
+
+        <div class="petssify-contact-cards">
+          <!-- Direct Email -->
+          <div class="petssify-info-card">
+            <div class="petssify-info-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </div>
+            <div class="petssify-info-card__content">
+              <div class="petssify-info-card__label">Email Support</div>
+              <div class="petssify-info-card__val">support@petssify.com</div>
+              <p class="petssify-info-card__sub">Fast response within 24 hours (Monday – Friday)</p>
+            </div>
+          </div>
+
+          <!-- Hours -->
+          <div class="petssify-info-card">
+            <div class="petssify-info-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="petssify-info-card__content">
+              <div class="petssify-info-card__label">Support Hours</div>
+              <div class="petssify-info-card__val">Mon – Fri: 9:00 AM – 6:00 PM EST</div>
+              <p class="petssify-info-card__sub">Inquiries received over the weekend are answered Monday morning</p>
+            </div>
+          </div>
+
+          <!-- Order Tracking -->
+          <div class="petssify-info-card">
+            <div class="petssify-info-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg>
+            </div>
+            <div class="petssify-info-card__content">
+              <div class="petssify-info-card__label">Order Tracking</div>
+              <div class="petssify-info-card__val">Need to track your package?</div>
+              <p class="petssify-info-card__sub">Get instant real-time carrier status with your order number.</p>
+              <a href="/pages/track-order" class="petssify-info-card__link">Track My Order &rarr;</a>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <input
-          type="tel"
-          id="ContactForm-phone"
-          class="field__input"
-          autocomplete="tel"
-          name="contact[{{ 'templates.contact.form.phone' | t }}]"
-          pattern="[0-9\-]*"
-          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="{{ 'templates.contact.form.phone' | t }}"
-        >
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+
+      <!-- Right Column: Clean White Form Card -->
+      <div class="petssify-form-card">
+        <div class="petssify-form-header">
+          <h2 class="petssify-form-header__title">Send Us a Message</h2>
+          <p class="petssify-form-header__sub">Please complete the form below. We will respond promptly.</p>
+        </div>
+
+        {%- form 'contact', id: 'ContactForm', class: 'petssify-contact-form isolate' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="form-status form-status-list form__message" tabindex="-1" autofocus style="background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; padding:14px; border-radius:10px; margin-bottom:20px;">
+              {{- 'icon-success.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.post_success' | t }}
+            </div>
+          {%- elsif form.errors -%}
+            <div class="form__message" style="background:#FEF2F2; border:1px solid #FECACA; color:#991B1B; padding:14px; border-radius:10px; margin-bottom:20px;">
+              <h3 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus style="color:#991B1B; margin:0 0 8px 0;">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+                {{ 'templates.contact.form.error_heading' | t }}
+              </h3>
+              <ul class="form-status-list caption-large" role="list" style="margin:0; padding-left:20px;">
+                <li>
+                  <a href="#ContactForm-email" class="link" style="color:#991B1B;">
+                    {{ form.errors.translated_fields.email | capitalize }}
+                    {{ form.errors.messages.email }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="petssify-field-row">
+            <div class="petssify-field-group">
+              <label class="petssify-input-label" for="ContactForm-name">
+                {{ 'templates.contact.form.name' | t }}
+              </label>
+              <input
+                class="petssify-input-control"
+                autocomplete="name"
+                type="text"
+                id="ContactForm-name"
+                name="contact[{{ 'templates.contact.form.name' | t }}]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Jane Doe"
+              >
+            </div>
+
+            <div class="petssify-field-group">
+              <label class="petssify-input-label" for="ContactForm-email">
+                {{ 'templates.contact.form.email' | t }} <span class="req" aria-hidden="true">*</span>
+              </label>
+              <input
+                autocomplete="email"
+                type="email"
+                id="ContactForm-email"
+                class="petssify-input-control"
+                name="contact[email]"
+                spellcheck="false"
+                autocapitalize="off"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="ContactForm-email-error"
+                {% endif %}
+                placeholder="jane@example.com"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="petssify-field-group">
+            <label class="petssify-input-label" for="ContactForm-phone">
+              {{ 'templates.contact.form.phone' | t }} (optional)
+            </label>
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="petssify-input-control"
+              autocomplete="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="+1 (555) 000-0000"
+            >
+          </div>
+
+          <div class="petssify-field-group">
+            <label class="petssify-input-label" for="ContactForm-body">
+              {{ 'templates.contact.form.comment' | t }} <span class="req" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              rows="6"
+              id="ContactForm-body"
+              class="petssify-input-control"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              placeholder="How can we help you and your pet today?"
+              required
+            >
+              {{- form.body -}}
+            </textarea>
+          </div>
+
+          <button type="submit" class="petssify-contact-submit">
+            <span>{{ 'templates.contact.form.send' | t }}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        {%- endform -%}
       </div>
-      <div class="field">
-        <textarea
-          rows="10"
-          id="ContactForm-body"
-          class="text-area field__input"
-          name="contact[{{ 'templates.contact.form.comment' | t }}]"
-          placeholder="{{ 'templates.contact.form.comment' | t }}"
-        >
-          {{- form.body -}}
-        </textarea>
-        <label class="form__label field__label" for="ContactForm-body">
-          {{- 'templates.contact.form.comment' | t -}}
-        </label>
-      </div>
-      <div class="contact__button">
-        <button type="submit" class="button">
-          {{ 'templates.contact.form.send' | t }}
-        </button>
-      </div>
-    {%- endform -%}
+
+    </div>
   </div>
 </div>
 

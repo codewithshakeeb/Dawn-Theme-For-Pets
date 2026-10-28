@@ -1,217 +1,169 @@
 {
   "sections": {
-    "image_banner_Xg3ffR": {
-      "type": "image-banner",
-      "blocks": {
-        "heading_WWxqBV": {
-          "type": "heading",
-          "settings": {
-            "heading": "Pet Supplies for Dogs & Cats Toys, Grooming, Feeding & Travel Gear",
-            "heading_size": "h0"
-          }
-        },
-        "text_kebGaT": {
-          "type": "text",
-          "settings": {
-            "text": "Petssify Offers A Wide Range Of Dog And Cat Products, From Toys And Grooming Tools To Feeders, Harnesses, Carriers, And Travel Gear, With Clear Size, Material, Weight, And Breed Details.",
-            "text_style": "body"
-          }
-        },
-        "buttons_GpMebU": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop Best Sellers",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_WWxqBV",
-        "text_kebGaT",
-        "buttons_GpMebU"
-      ],
-      "disabled": true,
-      "name": "t:sections.image-banner.presets.name",
+    "petssify_hero_bento_RL6zMr": {
+      "type": "petssify-hero-bento",
+      "name": "Petssify Hero Bento",
       "settings": {
-        "image": "shopify://shop_images/ChatGPT_Image_Sep_10_2026_09_45_33_PM_5d99003c-1631-4628-b07d-7a687b88284a.png",
-        "enable_image_overlay": true,
-        "image_overlay_color": "#000000",
-        "image_overlay_opacity": 35,
-        "banner_link": "shopify://collections/all",
-        "image_height": "adapt",
-        "image_behavior": "none",
-        "desktop_content_position": "middle-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
+        "heading_line_1": "Everything",
+        "heading_line_2": "Your Pets Love",
+        "heading_tag": "h1",
+        "heading_size_desktop": 104,
+        "heading_size_mobile": 42,
+        "upper_stage_space": 340,
+        "center_pet_image": "shopify://shop_images/Dog_Bg_Image.png",
+        "center_pet_alt": "Golden Retriever Hero Dog",
+        "center_pet_width_pct": 84,
+        "center_pet_ledge_pct": 66,
+        "left_pet_image": "shopify://shop_images/Brown_puppy_left.png",
+        "left_pet_alt": "Dachshund Peeking Puppy",
+        "left_pet_width_pct": 72,
+        "left_pet_ledge_pct": 78,
+        "right_pet_image": "shopify://shop_images/Cat_right.png",
+        "right_pet_alt": "Ginger Tabby Peeking Cat",
+        "right_pet_width_pct": 70,
+        "right_pet_ledge_pct": 68,
+        "show_side_pets_on_mobile": false,
+        "left_stat_number": "98K+",
+        "left_avatar_1": "shopify://shop_images/Cat_right.png",
+        "left_badge_text": "+",
+        "left_card_subtext": "Happy Clients and Their Pets\nWho Love Our Products",
+        "center_card_heading": "Best Products\nfor Your Pet",
+        "cta_button_label": "Explore Products",
+        "cta_button_link": "",
+        "right_rating_value": "4.6",
+        "show_star_icon": true,
+        "right_card_subtext": "Based on Reviews from Happy\nPet Owners Worldwide",
+        "upper_bg_color": "#EDF4FD",
+        "heading_color": "#00205B",
+        "side_cards_bg_color": "#ADC8ED",
+        "side_cards_text_color": "#FFFFFF",
+        "center_card_bg_color": "#00205B",
+        "center_card_text_color": "#FFFFFF",
+        "accent_orange_color": "#FF7A29",
+        "container_max_width": "1680px"
       }
     },
-    "custom_liquid_67Pd4R": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.presets.name",
+    "petssify_hero": {
+      "type": "petssify-hero",
       "settings": {
-        "custom_liquid": "{%- liquid\n  assign hero_image = 'https://cdn.shopify.com/s/files/1/0749/2377/0014/files/ChatGPT_Image_Sep_10_2026_09_45_33_PM_5d99003c-1631-4628-b07d-7a687b88284a.png?v=1789061400'\n  assign hero_image_mobile = ''\n  assign hero_alt = ''\n  assign hero_heading = 'Practical Dog & Cat Supplies - Verified Sizing, Materials & Breed'\n  assign hero_text = 'Shop 304 stainless steel water fountains, whisper-quiet LED nail grinders, interactive puzzle toys, escape-proof harnesses, and post-surgery recovery gear with exact measurements in inches and centimeters before you buy.'\n  assign hero_btn_label = 'Shop Now'\n  assign hero_btn_link = '/collections/all'\n  assign hero_tag = 'h1'\n  assign hero_align = 'left'\n  assign hero_overlay = 1.0\n-%}\n\n<section class=\"hxc hxc--{{ hero_align }}\">\n  <picture class=\"hxc__media\">\n    {%- if hero_image_mobile != blank -%}\n      <source media=\"(max-width: 749px)\" srcset=\"{{ hero_image_mobile }}\">\n    {%- endif -%}\n    <img\n      class=\"hxc__img\"\n      src=\"{{ hero_image }}\"\n      alt=\"{{ hero_alt | escape }}\"\n      {%- if hero_alt == blank %} role=\"presentation\"{% endif %}\n      loading=\"eager\"\n      fetchpriority=\"high\"\n      decoding=\"async\"\n    >\n  </picture>\n  <div class=\"hxc__overlay\" aria-hidden=\"true\"></div>\n\n  <div class=\"hxc__wrap page-width\">\n    <div class=\"hxc__content\">\n      <{{ hero_tag }} class=\"hxc__heading\">{{ hero_heading | escape }}</{{ hero_tag }}>\n      <p class=\"hxc__text\">{{ hero_text | escape }}</p>\n      <a href=\"{{ hero_btn_link }}\" class=\"hxc__btn\">{{ hero_btn_label | escape }}</a>\n    </div>\n  </div>\n</section>\n\n<style>\n  .hxc {\n    --hxc-text: #ffffff;\n    --hxc-btn-bg: #ffffff;\n    --hxc-btn-text: #000000;\n    --hxc-overlay: {{ hero_overlay }};\n    position: relative;\n    display: flex;\n    align-items: center;\n    isolation: isolate;\n    overflow: hidden;\n    min-height: 70vh;\n    padding: 72px 0;\n    color: var(--hxc-text);\n    background-color: #111;\n  }\n  .hxc__media, .hxc__overlay { position: absolute; inset: 0; }\n  .hxc__media { z-index: 0; }\n\n  /* Mobile: strong uniform dark overlay so text is readable over any part of the image */\n  .hxc__overlay {\n    z-index: 1;\n    background: rgba(0,0,0,var(--hxc-overlay));\n  }\n  .hxc__img { display: block; \n    opacity: 50% !important;\nwidth: 100%; height: 100%; object-fit: cover; object-position: center; }\n\n  .hxc__wrap { position: relative; z-index: 2; width: 100%; display: flex; }\n  .hxc--left .hxc__wrap { justify-content: flex-start; text-align: left; }\n  .hxc--center .hxc__wrap { justify-content: center; text-align: center; }\n  .hxc--right .hxc__wrap { justify-content: flex-end; text-align: right; }\n  .hxc__content { width: 100%; max-width: 62rem; min-width: 0; }\n\n  .hxc__heading {\n    margin: 0;\n    font-family: var(--font-heading-family);\n    font-style: var(--font-heading-style);\n    font-weight: var(--font-heading-weight);\n    font-size: calc(var(--font-heading-scale, 1) * clamp(3rem, 8vw, 4.6rem));\n    line-height: 1.12;\n    color: #fff;\n    overflow-wrap: break-word;\n    text-wrap: balance;\n    text-shadow: 0 2px 14px rgba(0,0,0,.6);\n  }\n  .hxc__text {\n    margin: 1.6rem 0 0;\n    max-width: 52rem;\n    font-family: var(--font-body-family);\n    font-style: var(--font-body-style);\n    font-weight: var(--font-body-weight);\n    font-size: calc(var(--font-body-scale, 1) * 1.6rem);\n    line-height: 1.6;\n    color: #fff;\n    text-shadow: 0 1px 10px rgba(0,0,0,.6);\n  }\n  .hxc--center .hxc__text { margin-left: auto; margin-right: auto; }\n  .hxc--right .hxc__text { margin-left: auto; }\n\n  .hxc__btn {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    min-height: 4.8rem;\n    margin-top: 2.8rem;\n    padding: 1.2rem 3.2rem;\n    font-family: var(--font-body-family);\n    font-style: var(--font-body-style);\n    font-weight: var(--font-body-weight);\n    font-size: calc(var(--font-body-scale, 1) * 1.5rem);\n    line-height: 1.2;\n    letter-spacing: .06rem;\n    text-decoration: none;\n    color: var(--hxc-btn-text);\n    background-color: var(--hxc-btn-bg);\n    border: max(var(--buttons-border-width, 1px), 1px) solid var(--hxc-btn-bg);\n    border-radius: var(--buttons-radius, 0);\n    transition: background-color .2s ease, color .2s ease;\n  }\n  .hxc__btn:hover { color: var(--hxc-btn-bg); background-color: transparent; }\n  .hxc__btn:focus-visible { outline: .2rem solid var(--hxc-btn-bg); outline-offset: .3rem; }\n\n  @media screen and (max-width: 749px) {\n    .hxc__btn { width: 100%; }\n    .hxc--center .hxc__btn { width: auto; min-width: 70%; }\n  }\n  @media screen and (min-width: 750px) {\n    .hxc { min-height: 80vh; padding: 130px 0; }\n    /* Desktop: darkest on the text side, lighter on the right so the image still shows */\n    .hxc__overlay {\n      background: linear-gradient(90deg, rgba(0,0,0,calc(var(--hxc-overlay) + .15)) 0%, rgba(0,0,0,var(--hxc-overlay)) 50%, rgba(0,0,0,calc(var(--hxc-overlay) * .5)) 100%);\n    }\n    .hxc__heading { font-size: calc(var(--font-heading-scale, 1) * clamp(4.2rem, 5vw, 6rem)); }\n    .hxc__text { font-size: calc(var(--font-body-scale, 1) * 1.8rem); }\n  }\n  @media (prefers-reduced-motion: reduce) { .hxc__btn { transition: none; } }\n</style>",
-        "color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0
-      },
-      "disabled": true
-    },
-    "multicolumn_yBdKqR": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_f3tGgg": {
-          "type": "column",
-          "settings": {
-            "title": "<strong>Exact Specs Before You Buy</strong>",
-            "text": "<p>Every listing states verified material grade, dimensions in inches and centimetre, and the exact weight or coat type it fits including when a toy isn't built for aggressive chewers.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_XJpYCz": {
-          "type": "column",
-          "settings": {
-            "title": "<strong>&nbsp;30-Day Easy Returns&nbsp;</strong>",
-            "text": "<p>If an item doesn't fit your dog or cat, return it unused in its original packaging within 30 days of delivery for a full refund.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_PpqFjn": {
-          "type": "column",
-          "settings": {
-            "title": "<strong>Tracked US Delivery</strong>",
-            "text": "<p>Orders process within 1–2 business days and arrive within 5–8 business days across the United States with real-time tracking. Free shipping on orders over $50!</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_JcPqVB": {
-          "type": "column",
-          "settings": {
-            "title": "<strong>Responsive Human Support</strong>",
-            "text": "<p>Email support@petssify.com or call our US support desk Monday–Friday (9:00 AM – 5:00 PM EST). We reply within 24 hours. Operated by Dynamic Resolutions LLC.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column_f3tGgg",
-        "column_XJpYCz",
-        "column_PpqFjn",
-        "column_JcPqVB"
-      ],
-      "custom_css": [
-        ".multicolumn-list h3 {font-size: 22px;}",
-        ".multicolumn-card.content-container {border-radius: 20px;}"
-      ],
-      "name": "t:sections.multicolumn.presets.name",
-      "settings": {
-        "title": "&nbsp;<strong>Why Shop With Petssify</strong>",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "square",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 4,
-        "column_alignment": "center",
-        "background_style": "primary",
-        "color_scheme": "scheme-0c5c97a6-cf03-49bf-94b2-518c1b87edcd",
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
-        "padding_top": 60,
-        "padding_bottom": 60
-      },
-      "disabled": true
-    },
-    "video_mCkbRL": {
-      "type": "video",
-      "disabled": true,
-      "name": "t:sections.video.presets.name",
-      "settings": {
-        "heading": "<strong>Premium Pet Supplies for Dogs & Cats</strong>",
-        "heading_size": "h2",
-        "enable_video_looping": false,
-        "video": "",
-        "video_url": "",
-        "description": "",
-        "full_width": true,
-        "color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "image_opacity": 45,
+        "badge_text": "Verified Sizing & Specs on Every Product",
+        "heading": "Practical Dog & Cat Supplies — Verified Sizing, Materials & Breed Specs",
+        "subheading": "Shop 304 stainless steel water fountains, whisper-quiet LED nail grinders, interactive puzzle toys, escape-proof harnesses, and post-surgery recovery gear—with exact measurements in inches and centimeters before you buy.",
+        "primary_button_label": "Shop Best Sellers",
+        "primary_button_link": "/collections/best-sellers",
+        "secondary_button_label": "Explore All Products",
+        "secondary_button_link": "/collections/all",
+        "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695"
       }
     },
-    "collection_list_h7hdFE": {
-      "type": "collection-list",
+    "petssify_value_props": {
+      "type": "petssify-value-props",
       "blocks": {
-        "featured_collection_969aMw": {
-          "type": "featured_collection",
+        "prop_1": {
+          "type": "prop",
           "settings": {
-            "collection": "dog"
+            "title": "Exact Specs Before You Buy",
+            "text": "Every listing states verified material grade, dimensions in inches and centimeters, and the weight or coat type it fits—including when a toy isn't made for heavy chewers. No guessing from photos."
           }
         },
-        "featured_collection_Gkj9T9": {
-          "type": "featured_collection",
+        "prop_2": {
+          "type": "prop",
           "settings": {
-            "collection": "cat"
+            "title": "30-Day Easy Returns",
+            "text": "If a product doesn't fit your pet, return it within 30 days of delivery for a full refund. Items must be unused and in their original packaging."
           }
         },
-        "featured_collection_67nEPd": {
-          "type": "featured_collection",
+        "prop_3": {
+          "type": "prop",
           "settings": {
-            "collection": "grooming-care"
+            "title": "Ships Across the United States",
+            "text": "Orders process in 1–2 business days and arrive in 5–8 business days with live tracking. Free US shipping on all orders over $50."
           }
         },
-        "featured_collection_DmEHdy": {
-          "type": "featured_collection",
+        "prop_4": {
+          "type": "prop",
           "settings": {
-            "collection": "feeding"
-          }
-        },
-        "featured_collection_MmRprN": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "toys"
-          }
-        },
-        "featured_collection_tCtwbi": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "collars-harnesses-leashes"
+            "title": "Reachable Human Support",
+            "text": "Email support@petssify.com. We reply within 24 hours, Monday through Friday. Petssify is operated by Dynamic Resolutions LLC."
           }
         }
       },
       "block_order": [
-        "featured_collection_969aMw",
-        "featured_collection_Gkj9T9",
-        "featured_collection_67nEPd",
-        "featured_collection_DmEHdy",
-        "featured_collection_MmRprN",
-        "featured_collection_tCtwbi"
+        "prop_1",
+        "prop_2",
+        "prop_3",
+        "prop_4"
       ],
-      "name": "t:sections.collection-list.presets.name",
       "settings": {
-        "title": "<strong>Who are you shopping for?</strong>",
-        "heading_size": "h1",
-        "image_ratio": "square",
-        "columns_desktop": 6,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "heading": "Why Shop With Petssify",
+        "subheading": "Every product is verified for real pet parents and real routines."
+      }
+    },
+    "petssify_category_circles": {
+      "type": "petssify-category-circles",
+      "blocks": {
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "collection": "dogs",
+            "title": "Dogs",
+            "url": "/collections/dogs"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "collection": "cat",
+            "title": "Cats",
+            "url": "/collections/cat"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "collection": "grooming-care",
+            "title": "Grooming & Care",
+            "url": "/collections/grooming-care"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "collection": "feeding",
+            "title": "Feeding Essentials",
+            "url": "/collections/feeding"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "collection": "toys",
+            "title": "Interactive Toys",
+            "url": "/collections/toys"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "collection": "collars-harnesses-leashes",
+            "title": "Collars & Leashes",
+            "url": "/collections/collars-harnesses-leashes"
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5",
+        "cat_6"
+      ],
+      "settings": {
+        "heading": "Who are you shopping for?",
+        "subheading": "Explore curated essentials tailored by category and species"
+      }
     },
     "featured_collection": {
       "type": "featured-collection",
@@ -281,7 +233,6 @@
       ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/ChatGPT_Image_Sep_10_2026_10_25_15_PM.png",
         "enable_image_overlay": true,
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 35,
@@ -365,7 +316,6 @@
       ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/ChatGPT_Image_Sep_10_2026_10_27_55_PM.png",
         "enable_image_overlay": true,
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 35,
@@ -419,7 +369,6 @@
         "column_nGAgkc": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/3.png",
             "title": "<strong>Trusted Quality</strong>",
             "text": "<p>Premium pet products chosen for comfort, safety & everyday durability.</p>",
             "link_label": "",
@@ -429,7 +378,6 @@
         "column_R6AyxL": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/4.png",
             "title": "<strong>Exclusive Savings</strong>",
             "text": "<p>Get <strong>up to 40% OFF</strong> on selected pet essentials for a limited time.</p>",
             "link_label": "",
@@ -439,7 +387,6 @@
         "column_aTWdx3": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/2.png",
             "title": "<strong>Fast & Secure Delivery</strong>",
             "text": "<p>Safe, quick, and reliable shipping straight to your doorstep.</p>",
             "link_label": "",
@@ -449,7 +396,6 @@
         "column_gbzYHG": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/1.png",
             "title": "<strong>Customer Support</strong>",
             "text": "<p>Friendly support always ready to help you and your pets.</p>",
             "link_label": "",
@@ -627,6 +573,7 @@
         "subheading": "Everything you need to know before you shop with Petssify.",
         "allow_multiple_open": false,
         "contact_text": "Still have questions? Email us at",
+        "contact_url": "",
         "contact_email": "support@petssify.com"
       }
     },
@@ -664,131 +611,220 @@
         "padding_bottom": 52
       }
     },
-    "petssify_hero": {
-      "type": "petssify-hero",
-      "settings": {
-        "image": "shopify://shop_images/ChatGPT_Image_Sep_10_2026_09_45_33_PM_5d99003c-1631-4628-b07d-7a687b88284a.png",
-        "image_opacity": 45,
-        "badge_text": "Verified Sizing & Specs on Every Product",
-        "heading": "Practical Dog & Cat Supplies — Verified Sizing, Materials & Breed Specs",
-        "subheading": "Shop 304 stainless steel water fountains, whisper-quiet LED nail grinders, interactive puzzle toys, escape-proof harnesses, and post-surgery recovery gear—with exact measurements in inches and centimeters before you buy.",
-        "primary_button_label": "Shop Best Sellers",
-        "primary_button_link": "/collections/best-sellers",
-        "secondary_button_label": "Explore All Products",
-        "secondary_button_link": "/collections/all",
-        "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695"
-      }
-    },
-    "petssify_value_props": {
-      "type": "petssify-value-props",
+    "image_banner_Xg3ffR": {
+      "type": "image-banner",
       "blocks": {
-        "prop_1": {
-          "type": "prop",
+        "heading_WWxqBV": {
+          "type": "heading",
           "settings": {
-            "title": "Exact Specs Before You Buy",
-            "text": "Every listing states verified material grade, dimensions in inches and centimeters, and the weight or coat type it fits—including when a toy isn't made for heavy chewers. No guessing from photos."
+            "heading": "Pet Supplies for Dogs & Cats Toys, Grooming, Feeding & Travel Gear",
+            "heading_size": "h0"
           }
         },
-        "prop_2": {
-          "type": "prop",
+        "text_kebGaT": {
+          "type": "text",
           "settings": {
-            "title": "30-Day Easy Returns",
-            "text": "If a product doesn't fit your pet, return it within 30 days of delivery for a full refund. Items must be unused and in their original packaging."
+            "text": "Petssify Offers A Wide Range Of Dog And Cat Products, From Toys And Grooming Tools To Feeders, Harnesses, Carriers, And Travel Gear, With Clear Size, Material, Weight, And Breed Details.",
+            "text_style": "body"
           }
         },
-        "prop_3": {
-          "type": "prop",
+        "buttons_GpMebU": {
+          "type": "buttons",
           "settings": {
-            "title": "Ships Across the United States",
-            "text": "Orders process in 1–2 business days and arrive in 5–8 business days with live tracking. Free US shipping on all orders over $50."
-          }
-        },
-        "prop_4": {
-          "type": "prop",
-          "settings": {
-            "title": "Reachable Human Support",
-            "text": "Email support@petssify.com. We reply within 24 hours, Monday through Friday. Petssify is operated by Dynamic Resolutions LLC."
+            "button_label_1": "Shop Best Sellers",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
       "block_order": [
-        "prop_1",
-        "prop_2",
-        "prop_3",
-        "prop_4"
+        "heading_WWxqBV",
+        "text_kebGaT",
+        "buttons_GpMebU"
       ],
+      "disabled": true,
+      "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "heading": "Why Shop With Petssify",
-        "subheading": "Every product is verified for real pet parents and real routines."
+        "enable_image_overlay": true,
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 35,
+        "banner_link": "shopify://collections/all",
+        "image_height": "adapt",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
       }
     },
-    "petssify_category_circles": {
-      "type": "petssify-category-circles",
+    "custom_liquid_67Pd4R": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "{%- liquid\n  assign hero_image = 'https://cdn.shopify.com/s/files/1/0749/2377/0014/files/ChatGPT_Image_Sep_10_2026_09_45_33_PM_5d99003c-1631-4628-b07d-7a687b88284a.png?v=1789061400'\n  assign hero_image_mobile = ''\n  assign hero_alt = ''\n  assign hero_heading = 'Practical Dog & Cat Supplies - Verified Sizing, Materials & Breed'\n  assign hero_text = 'Shop 304 stainless steel water fountains, whisper-quiet LED nail grinders, interactive puzzle toys, escape-proof harnesses, and post-surgery recovery gear with exact measurements in inches and centimeters before you buy.'\n  assign hero_btn_label = 'Shop Now'\n  assign hero_btn_link = '/collections/all'\n  assign hero_tag = 'h1'\n  assign hero_align = 'left'\n  assign hero_overlay = 1.0\n-%}\n\n<section class=\"hxc hxc--{{ hero_align }}\">\n  <picture class=\"hxc__media\">\n    {%- if hero_image_mobile != blank -%}\n      <source media=\"(max-width: 749px)\" srcset=\"{{ hero_image_mobile }}\">\n    {%- endif -%}\n    <img\n      class=\"hxc__img\"\n      src=\"{{ hero_image }}\"\n      alt=\"{{ hero_alt | escape }}\"\n      {%- if hero_alt == blank %} role=\"presentation\"{% endif %}\n      loading=\"eager\"\n      fetchpriority=\"high\"\n      decoding=\"async\"\n    >\n  </picture>\n  <div class=\"hxc__overlay\" aria-hidden=\"true\"></div>\n\n  <div class=\"hxc__wrap page-width\">\n    <div class=\"hxc__content\">\n      <{{ hero_tag }} class=\"hxc__heading\">{{ hero_heading | escape }}</{{ hero_tag }}>\n      <p class=\"hxc__text\">{{ hero_text | escape }}</p>\n      <a href=\"{{ hero_btn_link }}\" class=\"hxc__btn\">{{ hero_btn_label | escape }}</a>\n    </div>\n  </div>\n</section>\n\n<style>\n  .hxc {\n    --hxc-text: #ffffff;\n    --hxc-btn-bg: #ffffff;\n    --hxc-btn-text: #000000;\n    --hxc-overlay: {{ hero_overlay }};\n    position: relative;\n    display: flex;\n    align-items: center;\n    isolation: isolate;\n    overflow: hidden;\n    min-height: 70vh;\n    padding: 72px 0;\n    color: var(--hxc-text);\n    background-color: #111;\n  }\n  .hxc__media, .hxc__overlay { position: absolute; inset: 0; }\n  .hxc__media { z-index: 0; }\n\n  /* Mobile: strong uniform dark overlay so text is readable over any part of the image */\n  .hxc__overlay {\n    z-index: 1;\n    background: rgba(0,0,0,var(--hxc-overlay));\n  }\n  .hxc__img { display: block; \n    opacity: 50% !important;\nwidth: 100%; height: 100%; object-fit: cover; object-position: center; }\n\n  .hxc__wrap { position: relative; z-index: 2; width: 100%; display: flex; }\n  .hxc--left .hxc__wrap { justify-content: flex-start; text-align: left; }\n  .hxc--center .hxc__wrap { justify-content: center; text-align: center; }\n  .hxc--right .hxc__wrap { justify-content: flex-end; text-align: right; }\n  .hxc__content { width: 100%; max-width: 62rem; min-width: 0; }\n\n  .hxc__heading {\n    margin: 0;\n    font-family: var(--font-heading-family);\n    font-style: var(--font-heading-style);\n    font-weight: var(--font-heading-weight);\n    font-size: calc(var(--font-heading-scale, 1) * clamp(3rem, 8vw, 4.6rem));\n    line-height: 1.12;\n    color: #fff;\n    overflow-wrap: break-word;\n    text-wrap: balance;\n    text-shadow: 0 2px 14px rgba(0,0,0,.6);\n  }\n  .hxc__text {\n    margin: 1.6rem 0 0;\n    max-width: 52rem;\n    font-family: var(--font-body-family);\n    font-style: var(--font-body-style);\n    font-weight: var(--font-body-weight);\n    font-size: calc(var(--font-body-scale, 1) * 1.6rem);\n    line-height: 1.6;\n    color: #fff;\n    text-shadow: 0 1px 10px rgba(0,0,0,.6);\n  }\n  .hxc--center .hxc__text { margin-left: auto; margin-right: auto; }\n  .hxc--right .hxc__text { margin-left: auto; }\n\n  .hxc__btn {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    min-height: 4.8rem;\n    margin-top: 2.8rem;\n    padding: 1.2rem 3.2rem;\n    font-family: var(--font-body-family);\n    font-style: var(--font-body-style);\n    font-weight: var(--font-body-weight);\n    font-size: calc(var(--font-body-scale, 1) * 1.5rem);\n    line-height: 1.2;\n    letter-spacing: .06rem;\n    text-decoration: none;\n    color: var(--hxc-btn-text);\n    background-color: var(--hxc-btn-bg);\n    border: max(var(--buttons-border-width, 1px), 1px) solid var(--hxc-btn-bg);\n    border-radius: var(--buttons-radius, 0);\n    transition: background-color .2s ease, color .2s ease;\n  }\n  .hxc__btn:hover { color: var(--hxc-btn-bg); background-color: transparent; }\n  .hxc__btn:focus-visible { outline: .2rem solid var(--hxc-btn-bg); outline-offset: .3rem; }\n\n  @media screen and (max-width: 749px) {\n    .hxc__btn { width: 100%; }\n    .hxc--center .hxc__btn { width: auto; min-width: 70%; }\n  }\n  @media screen and (min-width: 750px) {\n    .hxc { min-height: 80vh; padding: 130px 0; }\n    /* Desktop: darkest on the text side, lighter on the right so the image still shows */\n    .hxc__overlay {\n      background: linear-gradient(90deg, rgba(0,0,0,calc(var(--hxc-overlay) + .15)) 0%, rgba(0,0,0,var(--hxc-overlay)) 50%, rgba(0,0,0,calc(var(--hxc-overlay) * .5)) 100%);\n    }\n    .hxc__heading { font-size: calc(var(--font-heading-scale, 1) * clamp(4.2rem, 5vw, 6rem)); }\n    .hxc__text { font-size: calc(var(--font-body-scale, 1) * 1.8rem); }\n  }\n  @media (prefers-reduced-motion: reduce) { .hxc__btn { transition: none; } }\n</style>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "multicolumn_yBdKqR": {
+      "type": "multicolumn",
       "blocks": {
-        "cat_1": {
-          "type": "category",
+        "column_f3tGgg": {
+          "type": "column",
           "settings": {
-            "collection": "dogs",
-            "title": "Dogs",
-            "url": "/collections/dogs"
+            "title": "<strong>Exact Specs Before You Buy</strong>",
+            "text": "<p>Every listing states verified material grade, dimensions in inches and centimetre, and the exact weight or coat type it fits including when a toy isn't built for aggressive chewers.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
-        "cat_2": {
-          "type": "category",
+        "column_XJpYCz": {
+          "type": "column",
           "settings": {
-            "collection": "cat",
-            "title": "Cats",
-            "url": "/collections/cat"
+            "title": "<strong>&nbsp;30-Day Easy Returns&nbsp;</strong>",
+            "text": "<p>If an item doesn't fit your dog or cat, return it unused in its original packaging within 30 days of delivery for a full refund.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
-        "cat_3": {
-          "type": "category",
+        "column_PpqFjn": {
+          "type": "column",
           "settings": {
-            "collection": "grooming-care",
-            "title": "Grooming & Care",
-            "url": "/collections/grooming-care"
+            "title": "<strong>Tracked US Delivery</strong>",
+            "text": "<p>Orders process within 1–2 business days and arrive within 5–8 business days across the United States with real-time tracking. Free shipping on orders over $50!</p>",
+            "link_label": "",
+            "link": ""
           }
         },
-        "cat_4": {
-          "type": "category",
+        "column_JcPqVB": {
+          "type": "column",
           "settings": {
-            "collection": "feeding",
-            "title": "Feeding Essentials",
-            "url": "/collections/feeding"
-          }
-        },
-        "cat_5": {
-          "type": "category",
-          "settings": {
-            "collection": "toys",
-            "title": "Interactive Toys",
-            "url": "/collections/toys"
-          }
-        },
-        "cat_6": {
-          "type": "category",
-          "settings": {
-            "collection": "collars-harnesses-leashes",
-            "title": "Collars & Leashes",
-            "url": "/collections/collars-harnesses-leashes"
+            "title": "<strong>Responsive Human Support</strong>",
+            "text": "<p>Email support@petssify.com or call our US support desk Monday–Friday (9:00 AM – 5:00 PM EST). We reply within 24 hours. Operated by Dynamic Resolutions LLC.</p>",
+            "link_label": "",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "cat_1",
-        "cat_2",
-        "cat_3",
-        "cat_4",
-        "cat_5",
-        "cat_6"
+        "column_f3tGgg",
+        "column_XJpYCz",
+        "column_PpqFjn",
+        "column_JcPqVB"
       ],
+      "disabled": true,
+      "custom_css": [
+        ".multicolumn-list h3 {font-size: 22px;}",
+        ".multicolumn-card.content-container {border-radius: 20px;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
       "settings": {
-        "heading": "Who are you shopping for?",
-        "subheading": "Explore curated essentials tailored by category and species"
+        "title": "&nbsp;<strong>Why Shop With Petssify</strong>",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "square",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "color_scheme": "scheme-0c5c97a6-cf03-49bf-94b2-518c1b87edcd",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "video_mCkbRL": {
+      "type": "video",
+      "disabled": true,
+      "name": "t:sections.video.presets.name",
+      "settings": {
+        "heading": "<strong>Premium Pet Supplies for Dogs & Cats</strong>",
+        "heading_size": "h2",
+        "enable_video_looping": false,
+        "video_url": "",
+        "description": "",
+        "full_width": true,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collection_list_h7hdFE": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_969aMw": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "dog"
+          }
+        },
+        "featured_collection_Gkj9T9": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat"
+          }
+        },
+        "featured_collection_67nEPd": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "grooming-care"
+          }
+        },
+        "featured_collection_DmEHdy": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "feeding"
+          }
+        },
+        "featured_collection_MmRprN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_tCtwbi": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "collars-harnesses-leashes"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_969aMw",
+        "featured_collection_Gkj9T9",
+        "featured_collection_67nEPd",
+        "featured_collection_DmEHdy",
+        "featured_collection_MmRprN",
+        "featured_collection_tCtwbi"
+      ],
+      "disabled": true,
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "<strong>Who are you shopping for?</strong>",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 6,
+        "color_scheme": "scheme-1",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 12
       }
     }
   },
   "order": [
+    "petssify_hero_bento_RL6zMr",
     "petssify_hero",
     "petssify_value_props",
     "petssify_category_circles",

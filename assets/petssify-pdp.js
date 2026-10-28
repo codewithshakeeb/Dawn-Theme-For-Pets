@@ -431,10 +431,22 @@
       });
     }
 
-    // 2. Standard DOM change listener (debounced fallback)
+    // 2. Standard DOM change listener (debounced fallback & instant label update)
     document.addEventListener('change', (e) => {
       const target = e.target;
       if (!target) return;
+
+      // Update selected value text in legend immediately
+      if (target.matches('.product-form__input input[type="radio"], .product-form__input select')) {
+        const parentFieldset = target.closest('.product-form__input');
+        if (parentFieldset) {
+          const selectedValEl = parentFieldset.querySelector('.petssify-variant-selected-val');
+          if (selectedValEl) {
+            selectedValEl.textContent = target.value;
+          }
+        }
+      }
+
       if (
         target.matches(
           'variant-selects select, variant-selects input, variant-radios input, form[action*="/cart/add"] [name="id"]'

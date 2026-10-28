@@ -38,6 +38,29 @@ class HeaderMenu extends DetailsDisclosure {
     this.header = document.querySelector('.header-wrapper');
   }
 
+  connectedCallback() {
+    this.hoverTimeout = null;
+    if (window.matchMedia('(min-width: 990px)').matches) {
+      this.addEventListener('mouseenter', () => {
+        clearTimeout(this.hoverTimeout);
+        this.openMenu();
+      });
+      this.addEventListener('mouseleave', () => {
+        this.hoverTimeout = setTimeout(() => {
+          this.close();
+        }, 150);
+      });
+    }
+  }
+
+  openMenu() {
+    if (!this.mainDetailsToggle.hasAttribute('open')) {
+      this.mainDetailsToggle.setAttribute('open', '');
+      const summary = this.mainDetailsToggle.querySelector('summary');
+      if (summary) summary.setAttribute('aria-expanded', 'true');
+    }
+  }
+
   onToggle() {
     if (!this.header) return;
     this.header.preventHide = this.mainDetailsToggle.open;

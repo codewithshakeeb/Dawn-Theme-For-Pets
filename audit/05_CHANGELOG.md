@@ -261,4 +261,45 @@ Merchant freedom was a primary architectural objective. The following settings a
 - **Navigation & Footer Resiliency:** Fixed breadcrumb collection resolution, header menu fallback to `main-menu`, and footer logo fallback with policy links.
 - **Validation:** Linter `shopify theme check` passed with **0 errors** across 192 inspected files.
 
+---
 
+## 7. Conversion Optimization, Minimalist FAQ, Contact & Newsletter Overhaul
+
+### 7.1 Breadcrumbs & Layout Gap Rectification (PDP & Collection Page)
+- **`assets/base.css`:** Removed bulky grey box container (`background: #f8faf8; border: 1px solid #e5e7eb; padding: 12px 16px; margin: 0 0 20px;`) and replaced with minimalist transparent inline styling (`background: transparent; border: none; padding: 8px 0 12px; margin: 0; color: #64748B;`).
+- **`sections/main-collection-banner.liquid`:** Integrated `{% render 'breadcrumbs', no_wrapper: true %}` directly above collection H1 and tightened title margin to `4px 0 8px 0`.
+- **`sections/main-collection-product-grid.liquid`:** Removed duplicate displaced breadcrumbs block (`.collection-header-wrapper`), eliminating the double-breadcrumb bug on collection pages.
+- **`assets/component-collection-hero.css`:** Tightened `.collection-hero__title` margin from `2.5rem 0` to `0.5rem 0 1rem`.
+
+### 7.2 Variant Selector & PDP Checkout Experience
+- **`snippets/petssify-stock-status.liquid`:** Removed estimated delivery dates (`.petssify-delivery-estimate`) per user prompt.
+- **`snippets/product-variant-picker.liquid`:** Added dynamic selected variant label indicator: `{{ option.name }}: <span class="petssify-variant-selected-val" data-selected-value>{{ option.selected_value }}</span>`.
+- **`assets/petssify-pdp.js`:** Added instant DOM listener on variant radios/selects to update `.petssify-variant-selected-val` in real time on click.
+- **`assets/petssify-theme.css`:**
+  - Redesigned variant pills (`.product-form__input--pill input[type='radio'] + label`): 1.5px crisp `#CBD5E1` border, 8px radius, `#FFFFFF` fill, `#0F172A` text, 44px min-height, and smooth hover lift.
+  - Active/Checked pill: solid `#00205B` fill with `#FFFFFF` text and subtle depth shadow (`box-shadow: 0 4px 12px rgba(0, 32, 91, 0.22)`).
+  - Out-of-stock/Disabled variant: clearly styled with dashed `#CBD5E1` border, `#64748B` readable text with strikethrough (no washed-out ghost text).
+  - Quantity selector: sleek 8px rounded container with smooth hover states and `#00205B` counter buttons.
+  - Buy box: 52px height for Add to Cart and Dynamic Checkout with 10px radius and solid navy palette.
+- **`snippets/buy-buttons.liquid`:** Integrated customer confidence trust strip (`30-Day Money-Back`, `Free US Shipping $50+`, `Secure Checkout`) right below the checkout buttons.
+
+### 7.3 FAQ Section Overhaul matching Minimalist Reference Mockup
+- **`sections/petssify-faq-section.liquid`:**
+  - Replaced basic accordion with a modern 2-column layout matching reference mockup:
+  - Left column: `• FAQ` pill badge, bold 38px H2 `Frequently Asked Questions`, supporting narrative, and "Still have a question? Contact Us" card.
+  - Right column: Numbered cards (`01`, `02`, `03`...) with 14px rounded corners, `#F8FAFC` background, subtle `#E2E8F0` hover/active outline, smooth expandable answer panel, and minimalist `+` / `−` toggles (no bulky rotating arrows).
+
+### 7.4 Contact Page Modernization
+- **`sections/contact-form.liquid`:**
+  - Converted barebones centered form into a high-trust 2-column layout:
+  - Left column: Official support cards displaying direct email (`support@petssify.com`), business hours (`Mon – Fri: 9:00 AM – 6:00 PM EST`), and live order tracking link.
+  - Right column: Clean white card container with rounded 24px corners, floating label controls with 10px radius, smooth focus rings, and full-width `#00205B` submit button.
+
+### 7.5 Newsletter Section Banner Transformation
+- **`sections/newsletter.liquid`:**
+  - Replaced unstyled basic form with a premium welcome card banner (`🎁 Exclusive Pet Parent Offer`, `Unlock 15% OFF Your First Order`, and value-driven subtext).
+  - High-converting capsule input group with smooth pill container, integrated email input, and vibrant teal hover submit button (`Claim 15% OFF`).
+  - Reassurance micro-text: `🔒 100% Privacy. Zero spam. Unsubscribe anytime with 1-click.`
+
+### 7.6 Theme Check Verification
+- Ran `shopify theme check --no-input --fail-level=error`: **0 Errors** across all 194 inspected files.

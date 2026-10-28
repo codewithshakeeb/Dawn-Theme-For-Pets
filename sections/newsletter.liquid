@@ -13,53 +13,241 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Petssify Premium Newsletter Banner */
+  #shopify-section-{{ section.id }} .petssify-newsletter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-card {
+    background: linear-gradient(135deg, #00205B 0%, #061A48 55%, #0B2568 100%);
+    border-radius: 28px;
+    padding: 60px 32px;
+    color: #FFFFFF;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 32px rgba(0, 32, 91, 0.16);
+    box-sizing: border-box;
+  }
+
+  /* Decorative Ambient Glow */
+  #shopify-section-{{ section.id }} .petssify-newsletter-card::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(13, 148, 136, 0.25) 0%, rgba(13, 148, 136, 0) 70%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-card::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(99, 102, 241, 0) 70%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-heading {
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 38px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-sub {
+    font-size: 16px;
+    color: #E2E8F0;
+    line-height: 1.6;
+    margin: 0 auto 32px auto;
+    max-width: 540px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-sub p {
+    margin: 0;
+    color: inherit;
+  }
+
+  /* High Converting Capsule Input Group */
+  #shopify-section-{{ section.id }} .petssify-newsletter-capsule {
+    background: #FFFFFF;
+    border-radius: 50px;
+    padding: 6px 6px 6px 22px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    max-width: 520px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-capsule:focus-within {
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.4), 0 6px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: #0F172A;
+    font-family: inherit;
+    padding: 6px 10px 6px 0;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-input::placeholder {
+    color: #94A3B8;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-btn {
+    background-color: #00205B;
+    color: #FFFFFF;
+    font-family: var(--font-heading, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50px;
+    padding: 13px 26px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 32, 91, 0.25);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-btn:hover {
+    background-color: #0D9488;
+    transform: scale(1.02);
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-trust {
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .petssify-newsletter-trust svg {
+    width: 14px;
+    height: 14px;
+    color: #10B981;
+  }
+
+  @media (max-width: 640px) {
+    #shopify-section-{{ section.id }} .petssify-newsletter-card {
+      padding: 40px 20px;
+      border-radius: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-newsletter-heading {
+      font-size: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-newsletter-capsule {
+      flex-direction: column;
+      border-radius: 16px;
+      padding: 12px;
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-newsletter-input {
+      width: 100%;
+      padding: 8px 12px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .petssify-newsletter-btn {
+      width: 100%;
+      justify-content: center;
+      border-radius: 12px;
+    }
+  }
 {%- endstyle -%}
 
-<div class="newsletter center {% if section.settings.full_width == false %}newsletter--narrow page-width{% endif %}">
-  <div class="newsletter__wrapper color-{{ section.settings.color_scheme }} gradient content-container isolate{% if section.settings.full_width %} content-container--full-width{% endif %} section-{{ section.id }}-padding">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when '@app' -%}
-          {% render block %}
-        {%- when 'heading' -%}
-          <h2
-            class="inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {{ block.shopify_attributes }}
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {{ block.settings.heading }}
-          </h2>
-        {%- when 'paragraph' -%}
-          <div
-            class="newsletter__subheading rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {{ block.shopify_attributes }}
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {{ block.settings.text }}
-          </div>
-        {%- when 'email_form' -%}
-          <div {{ block.shopify_attributes }}>
-            {% form 'customer', class: 'newsletter-form' %}
-              <input type="hidden" name="contact[tags]" value="newsletter">
-              <div
-                class="newsletter-form__field-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                <div class="field">
+<div class="petssify-newsletter-container section-{{ section.id }}-padding">
+  <div class="petssify-newsletter-card">
+    <div class="petssify-newsletter-content">
+      <div class="petssify-newsletter-badge">
+        🎁 Exclusive Pet Parent Offer
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+          {%- when 'heading' -%}
+            <h2
+              class="petssify-newsletter-heading inline-richtext"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.heading }}
+            </h2>
+          {%- when 'paragraph' -%}
+            <div
+              class="petssify-newsletter-sub rte"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.text }}
+            </div>
+          {%- when 'email_form' -%}
+            <div {{ block.shopify_attributes }}>
+              {% form 'customer', class: 'petssify-newsletter-form' %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+
+                <div class="petssify-newsletter-capsule">
                   <input
                     id="NewsletterForm--{{ section.id }}"
                     type="email"
                     name="contact[email]"
-                    class="field__input"
+                    class="petssify-newsletter-input"
                     value="{{ form.email }}"
                     aria-required="true"
                     autocorrect="off"
@@ -72,26 +260,26 @@
                     {% elsif form.posted_successfully? %}
                       aria-describedby="Newsletter-success--{{ section.id }}"
                     {% endif %}
-                    placeholder="{{ 'newsletter.label' | t }}"
+                    placeholder="Enter your email address..."
                     required
                   >
-                  <label class="field__label" for="NewsletterForm--{{ section.id }}">
-                    {{ 'newsletter.label' | t }}
-                  </label>
                   <button
                     type="submit"
-                    class="newsletter-form__button field__button"
+                    class="petssify-newsletter-btn"
                     name="commit"
-                    id="Subscribe"
+                    id="Subscribe--{{ section.id }}"
                     aria-label="{{ 'newsletter.button_label' | t }}"
                   >
-                    <span class="svg-wrapper">
-                      {{- 'icon-arrow.svg' | inline_asset_content -}}
-                    </span>
+                    <span>Claim 15% OFF</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                   </button>
                 </div>
+
                 {%- if form.errors -%}
-                  <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}">
+                  <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}" style="color:#FECACA; margin-top:10px; display:block;">
                     <span class="svg-wrapper">
                       {{- 'icon-error.svg' | inline_asset_content -}}
                     </span>
@@ -99,24 +287,33 @@
                     {{ form.errors.messages.email -}}
                   </small>
                 {%- endif -%}
-              </div>
-              {%- if form.posted_successfully? -%}
-                <h3
-                  class="newsletter-form__message newsletter-form__message--success form__message"
-                  id="Newsletter-success--{{ section.id }}"
-                  tabindex="-1"
-                  autofocus
-                >
-                  <span class="svg-wrapper">
-                    {{- 'icon-success.svg' | inline_asset_content -}}
-                  </span>
-                  {{- 'newsletter.success' | t }}
-                </h3>
-              {%- endif -%}
-            {% endform %}
-          </div>
-      {%- endcase -%}
-    {%- endfor -%}
+
+                {%- if form.posted_successfully? -%}
+                  <h3
+                    class="newsletter-form__message newsletter-form__message--success form__message"
+                    id="Newsletter-success--{{ section.id }}"
+                    tabindex="-1"
+                    autofocus
+                    style="color:#A7F3D0; margin-top:12px;"
+                  >
+                    <span class="svg-wrapper">
+                      {{- 'icon-success.svg' | inline_asset_content -}}
+                    </span>
+                    {{- 'newsletter.success' | t }}
+                  </h3>
+                {%- endif -%}
+
+                <div class="petssify-newsletter-trust">
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>100% Privacy. Zero spam. Unsubscribe anytime with 1-click.</span>
+                </div>
+              {% endform %}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
   </div>
 </div>
 
@@ -179,7 +376,7 @@
         {
           "type": "inline_richtext",
           "id": "heading",
-          "default": "t:sections.newsletter.blocks.heading.settings.heading.default",
+          "default": "Unlock 15% OFF Your First Order",
           "label": "t:sections.newsletter.blocks.heading.settings.heading.label"
         },
         {
@@ -220,7 +417,7 @@
         {
           "type": "richtext",
           "id": "text",
-          "default": "t:sections.newsletter.blocks.paragraph.settings.paragraph.default",
+          "default": "<p>Join over 25,000+ happy pet parents. Receive verified pet care guides and VIP restock alerts.</p>",
           "label": "t:sections.newsletter.blocks.paragraph.settings.paragraph.label"
         }
       ]

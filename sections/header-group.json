@@ -54,7 +54,7 @@
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
         "menu": "new-main-menu",
-        "menu_type_desktop": "mega",
+        "menu_type_desktop": "dropdown",
         "sticky_header_type": "always",
         "show_line_separator": true,
         "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695",
@@ -63,7 +63,7 @@
         "enable_language_selector": true,
         "enable_customer_avatar": true,
         "margin_bottom": 0,
-        "padding_top": 12,
+        "padding_top": 16,
         "padding_bottom": 16
       }
     }

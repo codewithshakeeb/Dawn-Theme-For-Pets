@@ -1,4 +1,8 @@
-<div class="page-width petssify-breadcrumbs-wrapper">
+{%- unless request.page_type == 'index' or request.page_type == 'cart' -%}
+  {%- unless no_wrapper -%}
+    <div class="page-width petssify-breadcrumbs-wrapper">
+  {%- endunless -%}
+
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <a href="{{ routes.root_url }}">Home</a>
 
@@ -100,4 +104,8 @@
 
     {% endcase %}
   </nav>
-</div>
+
+  {%- unless no_wrapper -%}
+    </div>
+  {%- endunless -%}
+{%- endunless -%}
