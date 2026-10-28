@@ -1,9 +1,9 @@
 {%- comment -%}
-  Petssify Promo Banner Section
-  - Styled after high-converting pet food promotional banners
-  - Features golden retriever puppy & kibble bowl with cream & forest green typography
+  Petssify Promo Banner Section (3D Pop-Out Edition)
+  - Features golden retriever puppy & kibble bowl popping out above the green card
+  - Matches the reference image where the dog sticks out over the top edge
   - 100% fluid and responsive across desktop, laptop, tablet, and mobile (down to 320px)
-  - Customizable in Shopify OS 2.0 Theme Editor
+  - Fully customizable via Shopify OS 2.0 Theme Editor
 {%- endcomment -%}
 
 {%- liquid
@@ -15,20 +15,12 @@
   assign radius = section.settings.border_radius | default: 24
   assign pad_top = section.settings.padding_top | default: 36
   assign pad_bottom = section.settings.padding_bottom | default: 36
+  assign popout = section.settings.popout_offset | default: 45
 
-  assign default_desktop_img = 'petssify-promo-banner-desktop.jpg' | asset_url
-  assign default_mobile_img = 'petssify-promo-banner-mobile.jpg' | asset_url
-
-  assign desktop_img = default_desktop_img
-  if section.settings.image_desktop != blank
-    assign desktop_img = section.settings.image_desktop | image_url: width: 2000
-  endif
-
-  assign mobile_img = default_mobile_img
-  if section.settings.image_mobile != blank
-    assign mobile_img = section.settings.image_mobile | image_url: width: 900
-  elsif section.settings.image_desktop != blank
-    assign mobile_img = section.settings.image_desktop | image_url: width: 900
+  assign default_pet_img = 'petssify-puppy-bowl.png' | asset_url
+  assign pet_img = default_pet_img
+  if section.settings.pet_image != blank
+    assign pet_img = section.settings.pet_image | image_url: width: 1200
   endif
 -%}
 
@@ -44,6 +36,7 @@
     --promo-radius: {{ radius }}px;
     --promo-pt: {{ pad_top }}px;
     --promo-pb: {{ pad_bottom }}px;
+    --promo-popout: {{ popout }}px;
   "
 >
   <div class="petssify-promo__container {% if section.settings.container_width == 'narrow' %}petssify-promo__container--narrow{% elsif section.settings.container_width == 'full' %}petssify-promo__container--full{% else %}page-width{% endif %}">
@@ -52,23 +45,22 @@
         <a href="{{ section.settings.card_link }}" class="petssify-promo__card-link" aria-label="{{ section.settings.heading | escape }} - {{ section.settings.subtext | escape }}"></a>
       {%- endif -%}
 
-      <!-- Background Image Layer (Responsive Desktop & Mobile Art Direction) -->
-      <picture class="petssify-promo__picture">
-        <source media="(max-width: 749px)" srcset="{{ mobile_img }}">
+      <!-- Subtle Ambient Paw Watermark Pattern in Green Background -->
+      <div class="petssify-promo__bg-pattern" aria-hidden="true"></div>
+
+      <!-- Left Column: 3D Pop-Out Puppy & Food Bowl -->
+      <div class="petssify-promo__media-wrap">
         <img
-          src="{{ desktop_img }}"
+          src="{{ pet_img }}"
           alt="{{ section.settings.heading | default: 'Special Offer 30% OFF' | escape }}"
           loading="lazy"
-          width="1800"
-          height="540"
-          class="petssify-promo__img"
+          width="836"
+          height="670"
+          class="petssify-promo__pet-img"
         >
-      </picture>
+      </div>
 
-      <!-- Decorative Ambient Paw Watermark Overlay (CSS fallback) -->
-      <div class="petssify-promo__ambient-glow" aria-hidden="true"></div>
-
-      <!-- Live Promotional Typography & CTA Block -->
+      <!-- Right Column: Live Promotional Typography & CTA Block -->
       <div class="petssify-promo__content">
         {%- if section.settings.subheading != blank -%}
           <span class="petssify-promo__subheading">
@@ -96,7 +88,7 @@
             <span class="petssify-promo__btn-text">{{ section.settings.button_label | escape }}</span>
             {%- if section.settings.show_arrow -%}
               <svg class="petssify-promo__arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             {%- endif -%}
           </a>
@@ -108,7 +100,8 @@
 
 <style>
   #petssify-promo-{{ section.id }} {
-    padding-top: var(--promo-pt);
+    /* Top padding provides headroom for the dog popping out above the card */
+    padding-top: calc(var(--promo-pt) + var(--promo-popout));
     padding-bottom: var(--promo-pb);
   }
 
@@ -123,65 +116,87 @@
     padding: 0 1rem;
   }
 
+  /* Card container with overflow: visible so dog pops out */
   .petssify-promo__card {
     position: relative;
     border-radius: var(--promo-radius);
     background-color: var(--promo-bg);
-    overflow: hidden;
+    overflow: visible;
     isolation: isolate;
-    box-shadow: 0 12px 32px -4px rgba(19, 78, 43, 0.22), 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 14px 36px -4px rgba(19, 78, 43, 0.24), 0 4px 14px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    min-height: 280px;
-    aspect-ratio: 3.4 / 1;
+    justify-content: space-between;
+    min-height: 250px;
     transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
   }
 
   .petssify-promo__card-link {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 5;
     text-indent: -9999px;
   }
 
-  .petssify-promo__picture {
+  /* Watermark background stays confined inside the rounded card */
+  .petssify-promo__bg-pattern {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  .petssify-promo__img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: left center;
-  }
-
-  .petssify-promo__ambient-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 80% 50%, rgba(254, 240, 138, 0.06) 0%, transparent 60%);
+    border-radius: inherit;
+    overflow: hidden;
     pointer-events: none;
     z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 100 100' opacity='0.05'%3E%3Cpath fill='%23ffffff' d='M25 35c-2-3-4-4-6-4s-4 1-5 2c-1 1-1 2-1 4 0 3 2 7 4 9 1 1 4 2 6 2 2 0 3-1 4-3 1-3 0-6-2-10zm11 1c2 3 3 8 2 12-1 5-4 7-8 7s-6-1-8-4c-2-3-4-9-4-13 0-3 1-5 3-7 2-2 5-3 8-3 5 0 9 3 11 8zm-7-25c0-1-1-2-3-1-2 2-2 7-2 11 1 6 5 8 8 8 1 0 2-1 3-3 1-1 1-4 1-6 0-3-2-5-3-7-1-1-3-2-4-2zm35 2c-2-1-3 0-5 2-2 3-2 8 0 11 1 2 2 3 3 3 1 0 3-1 4-3 2-3 2-6 2-9 0-2-2-4-4-4zm28 26c-1-1-2-1-4 0-2 1-5 3-6 6-1 3-1 5 0 6 1 2 2 2 3 2 2 0 4 0 5-1 2-1 3-3 4-7 0-2 0-4-1-5s-1-1-1-1zm-13-5c-2-1-4 0-5 3-2 3-3 7-2 11 1 5 4 7 7 8 3 1 6 1 8 0 3-2 4-5 5-8 0-3 0-6-1-8-1-3-4-5-7-5s-4 1-5-1zm-32 52l6 6c5 5 13 5 19 0l16-16c5-5 5-13 0-19l-25-25c-5-5-13-5-19 0L24 64c-5 5-5 13 0 19l13 13c1 1 2 1 3 0z'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 140px 140px;
   }
 
-  /* Content area positioned strictly in the right open green zone */
+  /* 3D Pop-Out Media Wrap: Sticks out above the card's top edge */
+  .petssify-promo__media-wrap {
+    position: relative;
+    z-index: 3;
+    flex: 0 0 48%;
+    max-width: 48%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    align-self: flex-end;
+    pointer-events: none;
+    line-height: 0;
+    margin-top: calc(-1 * var(--promo-popout));
+    margin-bottom: 0;
+    padding-left: clamp(16px, 3vw, 48px);
+  }
+
+  .petssify-promo__pet-img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(250px + var(--promo-popout));
+    object-fit: contain;
+    object-position: bottom left;
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.28));
+    transform-origin: bottom center;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .petssify-promo__card:hover .petssify-promo__pet-img {
+    transform: scale(1.02) translateY(-2px);
+  }
+
+  /* Promotional Typography & CTA Block */
   .petssify-promo__content {
     position: relative;
     z-index: 2;
+    flex: 0 0 52%;
+    max-width: 52%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 50%;
-    max-width: 540px;
-    margin-left: auto;
-    padding: 24px 36px;
+    padding: 28px clamp(16px, 3vw, 40px);
     color: var(--promo-text);
   }
 
@@ -190,10 +205,10 @@
     font-family: var(--font-heading-family, inherit);
     font-style: italic;
     font-weight: 700;
-    font-size: clamp(20px, 2.2vw, 28px);
+    font-size: clamp(20px, 2.3vw, 30px);
     line-height: 1.2;
     color: var(--promo-accent);
-    margin: 0 0 6px 0;
+    margin: 0 0 4px 0;
     letter-spacing: 0.3px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
@@ -202,7 +217,7 @@
     margin: 0 0 6px 0;
     font-family: var(--font-heading-family, inherit);
     font-weight: 900;
-    font-size: clamp(34px, 4.4vw, 58px);
+    font-size: clamp(34px, 4.5vw, 60px);
     line-height: 1;
     color: var(--promo-text);
     text-transform: uppercase;
@@ -240,7 +255,7 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
     cursor: pointer;
     position: relative;
-    z-index: 4;
+    z-index: 6;
     transition: transform 0.22s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.22s ease, background-color 0.2s ease;
   }
 
@@ -269,13 +284,19 @@
 
   /* Tablet Adjustments (750px - 989px) */
   @media screen and (min-width: 750px) and (max-width: 989px) {
-    .petssify-promo__card {
-      min-height: 250px;
-      aspect-ratio: 3 / 1;
+    .petssify-promo__media-wrap {
+      flex: 0 0 46%;
+      max-width: 46%;
+      padding-left: 20px;
+      margin-top: calc(-1 * (var(--promo-popout) * 0.8));
+    }
+    .petssify-promo__pet-img {
+      max-height: calc(230px + (var(--promo-popout) * 0.8));
     }
     .petssify-promo__content {
-      width: 54%;
-      padding: 18px 24px;
+      flex: 0 0 54%;
+      max-width: 54%;
+      padding: 20px 24px;
     }
     .petssify-promo__subtext {
       margin-bottom: 14px;
@@ -287,26 +308,42 @@
 
   /* Mobile Adjustments (< 750px down to 320px) */
   @media screen and (max-width: 749px) {
-    .petssify-promo__card {
-      aspect-ratio: 4 / 5;
-      min-height: 450px;
-      max-height: 540px;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      border-radius: min(var(--promo-radius), 20px);
+    #petssify-promo-{{ section.id }} {
+      padding-top: calc(var(--promo-pt) + 40px);
     }
 
-    .petssify-promo__img {
-      object-position: top center;
+    .petssify-promo__card {
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: auto;
+      border-radius: min(var(--promo-radius), 20px);
+      margin-top: 20px;
+    }
+
+    .petssify-promo__media-wrap {
+      flex: 0 0 auto;
+      max-width: 86%;
+      width: 86%;
+      justify-content: center;
+      align-self: center;
+      padding-left: 0;
+      margin-top: -55px; /* Dog pops out above the top edge on mobile */
+      margin-bottom: 0;
+    }
+
+    .petssify-promo__pet-img {
+      max-height: 230px;
+      width: auto;
+      margin: 0 auto;
     }
 
     .petssify-promo__content {
+      flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
       margin-left: 0;
-      margin-top: auto;
-      padding: 16px 20px 28px;
+      padding: 14px 20px 28px;
     }
 
     .petssify-promo__subheading {
@@ -334,11 +371,16 @@
 
   /* Ultra-compact screens (<= 360px) */
   @media screen and (max-width: 360px) {
-    .petssify-promo__card {
-      min-height: 420px;
+    .petssify-promo__media-wrap {
+      max-width: 92%;
+      width: 92%;
+      margin-top: -45px;
+    }
+    .petssify-promo__pet-img {
+      max-height: 190px;
     }
     .petssify-promo__content {
-      padding: 12px 14px 22px;
+      padding: 10px 14px 22px;
     }
     .petssify-promo__heading {
       font-size: 30px;
@@ -358,19 +400,24 @@
   "settings": [
     {
       "type": "header",
-      "content": "Banner Images"
+      "content": "Pet Cutout Image"
     },
     {
       "type": "image_picker",
-      "id": "image_desktop",
-      "label": "Desktop Banner Image",
-      "info": "Leave blank to use default golden retriever puppy & kibble bowl on green (16:9 widescreen)."
+      "id": "pet_image",
+      "label": "Pet Pop-Out Image (PNG)",
+      "info": "Leave blank to use default golden retriever puppy & kibble bowl cutout."
     },
     {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Mobile Banner Image",
-      "info": "Leave blank to use default mobile portrait companion (4:5 / vertical)."
+      "type": "range",
+      "id": "popout_offset",
+      "label": "Dog Pop-Out Height",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 45,
+      "info": "Controls how far the dog's head sticks out above the top edge of the card."
     },
     {
       "type": "header",
