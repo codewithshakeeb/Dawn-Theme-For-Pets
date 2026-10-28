@@ -1,69 +1,385 @@
 {%- comment -%}
-  Petssify 4-Column Value Props Section
-  Matches Base44 Prototype (Spec 2.3)
+  Petssify 4-Column Value Props Section (Enhanced)
+  - Desktop: 4-Column responsive grid with micro-interactions, hover elevation, and top-right numerals (01, 02, 03, 04)
+  - Mobile: Native smooth swipe carousel with card peek affordance and animated pill pagination dots
+  - Aligned with Petssify Design System (Plus Jakarta Sans, Inter, brand colors, soft duotone badges)
 {%- endcomment -%}
 
-<div class="petssify-value-props section-{{ section.id }}-padding" style="background-color: var(--color-bg-subtle); padding: 56px 0;">
+<div
+  id="petssify-value-props-{{ section.id }}"
+  class="petssify-value-props section-{{ section.id }}-padding"
+  style="
+    --props-pt: {{ section.settings.padding_top | default: 56 }}px;
+    --props-pb: {{ section.settings.padding_bottom | default: 56 }}px;
+    background-color: var(--color-bg-subtle, #F8FAFC);
+  "
+>
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
-      <div style="text-align: center; margin-bottom: 40px;">
-        <h2 style="font-family: var(--font-heading); font-size: clamp(24px, 3vw, 32px); font-weight: 800; color: var(--color-primary); margin: 0 0 8px 0;">
+      <div class="petssify-value-props__header">
+        <h2 class="petssify-value-props__title">
           {{ section.settings.heading }}
         </h2>
         {%- if section.settings.subheading != blank -%}
-          <p style="font-size: 15px; color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">
+          <p class="petssify-value-props__subtitle">
             {{ section.settings.subheading }}
           </p>
         {%- endif -%}
       </div>
     {%- endif -%}
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+    <div
+      class="petssify-value-props__grid {% if section.settings.enable_carousel_mobile %}petssify-value-props__grid--carousel{% endif %}"
+      id="PetssifyPropsGrid-{{ section.id }}"
+    >
       {%- for block in section.blocks -%}
         <div
           class="petssify-value-prop-card"
+          data-card-index="{{ forloop.index0 }}"
           {{ block.shopify_attributes }}
-          style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 28px 24px; box-shadow: var(--shadow-sm); transition: all var(--transition-normal);"
         >
-          <div style="width: 48px; height: 48px; border-radius: var(--radius-btn); background: var(--color-bg-muted); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--color-accent);">
-            {%- case forloop.index -%}
-              {%- when 1 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              {%- when 2 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              {%- when 3 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-              {%- when 4 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              {%- else -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
-            {%- endcase -%}
+          <!-- Top Right Sequential Numeral (01, 02, 03, 04) -->
+          {%- if section.settings.show_numbers -%}
+            <span class="petssify-val-num" aria-hidden="true">
+              {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}
+            </span>
+          {%- endif -%}
+
+          <!-- Polished Duotone Icon Container -->
+          <div class="petssify-val-icon-wrap">
+            {%- if block.settings.custom_icon != blank -%}
+              <img
+                src="{{ block.settings.custom_icon | image_url: width: 64 }}"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+                width="28"
+                height="28"
+                class="petssify-val-custom-icon"
+              >
+            {%- else -%}
+              {%- case forloop.index -%}
+                {%- when 1 -%}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                {%- when 2 -%}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                {%- when 3 -%}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                {%- when 4 -%}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                {%- else -%}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+              {%- endcase -%}
+            {%- endif -%}
           </div>
 
-          <h3 style="font-family: var(--font-heading); font-size: 17px; font-weight: 700; color: var(--color-primary); margin: 0 0 10px 0;">
+          <h3 class="petssify-val-card-title">
             {{ block.settings.title }}
           </h3>
 
-          <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-text-muted); margin: 0;">
+          <p class="petssify-val-card-text">
             {{ block.settings.text }}
           </p>
         </div>
       {%- endfor -%}
     </div>
+
+    <!-- Mobile Carousel Pagination Indicator Dots -->
+    {%- if section.settings.enable_carousel_mobile and section.blocks.size > 1 -%}
+      <div class="petssify-value-props__dots" aria-label="Slide indicators" role="tablist">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="petssify-val-dot {% if forloop.first %}is-active{% endif %}"
+            data-target-index="{{ forloop.index0 }}"
+            aria-label="Go to slide {{ forloop.index }}"
+            role="tab"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
 <style>
+  #petssify-value-props-{{ section.id }} {
+    padding-top: var(--props-pt);
+    padding-bottom: var(--props-pb);
+  }
+
+  .petssify-value-props__header {
+    text-align: center;
+    margin-bottom: clamp(32px, 4vw, 44px);
+  }
+
+  .petssify-value-props__title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(24px, 3.2vw, 34px);
+    font-weight: 800;
+    color: var(--color-primary, #00205B);
+    letter-spacing: -0.025em;
+    margin: 0 0 10px 0;
+  }
+
+  .petssify-value-props__subtitle {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: clamp(14px, 1.4vw, 15px);
+    color: var(--color-text-muted, #64748B);
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+
+  /* Desktop Grid Layout (4 columns) */
+  .petssify-value-props__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1040px) {
+    .petssify-value-props__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  /* Value Prop Card Styling */
+  .petssify-value-prop-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: var(--radius-lg, 16px);
+    padding: 30px 24px 26px;
+    box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.28s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  }
+
   .petssify-value-prop-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-5px);
     border-color: #CBD5E1;
+    box-shadow: 0 16px 32px -6px rgba(0, 32, 91, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Top Right Number Badge (01, 02, 03, 04) */
+  .petssify-val-num {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    color: #CBD5E1;
+    letter-spacing: -0.02em;
+    user-select: none;
+    transition: color 0.28s ease, transform 0.28s ease;
+  }
+
+  .petssify-value-prop-card:hover .petssify-val-num {
+    color: var(--color-accent, #FF7A29);
+    transform: translateY(-2px);
+  }
+
+  /* Icon Wrap with warm duo-tone glow */
+  .petssify-val-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 122, 41, 0.10);
+    color: var(--color-accent, #FF7A29);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: transform 0.28s ease, background-color 0.28s ease;
+  }
+
+  .petssify-value-prop-card:hover .petssify-val-icon-wrap {
+    transform: scale(1.08);
+    background: rgba(255, 122, 41, 0.16);
+  }
+
+  .petssify-val-custom-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  .petssify-val-card-title {
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-primary, #00205B);
+    line-height: 1.35;
+    margin: 0 0 10px 0;
+  }
+
+  .petssify-val-card-text {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-muted, #64748B);
+    margin: 0;
+  }
+
+  /* Mobile Carousel Pagination Dots (Hidden on Desktop) */
+  .petssify-value-props__dots {
+    display: none;
+  }
+
+  /* Mobile Responsive Carousel Layout */
+  @media screen and (max-width: 767px) {
+    #petssify-value-props-{{ section.id }} {
+      padding-top: calc(var(--props-pt) * 0.7);
+      padding-bottom: calc(var(--props-pb) * 0.7);
+    }
+
+    .petssify-value-props__header {
+      margin-bottom: 24px;
+    }
+
+    .petssify-value-props__grid--carousel {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 14px;
+      padding: 6px 18px 16px;
+      margin: 0 -18px;
+    }
+
+    .petssify-value-props__grid--carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .petssify-value-props__grid--carousel .petssify-value-prop-card {
+      flex: 0 0 84%;
+      max-width: 84%;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      padding: 24px 20px 22px;
+      border-radius: 14px;
+    }
+
+    .petssify-val-num {
+      top: 18px;
+      right: 18px;
+      font-size: 20px;
+    }
+
+    .petssify-value-props__dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .petssify-val-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: #CBD5E1;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.28s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+
+    .petssify-val-dot.is-active {
+      width: 24px;
+      background: var(--color-primary, #00205B);
+    }
   }
 </style>
+
+{%- if section.settings.enable_carousel_mobile -%}
+  <script>
+    (function() {
+      function initPetssifyPropsCarousel() {
+        const root = document.getElementById('petssify-value-props-{{ section.id }}');
+        if (!root) return;
+        const grid = root.querySelector('.petssify-value-props__grid--carousel');
+        const dots = root.querySelectorAll('.petssify-val-dot');
+        if (!grid || !dots.length) return;
+
+        const cards = grid.querySelectorAll('.petssify-value-prop-card');
+        if (!cards.length) return;
+
+        // Smooth scroll listener to update active dot
+        let scrollTimer;
+        grid.addEventListener('scroll', function() {
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(function() {
+            const scrollLeft = grid.scrollLeft;
+            const cardWidth = cards[0].offsetWidth || 1;
+            const gap = 14;
+            const activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+            const clamped = Math.max(0, Math.min(activeIndex, dots.length - 1));
+
+            dots.forEach((dot, idx) => {
+              if (idx === clamped) {
+                dot.classList.add('is-active');
+              } else {
+                dot.classList.remove('is-active');
+              }
+            });
+          }, 35);
+        }, { passive: true });
+
+        // Dot click navigation
+        dots.forEach((dot) => {
+          dot.addEventListener('click', function() {
+            const idx = parseInt(this.getAttribute('data-target-index'), 10);
+            if (cards[idx]) {
+              cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPetssifyPropsCarousel);
+      } else {
+        initPetssifyPropsCarousel();
+      }
+
+      document.addEventListener('shopify:section:load', function(e) {
+        if (e.detail && e.detail.sectionId === '{{ section.id }}') {
+          initPetssifyPropsCarousel();
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Why Shop With Petssify",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "text",
@@ -76,6 +392,46 @@
       "id": "subheading",
       "label": "Section Subheading",
       "default": "Every product is verified for real pet parents and real routines."
+    },
+    {
+      "type": "header",
+      "content": "Card Numbers & Mobile Carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_numbers",
+      "label": "Show Numbers (01, 02, 03, 04) in Top Right",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel_mobile",
+      "label": "Enable Swipe Carousel on Mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 56
     }
   ],
   "blocks": [
@@ -83,6 +439,12 @@
       "type": "prop",
       "name": "Value Prop",
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon (Optional)",
+          "info": "Upload custom icon PNG/SVG or leave blank for default SVG."
+        },
         {
           "type": "text",
           "id": "title",
