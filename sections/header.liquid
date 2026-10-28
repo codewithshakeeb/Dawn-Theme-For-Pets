@@ -450,13 +450,19 @@
     .header__search--mobile .search-modal .reset__button .svg-wrapper,
     .header__search--mobile .search-modal .reset__button .icon {
       color: #00205B !important;
-      fill: #00205B !important;
-      stroke: #00205B !important;
+      fill: none !important;
+      stroke: none !important;
       width: 20px !important;
       height: 20px !important;
       display: block !important;
       opacity: 1 !important;
       visibility: visible !important;
+    }
+
+    .header__search--mobile .search-modal .search__button svg path,
+    .header__search--mobile .search-modal .reset__button svg path {
+      fill: #00205B !important;
+      stroke: none !important;
     }
 
     .header__search--mobile .search-modal__close-button,

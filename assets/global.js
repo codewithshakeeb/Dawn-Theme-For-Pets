@@ -570,12 +570,16 @@ class HeaderDrawer extends MenuDrawer {
     this.header = headerWrapper || document.querySelector('.section-header');
     if (this.header) {
       this.header.classList.remove('shopify-section-header-hidden');
+      this.header.classList.remove('header-wrapper--scrolled');
+      this.header.classList.remove('scrolled-past-header');
       this.header.classList.add('menu-open');
       this.header.classList.add('header--menu-open');
     }
     const sectionHeader = document.querySelector('.section-header');
     if (sectionHeader) {
       sectionHeader.classList.remove('shopify-section-header-hidden');
+      sectionHeader.classList.remove('header-wrapper--scrolled');
+      sectionHeader.classList.remove('scrolled-past-header');
       sectionHeader.classList.add('menu-open');
       sectionHeader.classList.add('header--menu-open');
     }
@@ -604,14 +608,17 @@ class HeaderDrawer extends MenuDrawer {
   closeMenuDrawer(event, elementToFocus) {
     if (!elementToFocus) return;
     super.closeMenuDrawer(event, elementToFocus);
+    const isScrolled = window.pageYOffset > 20;
     if (this.header) {
       this.header.classList.remove('menu-open');
       this.header.classList.remove('header--menu-open');
+      if (isScrolled) this.header.classList.add('header-wrapper--scrolled');
     }
     const sectionHeader = document.querySelector('.section-header');
     if (sectionHeader) {
       sectionHeader.classList.remove('menu-open');
       sectionHeader.classList.remove('header--menu-open');
+      if (isScrolled) sectionHeader.classList.add('header-wrapper--scrolled');
     }
     const headerEl = document.querySelector('header.header');
     if (headerEl) headerEl.classList.remove('header--menu-open');
