@@ -561,14 +561,13 @@ class HeaderDrawer extends MenuDrawer {
   }
 
   openMenuDrawer(summaryElement) {
-    this.header = this.header || document.querySelector('.section-header');
+    const headerWrapper = this.closest('.header-wrapper') || document.querySelector('.header-wrapper') || document.querySelector('.section-header');
     this.borderOffset =
-      this.borderOffset || this.closest('.header-wrapper').classList.contains('header-wrapper--border-bottom') ? 1 : 0;
-    document.documentElement.style.setProperty(
-      '--header-bottom-position',
-      `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
-    );
-    this.header.classList.add('menu-open');
+      this.borderOffset || (this.closest('.header-wrapper') && this.closest('.header-wrapper').classList.contains('header-wrapper--border-bottom')) ? 1 : 0;
+    const headerBottom = headerWrapper ? Math.max(0, parseInt(headerWrapper.getBoundingClientRect().bottom - (this.borderOffset || 0))) : 68;
+    document.documentElement.style.setProperty('--header-bottom-position', `${headerBottom}px`);
+    this.header = headerWrapper || document.querySelector('.section-header');
+    if (this.header) this.header.classList.add('menu-open');
 
     setTimeout(() => {
       this.mainDetailsToggle.classList.add('menu-opening');
@@ -583,16 +582,16 @@ class HeaderDrawer extends MenuDrawer {
   closeMenuDrawer(event, elementToFocus) {
     if (!elementToFocus) return;
     super.closeMenuDrawer(event, elementToFocus);
-    this.header.classList.remove('menu-open');
+    if (this.header) this.header.classList.remove('menu-open');
     window.removeEventListener('resize', this.onResize);
   }
 
   onResize = () => {
-    this.header &&
-      document.documentElement.style.setProperty(
-        '--header-bottom-position',
-        `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
-      );
+    const headerWrapper = this.closest('.header-wrapper') || document.querySelector('.header-wrapper') || document.querySelector('.section-header');
+    if (headerWrapper) {
+      const headerBottom = Math.max(0, parseInt(headerWrapper.getBoundingClientRect().bottom - (this.borderOffset || 0)));
+      document.documentElement.style.setProperty('--header-bottom-position', `${headerBottom}px`);
+    }
     document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
   };
 }

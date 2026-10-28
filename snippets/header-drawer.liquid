@@ -18,21 +18,6 @@
     </summary>
     <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
       <div class="menu-drawer__inner-container">
-        <div class="menu-drawer__header">
-          <div class="menu-drawer__brand">
-            <span class="menu-drawer__brand-text">{{ shop.name }}</span>
-          </div>
-          <button
-            type="button"
-            class="menu-drawer__close-btn"
-            onclick="document.getElementById('Details-menu-drawer-container')?.removeAttribute('open'); document.body.classList.remove('overflow-hidden'); document.querySelector('header.header')?.classList.remove('header--menu-open');"
-            aria-label="{{ 'accessibility.close' | t }}"
-          >
-            <span class="svg-wrapper">
-              {{- 'icon-close.svg' | inline_asset_content -}}
-            </span>
-          </button>
-        </div>
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">

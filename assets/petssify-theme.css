@@ -794,16 +794,17 @@ h1, h2, h3, h4, h5, h6,
 
 .petssify-shipping-bar__progress-fill {
   height: 100% !important;
-  background: linear-gradient(90deg, #FF6B00 0%, #FF8A00 50%, #FFA500 100%) !important;
+  background: linear-gradient(90deg, #FF7A29 0%, #F59E0B 35%, #10B981 80%, #059669 100%) !important;
   border-radius: 999px !important;
-  box-shadow: 0 1px 4px rgba(255, 107, 0, 0.45) !important;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 6px rgba(16, 185, 129, 0.45) !important;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease !important;
   min-width: 8px !important;
+  display: block !important;
 }
 
 .petssify-shipping-bar.is-unlocked .petssify-shipping-bar__progress-fill {
   background: linear-gradient(90deg, #10B981 0%, #059669 100%) !important;
-  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 1px 6px rgba(16, 185, 129, 0.5) !important;
 }
 
 /* ==========================================================================
@@ -3693,87 +3694,60 @@ details[open] .modal-overlay::after {
   .menu-drawer,
   .js .menu-drawer {
     position: fixed !important;
-    top: 0 !important;
+    top: var(--header-bottom-position, 68px) !important;
     left: 0 !important;
     width: 86vw !important;
     max-width: 360px !important;
-    height: 100dvh !important;
-    min-height: 100dvh !important;
+    height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
+    min-height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
     background: #ffffff !important;
-    z-index: 100000 !important;
+    z-index: 99999 !important;
     box-shadow: 4px 0 28px rgba(0, 32, 91, 0.18) !important;
     box-sizing: border-box !important;
-  }
-
-  .menu-drawer__header {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    height: 68px !important;
-    min-height: 68px !important;
-    padding: 0 20px !important;
-    border-bottom: 1px solid #E2E8F0 !important;
-    background: #F8FAFC !important;
-    flex-shrink: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .menu-drawer__brand-text {
-    font-size: 20px !important;
-    font-weight: 800 !important;
-    color: #00205B !important;
-    letter-spacing: -0.3px !important;
-  }
-
-  .menu-drawer__close-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
-    border-radius: 50% !important;
-    background: #FFFFFF !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border: 1px solid #E2E8F0 !important;
-    color: #00205B !important;
-    cursor: pointer !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-  }
-
-  details#Details-menu-drawer-container[open] > summary::before {
-    content: '' !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0, 16, 48, 0.45) !important;
-    backdrop-filter: blur(2px) !important;
-    z-index: 99999 !important;
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .menu-drawer__inner-container {
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
+    padding: 6px 0 24px 0 !important;
+    box-sizing: border-box !important;
   }
 
   .menu-drawer__navigation-container {
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
+    height: auto !important;
+    display: block !important;
     overflow-y: auto !important;
+    padding: 0 !important;
+  }
+
+  .menu-drawer__navigation {
+    padding: 0 !important;
+  }
+
+  details#Details-menu-drawer-container[open] > summary::before {
+    content: '' !important;
+    position: fixed !important;
+    top: var(--header-bottom-position, 68px) !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100dvh - var(--header-bottom-position, 68px)) !important;
+    background: rgba(0, 16, 48, 0.5) !important;
+    backdrop-filter: blur(2px) !important;
+    z-index: 99998 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
   }
 
   body.overflow-hidden {
@@ -3825,6 +3799,29 @@ details[open] .modal-overlay::after {
     height: 68px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+  }
+
+  .header-wrapper:has(header.header.header--search-open),
+  .header-wrapper:has(.header__search--mobile details[open]) {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 100000 !important;
+    background: #FFFFFF !important;
+  }
+
+  .header__search--mobile details[open] .modal-overlay::after,
+  details-modal.header__search details[open] .modal-overlay::after {
+    position: fixed !important;
+    top: 68px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 68px) !important;
+    background: rgba(0, 16, 48, 0.5) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 99998 !important;
+    pointer-events: auto !important;
   }
 
   header.header.header--search-open .header__left-group,
@@ -3957,7 +3954,7 @@ details[open] .modal-overlay::after {
 }
 
 /* --------------------------------------------------------------------------
-   4. MOBILE CART DRAWER: ROBUST DISPLAY, VISIBLE PRODUCTS & SHIPPING BAR
+   4. MOBILE CART DRAWER: FULL WIDTH (NO CUT OFF), VIBRANT PRODUCTS & SHIPPING BAR
    -------------------------------------------------------------------------- */
 @media screen and (max-width: 989px) {
   cart-drawer.is-empty .drawer__header,
@@ -3977,18 +3974,42 @@ details[open] .modal-overlay::after {
     flex-shrink: 0 !important;
   }
 
-  .drawer__inner {
-    width: 92vw !important;
-    max-width: 420px !important;
-    padding: 18px 16px !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100dvh !important;
-    background: #FFFFFF !important;
+  /* Full 100% width on mobile screens to completely fix left-side cut off */
+  @media screen and (max-width: 749px) {
+    .drawer__inner {
+      width: 100% !important;
+      max-width: 100vw !important;
+      left: 0 !important;
+      right: 0 !important;
+      border-radius: 0 !important;
+      padding: 16px 14px 20px 14px !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100dvh !important;
+      background: #FFFFFF !important;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .drawer__inner {
+      width: 420px !important;
+      max-width: 90vw !important;
+      right: 0 !important;
+      left: auto !important;
+      padding: 18px 16px !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100dvh !important;
+      background: #FFFFFF !important;
+    }
   }
 
   .drawer__heading {
@@ -4122,11 +4143,19 @@ details[open] .modal-overlay::after {
 
   .cart-drawer .cart-item__quantity {
     grid-area: quantity !important;
+    display: block !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  .cart-drawer .cart-item__quantity-wrapper {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-    margin-top: 2px !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
   }
 
   .cart-drawer quantity-input.quantity {
@@ -4134,17 +4163,18 @@ details[open] .modal-overlay::after {
     align-items: center !important;
     border: 1.5px solid #CBD5E1 !important;
     border-radius: 999px !important;
-    height: 32px !important;
-    min-height: 32px !important;
+    height: 34px !important;
+    min-height: 34px !important;
     width: 96px !important;
     background: #FFFFFF !important;
     overflow: hidden !important;
     box-sizing: border-box !important;
+    flex-shrink: 0 !important;
   }
 
   .cart-drawer .quantity__button {
     width: 30px !important;
-    height: 32px !important;
+    height: 34px !important;
     min-width: 30px !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -4158,7 +4188,7 @@ details[open] .modal-overlay::after {
 
   .cart-drawer .quantity__input {
     width: 36px !important;
-    height: 32px !important;
+    height: 34px !important;
     text-align: center !important;
     font-size: 13px !important;
     font-weight: 600 !important;
@@ -4169,29 +4199,32 @@ details[open] .modal-overlay::after {
   }
 
   .cart-drawer cart-remove-button {
-    margin-left: auto !important;
     display: inline-flex !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   .cart-drawer cart-remove-button .button {
-    min-width: 30px !important;
-    min-height: 30px !important;
-    height: 30px !important;
-    width: 30px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    height: 34px !important;
+    width: 34px !important;
     padding: 0 !important;
-    border-radius: 50% !important;
-    background: #FEE2E2 !important;
-    color: #EF4444 !important;
+    border-radius: 8px !important;
+    background: #FF7A29 !important;
+    color: #FFFFFF !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     border: none !important;
     cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(255, 122, 41, 0.25) !important;
   }
 
   .cart-drawer cart-remove-button .button svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 15px !important;
+    height: 15px !important;
+    fill: currentColor !important;
   }
 
   .drawer__footer {

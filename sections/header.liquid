@@ -825,7 +825,7 @@
     onScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+      if ((this.predictiveSearch && this.predictiveSearch.isOpen) || (this.header && this.header.classList.contains('header--search-open')) || this.querySelector('details-modal.header__search details[open]')) return;
 
       const isScrolled = scrollTop > 20;
       this.classList.toggle('header-wrapper--scrolled', isScrolled);

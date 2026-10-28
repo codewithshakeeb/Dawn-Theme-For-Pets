@@ -116,8 +116,8 @@
             var menuDrawer = document.getElementById('Details-menu-drawer-container');
             if (menuDrawer && menuDrawer.open) {
               menuDrawer.removeAttribute('open');
-              document.body.classList.remove('overflow-hidden');
             }
+            document.body.classList.add('overflow-hidden');
             if (header) {
               header.classList.add('header--search-open');
               header.classList.remove('header--menu-open');
@@ -127,6 +127,7 @@
               if (input) input.focus();
             }, 60);
           } else {
+            document.body.classList.remove('overflow-hidden');
             if (header) {
               header.classList.remove('header--search-open');
             }

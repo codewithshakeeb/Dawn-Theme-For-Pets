@@ -16,7 +16,10 @@
       <span>Add <strong>{{ remaining_money }}</strong> more to unlock <strong>FREE Tracked US Shipping!</strong></span>
     {%- endif -%}
   </div>
-  <div class="petssify-shipping-bar__progress-track" role="progressbar" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">
-    <div class="petssify-shipping-bar__progress-fill" style="width: {{ progress_percent }}%;"></div>
+  <div class="petssify-shipping-bar__progress-track" role="progressbar" aria-valuenow="{{ progress_percent | round }}" aria-valuemin="0" aria-valuemax="100">
+    <div
+      class="petssify-shipping-bar__progress-fill"
+      style="width: {{ progress_percent }}%; background: {% if cart_total >= free_shipping_threshold %}linear-gradient(90deg, #10B981 0%, #059669 100%){% else %}linear-gradient(90deg, #FF7A29 0%, #F59E0B 35%, #10B981 80%, #059669 100%){% endif %};"
+    ></div>
   </div>
 </div>
