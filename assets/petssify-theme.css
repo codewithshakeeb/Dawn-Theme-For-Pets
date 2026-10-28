@@ -2318,48 +2318,492 @@ body {
   }
 }
 
-.header {
-  padding-top: 14px !important;
-  padding-bottom: 14px !important;
-  min-height: 72px !important;
+/* Global Viewport Overflow Prevention (No sideways scroll or white gap) */
+html,
+body,
+.section-header,
+.header-wrapper,
+header.header,
+.announcement-bar-section,
+.utility-bar {
+  max-width: 100vw !important;
+  overflow-x: clip !important;
   box-sizing: border-box !important;
 }
 
-.header--middle-left {
-  grid-template-columns: auto 1fr auto !important;
-  align-items: center !important;
-  column-gap: 2rem !important;
+/* ==========================================================================
+   Desktop Header Architecture (min-width: 990px)
+   ========================================================================== */
+@media screen and (min-width: 990px) {
+  .header {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    min-height: 72px !important;
+    box-sizing: border-box !important;
+  }
+
+  .header--middle-left {
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    column-gap: 2rem !important;
+  }
+
+  .header__inline-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow-x: visible !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+
+  .header__inline-menu > .list-menu--inline {
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 4px 6px !important;
+    list-style: none !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .header__inline-menu > .list-menu--inline > li {
+    display: inline-flex !important;
+    align-items: center !important;
+    list-style: none !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+  }
 }
 
-.header__inline-menu {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow-x: visible !important;
-  margin: 0 auto !important;
-  width: 100% !important;
-}
+/* ==========================================================================
+   Mobile & Tablet Header Architecture (max-width: 989px)
+   Bulletproof 66px Single-Row Flex Bar, Nowrap Logo, Scaled Icons & Drawer
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  /* 1. Bulletproof Removal of Desktop Menu on Mobile / Tablet */
+  .header__inline-menu,
+  nav.header__inline-menu,
+  .header__inline-menu > .list-menu--inline,
+  header .header__inline-menu,
+  .header--middle-left .header__inline-menu,
+  .header--middle-center .header__inline-menu,
+  .header--top-left .header__inline-menu,
+  .header--top-center .header__inline-menu {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
-.header__inline-menu > .list-menu--inline {
-  display: inline-flex !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  gap: 3px !important;
-  margin: 0 !important;
-  padding: 4px 6px !important;
-  list-style: none !important;
-  height: 44px !important;
-  box-sizing: border-box !important;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
+  /* 2. Single Compact Horizontal Flex Row (Height: 66px, Padding: 0 14px, Gap: 8px) */
+  header.header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+    padding: 0 14px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+  }
 
-.header__inline-menu > .list-menu--inline > li {
-  display: inline-flex !important;
-  align-items: center !important;
-  list-style: none !important;
-  white-space: nowrap !important;
-  flex-shrink: 0 !important;
-  position: relative !important;
+  .header-wrapper {
+    min-height: 66px !important;
+    max-width: 100vw !important;
+    overflow-x: clip !important;
+    box-sizing: border-box !important;
+  }
+
+  .section-header {
+    max-width: 100vw !important;
+    overflow-x: clip !important;
+  }
+
+  /* 3. Left: Hamburger Menu Button (38px x 38px circular button, flex-shrink: 0) */
+  header-drawer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 38px !important;
+    height: 38px !important;
+    z-index: 2 !important;
+  }
+
+  header-drawer details,
+  header-drawer .menu-drawer-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  header-drawer .header__icon--menu,
+  .header__icon--menu,
+  .header__icon--summary {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  header-drawer .header__icon--menu svg,
+  .header__icon--menu svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* 4. Fix Vertical Letter-by-Letter Wrapping on "Petssify" Logo */
+  .header__heading,
+  .header__heading-link,
+  .header__heading-logo-wrapper,
+  .header__heading-link .h2,
+  .header__heading .h2,
+  .header__heading span.h2,
+  .header__heading h1.h2,
+  .header__heading-text {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    min-width: max-content !important;
+    flex-shrink: 0 !important;
+    font-size: clamp(20px, 5.5vw, 24px) !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.4px !important;
+    text-decoration: none !important;
+    margin: 0 !important;
+  }
+
+  .header__heading {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 2 !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+  }
+
+  .header__heading-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+
+  .header__heading-logo {
+    max-height: 38px !important;
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Centered logo (default) or left next to hamburger */
+  .header--mobile-center .header__heading {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    text-align: center !important;
+    max-width: calc(100vw - 160px) !important;
+  }
+
+  .header--mobile-left .header__heading {
+    position: static !important;
+    transform: none !important;
+    margin-right: auto !important;
+    margin-left: 8px !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+  }
+
+  /* 5. Right: Compact Action Icons Container (.header__icons) */
+  .header__icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    z-index: 2 !important;
+  }
+
+  .desktop-localization-wrapper {
+    display: none !important;
+  }
+
+  .header__icons .header__icon,
+  .header__icons a.header__icon,
+  .header__icons summary.header__icon,
+  .header__icons .header__search summary.header__icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .header__icons .header__icon svg,
+  .header__icons .header__icon .svg-wrapper svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .header__icons .header__icon--cart svg,
+  .header__icons #cart-icon-bubble svg {
+    width: 20px !important;
+    height: 20px !important;
+    transform: scale(1.15) !important;
+  }
+
+  .header__icons .cart-count-bubble,
+  .cart-count-bubble {
+    top: -2px !important;
+    right: -2px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    font-size: 10px !important;
+    line-height: 16px !important;
+    border-width: 1.5px !important;
+  }
+
+  /* Hide Account icon on screens < 400px so icons never squeeze the logo */
+  @media screen and (max-width: 400px) {
+    .header__icon--account,
+    .header__icons .header__icon--account {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .header--mobile-center .header__heading {
+      max-width: calc(100vw - 128px) !important;
+    }
+  }
+
+  /* 6. Mobile Announcement Bar Polish */
+  .utility-bar,
+  .announcement-bar-section,
+  .announcement-bar {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow: hidden !important;
+    background-color: #00205B !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .utility-bar .page-width {
+    padding: 0 6px !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  .announcement-bar-slider {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    position: relative !important;
+  }
+
+  .announcement-bar .slider-button,
+  .announcement-bar .slider-button--prev,
+  .announcement-bar .slider-button--next {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #FFFFFF !important;
+    opacity: 0.85 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .announcement-bar .slider-button svg,
+  .announcement-bar .slider-button .svg-wrapper svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .announcement-bar-slider .slider {
+    width: calc(100% - 56px) !important;
+    max-width: calc(100% - 56px) !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+  }
+
+  .announcement-bar__announcement {
+    padding: 0 !important;
+  }
+
+  .announcement-bar__message {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    min-height: auto !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .announcement-bar__link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    text-decoration: none !important;
+    color: #FFFFFF !important;
+  }
+
+  .announcement-bar__link .icon-arrow {
+    width: 11px !important;
+    height: 11px !important;
+    margin-left: 5px !important;
+    flex-shrink: 0 !important;
+    color: #FFFFFF !important;
+  }
+
+  /* 7. Mobile Drawer Menu Polish */
+  .menu-drawer-container {
+    z-index: 9999 !important;
+  }
+
+  .menu-drawer {
+    z-index: 9999 !important;
+    background-color: #FFFFFF !important;
+    box-shadow: 8px 0 28px rgba(0, 32, 91, 0.16) !important;
+    max-width: 85vw !important;
+  }
+
+  .js menu-drawer > details > summary::before,
+  .js menu-drawer > details[open] > summary::before {
+    z-index: 9998 !important;
+    background: rgba(0, 32, 91, 0.45) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  .menu-drawer__menu-item {
+    color: #00205B !important;
+    font-size: 15.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.2px !important;
+    padding: 13px 20px !important;
+    transition: all 0.18s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+  }
+
+  .menu-drawer__menu-item:hover,
+  .menu-drawer__menu-item:focus {
+    background-color: #F8FAFC !important;
+    color: #FF7A29 !important;
+  }
+
+  .menu-drawer__menu-item--active,
+  .menu-drawer__menu-item[aria-current="page"] {
+    color: #00205B !important;
+    font-weight: 700 !important;
+    background-color: #EFF6FF !important;
+    border-left: 4px solid #00205B !important;
+  }
+
+  .menu-drawer__close-button {
+    color: #00205B !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    padding: 16px 20px !important;
+  }
+
+  .menu-drawer__utility-links {
+    background-color: #F8FAFC !important;
+    padding: 18px 20px !important;
+    border-top: 1px solid #E2E8F0 !important;
+  }
+
+  .menu-drawer__account {
+    color: #00205B !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-decoration: none !important;
+  }
+
+  .menu-drawer__account svg {
+    width: 18px !important;
+    height: 18px !important;
+    color: #00205B !important;
+  }
 }
 
 /* Bulletproof Reset for All Header Menu Lists & Dropdowns */
