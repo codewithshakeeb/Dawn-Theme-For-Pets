@@ -194,7 +194,7 @@
         "columns_mobile": "2",
         "swipe_on_mobile": true,
         "padding_top": 76,
-        "padding_bottom": 60
+        "padding_bottom": 28
       }
     },
     "image_banner_hmxfwA": {
@@ -826,6 +826,9 @@
     "petssify_promo_banner": {
       "type": "petssify-promo-banner",
       "settings": {
+        "popout_offset": 45,
+        "card_max_width": 1140,
+        "content_gap": 40,
         "subheading": "Special Offer",
         "heading": "30% OFF",
         "subtext": "on premium food",
@@ -838,9 +841,8 @@
         "btn_bg": "#FEF08A",
         "btn_text": "#134e2c",
         "border_radius": 24,
-        "container_width": "page-width",
-        "padding_top": 36,
-        "padding_bottom": 48
+        "padding_top": 12,
+        "padding_bottom": 24
       }
     }
   },
