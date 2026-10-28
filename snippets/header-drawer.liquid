@@ -33,7 +33,7 @@
                         id="HeaderDrawer-{{ link.handle }}"
                         class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
                       >
-                        {{ link.title | escape }}
+                        <span class="menu-drawer__menu-item-text">{{ link.title | escape }}</span>
                         <span class="svg-wrapper menu-drawer__menu-item-arrow">
                           {{- 'icon-arrow.svg' | inline_asset_content -}}
                         </span>
@@ -70,7 +70,7 @@
                                       id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
                                       class="menu-drawer__menu-item link link--text list-menu__item focus-inset"
                                     >
-                                      {{ childlink.title | escape }}
+                                      <span class="menu-drawer__menu-item-text">{{ childlink.title | escape }}</span>
                                       <span class="svg-wrapper menu-drawer__menu-item-arrow">
                                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                                       </span>
@@ -295,6 +295,11 @@
       var d = document.getElementById('Details-menu-drawer-container');
       if (d) {
         d.addEventListener('toggle', function() {
+          if (d.open) {
+            document.querySelectorAll('details-modal.header__search details[open]').forEach(function(s) {
+              s.removeAttribute('open');
+            });
+          }
           document.body.classList.toggle('overflow-hidden', d.open);
         });
       }

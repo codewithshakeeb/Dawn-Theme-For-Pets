@@ -105,4 +105,20 @@
       </div>
     </div>
   </details>
+  <script>
+    (function() {
+      var d = document.currentScript.closest('details-modal')?.querySelector('details');
+      if (d) {
+        d.addEventListener('toggle', function() {
+          if (d.open) {
+            var menuDrawer = document.getElementById('Details-menu-drawer-container');
+            if (menuDrawer && menuDrawer.open) {
+              menuDrawer.removeAttribute('open');
+              document.body.classList.remove('overflow-hidden');
+            }
+          }
+        });
+      }
+    })();
+  </script>
 </details-modal>

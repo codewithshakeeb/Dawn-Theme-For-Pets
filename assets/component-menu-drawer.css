@@ -115,6 +115,16 @@ summary.menu-drawer__menu-item {
 
 .menu-drawer summary.menu-drawer__menu-item {
   padding: 14px 24px !important;
+  list-style: none !important;
+}
+
+summary.menu-drawer__menu-item::-webkit-details-marker {
+  display: none !important;
+}
+
+.menu-drawer__menu-item-text {
+  flex: 1 1 auto !important;
+  text-align: left !important;
 }
 
 .menu-drawer__menu-item--active,
