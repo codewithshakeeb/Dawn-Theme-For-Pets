@@ -62,8 +62,8 @@
               </svg>
             </span>
             <div class="petssify-footer-trust-info">
-              <strong>Free US Shipping $50+</strong>
-              <span>Fast 1–2 day dispatch with live tracking</span>
+              <strong class="petssify-trust-title">Free US Shipping $50+</strong>
+              <span class="petssify-trust-sub">Fast 1–2 day dispatch with live tracking</span>
             </div>
           </div>
 
@@ -75,8 +75,8 @@
               </svg>
             </span>
             <div class="petssify-footer-trust-info">
-              <strong>30-Day Money-Back Guarantee</strong>
-              <span>Hassle-free 30-day returns &amp; easy refunds</span>
+              <strong class="petssify-trust-title">30-Day Money-Back Guarantee</strong>
+              <span class="petssify-trust-sub">Hassle-free 30-day returns &amp; easy refunds</span>
             </div>
           </div>
 
@@ -88,8 +88,8 @@
               </svg>
             </span>
             <div class="petssify-footer-trust-info">
-              <strong>100% Safe &amp; Secure Checkout</strong>
-              <span>Visa, Mastercard &amp; 256-Bit SSL encryption</span>
+              <strong class="petssify-trust-title">100% Safe &amp; Secure Checkout</strong>
+              <span class="petssify-trust-sub">Visa, Mastercard &amp; 256-Bit SSL encryption</span>
             </div>
           </div>
 
@@ -100,8 +100,8 @@
               </svg>
             </span>
             <div class="petssify-footer-trust-info">
-              <strong>Dedicated Pet Parent Support</strong>
-              <span>Fast 24h response at support@petssify.com</span>
+              <strong class="petssify-trust-title">Dedicated Pet Parent Support</strong>
+              <span class="petssify-trust-sub">Fast 24h response at support@petssify.com</span>
             </div>
           </div>
         </div>
@@ -140,45 +140,70 @@
                   {%- when 'text' -%}
                     {%- assign heading_down = block.settings.heading | downcase -%}
                     {%- if heading_down contains 'contact' or heading_down contains 'operation' -%}
-                      <div class="footer-block__details-content rte">
-                        <ul class="petssify-footer-contact-list">
-                          <li class="petssify-footer-contact-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                            <div>
-                              <strong>Customer Support &amp; Returns:</strong>
-                              <a href="mailto:support@petssify.com">support@petssify.com</a>
-                              <span class="petssify-badge-24h">24h response</span>
+                      <div class="footer-block__details-content petssify-contact-wrapper">
+                        <div class="petssify-footer-contact-list">
+                          <div class="petssify-footer-contact-item">
+                            <span class="petssify-footer-contact-icon" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </span>
+                            <div class="petssify-footer-contact-content">
+                              <span class="petssify-contact-label">Customer Support &amp; Returns:</span>
+                              <div class="petssify-contact-value">
+                                <a href="mailto:support@petssify.com">support@petssify.com</a>
+                                <span class="petssify-badge-24h">24h response</span>
+                              </div>
                             </div>
-                          </li>
-                          <li class="petssify-footer-contact-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                            <div>
-                              <strong>Legal &amp; Privacy:</strong>
-                              <a href="mailto:admin@petssify.com">admin@petssify.com</a>
+                          </div>
+
+                          <div class="petssify-footer-contact-item">
+                            <span class="petssify-footer-contact-icon" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <div class="petssify-footer-contact-content">
+                              <span class="petssify-contact-label">Legal &amp; Privacy:</span>
+                              <div class="petssify-contact-value">
+                                <a href="mailto:admin@petssify.com">admin@petssify.com</a>
+                              </div>
                             </div>
-                          </li>
-                          <li class="petssify-footer-contact-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                            <div>
-                              <strong>Phone:</strong>
-                              <a href="tel:+18889990624">+1 (888) 999-0624</a> <span style="color: #94A3B8; font-size: 12px;">(Mon–Fri, 9am–5pm EST)</span>
+                          </div>
+
+                          <div class="petssify-footer-contact-item">
+                            <span class="petssify-footer-contact-icon" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            </span>
+                            <div class="petssify-footer-contact-content">
+                              <span class="petssify-contact-label">Phone:</span>
+                              <div class="petssify-contact-value">
+                                <a href="tel:+18889990624">+1 (888) 999-0624</a>
+                                <span class="petssify-contact-subtext">(Mon–Fri, 9am–5pm EST)</span>
+                              </div>
                             </div>
-                          </li>
-                          <li class="petssify-footer-contact-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path></svg>
-                            <div>
-                              <strong>Legal Entity:</strong>
-                              <span>Dynamic Resolutions LLC</span>
+                          </div>
+
+                          <div class="petssify-footer-contact-item">
+                            <span class="petssify-footer-contact-icon" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path></svg>
+                            </span>
+                            <div class="petssify-footer-contact-content">
+                              <span class="petssify-contact-label">Legal Entity:</span>
+                              <div class="petssify-contact-value">
+                                <span>Dynamic Resolutions LLC</span>
+                              </div>
                             </div>
-                          </li>
-                          <li class="petssify-footer-contact-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            <div>
-                              <strong>Official Address:</strong>
-                              <span>2810 N Church St #728120, Wilmington, DE 19802, United States</span>
+                          </div>
+
+                          <div class="petssify-footer-contact-item">
+                            <span class="petssify-footer-contact-icon" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </span>
+                            <div class="petssify-footer-contact-content">
+                              <span class="petssify-contact-label">Official Address:</span>
+                              <div class="petssify-contact-value">
+                                <span>2810 N Church St #728120, Wilmington, DE 19802, United States</span>
+                              </div>
                             </div>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
                       </div>
                     {%- else -%}
                       <div class="footer-block__details-content rte">
@@ -186,44 +211,32 @@
                       </div>
                     {%- endif -%}
                   {%- when 'link_list' -%}
-                    {%- assign menu_links = block.settings.menu.links -%}
-                    <ul class="footer-block__details-content list-unstyled">
-                      {%- for link in menu_links -%}
-                        <li>
-                          <a
-                            href="{{ link.url }}"
-                            class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
-                          >
-                            {{ link.title | escape }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                      {%- comment -%} Petssify: Automatic policy links fallback when menu only has search or is Customer Care & Policies {%- endcomment -%}
-                      {%- assign block_heading_down = block.settings.heading | downcase -%}
-                      {%- if block_heading_down contains 'polic' or block_heading_down contains 'care' or menu_links.size <= 1 -%}
-                        {%- for policy in shop.policies -%}
-                          {%- if policy != blank -%}
-                            {%- assign policy_already_in_menu = false -%}
-                            {%- for link in menu_links -%}
-                              {%- if link.url == policy.url -%}
-                                {%- assign policy_already_in_menu = true -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            {%- unless policy_already_in_menu -%}
-                              <li>
-                                <a
-                                  href="{{ policy.url }}"
-                                  class="link link--text list-menu__item list-menu__item--link"
-                                >
-                                  {{ policy.title | escape }}
-                                </a>
-                              </li>
-                            {%- endunless -%}
-                          {%- endif -%}
+                    {%- assign block_heading_down = block.settings.heading | downcase -%}
+                    {%- if block_heading_down contains 'care' or block_heading_down contains 'polic' -%}
+                      <ul class="footer-block__details-content list-unstyled petssify-footer-links-list">
+                        <li><a href="/pages/track-order" class="link link--text list-menu__item list-menu__item--link">Track Your Order</a></li>
+                        <li><a href="/policies/shipping-policy" class="link link--text list-menu__item list-menu__item--link">Shipping Policy</a></li>
+                        <li><a href="/policies/refund-policy" class="link link--text list-menu__item list-menu__item--link">30-Day Returns &amp; Refunds</a></li>
+                        <li><a href="/policies/terms-of-service" class="link link--text list-menu__item list-menu__item--link">Terms of Service</a></li>
+                        <li><a href="/policies/privacy-policy" class="link link--text list-menu__item list-menu__item--link">Privacy Policy</a></li>
+                        <li><a href="/pages/faq" class="link link--text list-menu__item list-menu__item--link">FAQ &amp; Help Center</a></li>
+                        <li><a href="/pages/contact" class="link link--text list-menu__item list-menu__item--link">Contact Support</a></li>
+                      </ul>
+                    {%- else -%}
+                      {%- assign menu_links = block.settings.menu.links -%}
+                      <ul class="footer-block__details-content list-unstyled petssify-footer-links-list">
+                        {%- for link in menu_links -%}
+                          <li>
+                            <a
+                              href="{{ link.url }}"
+                              class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
+                            >
+                              {{ link.title | escape }}
+                            </a>
+                          </li>
                         {%- endfor -%}
-                      {%- endif -%}
-                    </ul>
+                      </ul>
+                    {%- endif -%}
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
                       <div class="petssify-footer-brand-logo">
@@ -260,7 +273,9 @@
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
                       {%- endif -%}
                       {%- if settings.brand_description != blank -%}
-                        <div class="rte">{{ settings.brand_description }}</div>
+                        <div class="rte petssify-footer-brand-tagline">{{ settings.brand_description }}</div>
+                      {%- else -%}
+                        <div class="rte petssify-footer-brand-tagline">Petssify is a US-based online pet supply store operated by Dynamic Resolutions LLC, offering dog and cat essentials—including grooming tools, water fountains, slow feeders, harnesses, and travel gear—with verified size, weight, and material specs.</div>
                       {%- endif -%}
                       {%- if block.settings.show_social and has_social_icons -%}
                         {%- render 'social-icons', class: 'footer__list-social' -%}
@@ -293,8 +308,12 @@
           </div>
         {%- endif -%}
 
-        <div
-          class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        <!-- Petssify Safe & Secure Checkout Badges -->
+        <div class="petssify-footer-payment-section">
+          {% render 'petssify-payment-icons' %}
+        </div>
+
+        <div class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
             data-cascade
           {% endif %}
@@ -384,9 +403,7 @@
     {%- endunless -%}
   {%- endif -%}
 
-  <div class="petssify-footer-payment-section page-width">
-      {% render 'petssify-payment-icons' %}
-    </div>
+  
 
   <div
     class="footer__content-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
