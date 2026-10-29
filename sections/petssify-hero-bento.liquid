@@ -1,25 +1,25 @@
 {% comment %}
-  Petssify 3D Bento Hero — Editorial Sky-Frost DTC Edition
-  - Clean, airy Sky-Frost canvas (#EDF4FD) with zero floating sticker collisions
-  - Single high-contrast Obsidian Black Eyebrow Pill (#090D16) with pulsing #FF6B00 dot
-  - Giant 2-line H1 ("Everything" / "Your Pets Love")
-  - 3 peeking pets anchored to top: 0 of the 3-column bottom bento bar
-  - Enforced WCAG AAA contrast: Deep Obsidian Navy (#090D16) on Sky-Blue (#ADC8ED)
-  - Deep Obsidian-Navy gradient center card with high-impact #FF6B00 CTA
+  Petssify 3D Bento Hero — Exact Match to Reference Mockup (image_ac7e5b.jpg)
+  - Top-Left: Upright Black Friday "UP TO 70% OFF" Card with Orange Price Tag SVG & Side Rays
+  - Top-Right: Upright "BLACK FRIDAY DEAL ENDS IN" Card with 4 Orange Digit Boxes & Labels
+  - Center Headline: "Everything / Your Pets Love" with Hand-Drawn Orange Heart SVG & Sky Paw Watermarks
+  - Bottom Bento Bar: Rounded Obsidian-Navy Center Card with Orange Paw Icon + "Up to 70% OFF" in Orange
 {% endcomment %}
 
 <section
   id="petssify-hero-{{ section.id }}"
   class="ps-hero-section"
   style="
-    --ps-upper-bg: {{ section.settings.upper_bg_color | default: '#EDF4FD' }};
-    --ps-heading-color: {{ section.settings.heading_color | default: '#090D16' }};
-    --ps-side-bg: {{ section.settings.side_cards_bg_color | default: '#ADC8ED' }};
-    --ps-side-text: {{ section.settings.side_cards_text_color | default: '#090D16' }};
-    --ps-center-bg: {{ section.settings.center_card_bg_color | default: '#0A2540' }};
+    --ps-upper-bg: {{ section.settings.upper_bg_color | default: '#EBF3FE' }};
+    --ps-heading-color: {{ section.settings.heading_color | default: '#0B1320' }};
+    --ps-side-bg: {{ section.settings.side_cards_bg_color | default: '#B7D2F7' }};
+    --ps-side-text: {{ section.settings.side_cards_text_color | default: '#0B1320' }};
+    --ps-center-bg: {{ section.settings.center_card_bg_color | default: '#0B1320' }};
     --ps-center-text: {{ section.settings.center_card_text_color | default: '#FFFFFF' }};
     --ps-accent: {{ section.settings.accent_orange_color | default: '#FF6B00' }};
-    --ps-stage-space: {{ section.settings.upper_stage_space | default: 230 }}px;
+    --ps-h1-desktop: {{ section.settings.heading_size_desktop | default: 96 }}px;
+    --ps-h1-mobile: {{ section.settings.heading_size_mobile | default: 42 }}px;
+    --ps-stage-space: {{ section.settings.upper_stage_space | default: 235 }}px;
     --ps-left-w: {{ section.settings.left_pet_width_pct | default: 72 }};
     --ps-left-ledge: {{ section.settings.left_pet_ledge_pct | default: 66 }};
     --ps-center-w: {{ section.settings.center_pet_width_pct | default: 84 }};
@@ -29,34 +29,135 @@
     --ps-max-w: {{ section.settings.container_max_width | default: '1680px' }};
   "
 >
-  <!-- ZONE A: Upper Sky-Frost Stage with Centered Eyebrow & Giant Headline -->
+  <!-- ZONE A: Upper Sky Stage, Floating Left/Right Cards, Paw Watermarks & Giant Headline -->
   <div class="ps-hero-upper">
     <div class="ps-hero-container">
-      <div class="ps-hero-headline-box">
-        {% if section.settings.eyebrow_text != blank %}
-          <div class="ps-eyebrow-pill">
-            <span class="ps-eyebrow-dot" aria-hidden="true"></span>
-            <span>{{ section.settings.eyebrow_text | escape }}</span>
-          </div>
-        {% endif %}
 
+      <!-- Subtle Sky-Blue Decorative Paw Watermarks -->
+      <span class="ps-bg-paw ps-bg-paw--left" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="32" cy="42" rx="14" ry="11"/>
+          <circle cx="16" cy="26" r="6"/>
+          <circle cx="26" cy="18" r="6"/>
+          <circle cx="38" cy="18" r="6"/>
+          <circle cx="48" cy="26" r="6"/>
+        </svg>
+      </span>
+      <span class="ps-bg-paw ps-bg-paw--right" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="32" cy="42" rx="14" ry="11"/>
+          <circle cx="16" cy="26" r="6"/>
+          <circle cx="26" cy="18" r="6"/>
+          <circle cx="38" cy="18" r="6"/>
+          <circle cx="48" cy="26" r="6"/>
+        </svg>
+      </span>
+
+      {% if section.settings.enable_bf_widgets %}
+        <!-- TOP-LEFT FLOATING WIDGET: "BLACK FRIDAY UP TO 70% OFF" CARD -->
+        <div class="ps-bf-left-box">
+          <!-- Left Orange Burst Rays -->
+          <svg class="ps-burst-rays ps-burst-rays--left" viewBox="0 0 24 48" fill="none" aria-hidden="true">
+            <line x1="20" y1="10" x2="4" y2="4" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="18" y1="24" x2="2" y2="24" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="38" x2="4" y2="44" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+
+          <div class="ps-left-card-inner">
+            <div class="ps-lc-header">
+              <!-- Orange Price Tag SVG Icon -->
+              <svg class="ps-lc-tag-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M16.5 3H6C4.34315 3 3 4.34315 3 6V16.5C3 17.2956 3.31607 18.0587 3.87868 18.6213L15.3787 30.1213C16.5503 31.2929 18.4497 31.2929 19.6213 30.1213L30.1213 19.6213C31.2929 18.4497 31.2929 16.5503 30.1213 15.3787L18.6213 3.87868C18.0587 3.31607 17.2956 3 16.5 3Z" fill="#FF6B00"/>
+                <circle cx="9.5" cy="9.5" r="2.2" fill="#0B111E"/>
+                <line x1="13" y1="18" x2="20" y2="11" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="21" x2="23" y2="14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span class="ps-lc-title">{{ section.settings.left_box_title | default: 'BLACK FRIDAY' }}</span>
+            </div>
+            <div class="ps-lc-upto">{{ section.settings.left_box_top | default: 'UP TO' }}</div>
+            <div class="ps-lc-big">{{ section.settings.left_box_stat | default: '70%' }}</div>
+            <div class="ps-lc-off">{{ section.settings.left_box_bottom | default: 'OFF' }}</div>
+          </div>
+
+          <!-- Right Orange Burst Rays -->
+          <svg class="ps-burst-rays ps-burst-rays--right" viewBox="0 0 24 48" fill="none" aria-hidden="true">
+            <line x1="4" y1="10" x2="20" y2="4" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="6" y1="24" x2="22" y2="24" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="4" y1="38" x2="20" y2="44" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- TOP-RIGHT FLOATING WIDGET: "BLACK FRIDAY DEAL ENDS IN" 4-ORANGE-BOX TIMER -->
+        <div class="ps-bf-right-box" data-hero-bf-timer data-end-date="{{ section.settings.bf_end_date }}">
+          <div class="ps-rc-top">
+            <span class="ps-rc-clock-circle" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="10" r="9" fill="#FF6B00"/>
+                <path d="M10 5.5V10L13 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="ps-rc-deal-white">{{ section.settings.right_box_title | default: 'BLACK FRIDAY DEAL' }}</span>
+            <span class="ps-rc-deal-orange">{{ section.settings.right_box_accent | default: 'ENDS IN' }}</span>
+          </div>
+
+          <div class="ps-rc-grid" data-hero-clock>
+            <div class="ps-rc-col">
+              <div class="ps-rc-orange-box" data-d>02</div>
+              <span class="ps-rc-unit-label">Days</span>
+            </div>
+            <div class="ps-rc-col">
+              <div class="ps-rc-orange-box" data-h>14</div>
+              <span class="ps-rc-unit-label">Hours</span>
+            </div>
+            <div class="ps-rc-col">
+              <div class="ps-rc-orange-box" data-m>37</div>
+              <span class="ps-rc-unit-label">Minutes</span>
+            </div>
+            <div class="ps-rc-col">
+              <div class="ps-rc-orange-box" data-s>56</div>
+              <span class="ps-rc-unit-label">Seconds</span>
+            </div>
+          </div>
+
+          <!-- Outer Right Orange Burst Rays -->
+          <svg class="ps-burst-rays ps-burst-rays--far-right" viewBox="0 0 24 48" fill="none" aria-hidden="true">
+            <line x1="4" y1="10" x2="20" y2="4" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="6" y1="24" x2="22" y2="24" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="4" y1="38" x2="20" y2="44" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      {% endif %}
+
+      <!-- CENTER GIANT 2-LINE HEADLINE + ORANGE HEART DOODLE -->
+      <div class="ps-hero-headline-box">
         <{{ section.settings.heading_tag | default: 'h1' }} class="ps-hero-title">
           {% if section.settings.heading_line_1 != blank %}
             <span class="ps-title-line">{{ section.settings.heading_line_1 | escape }}</span>
           {% endif %}
           {% if section.settings.heading_line_2 != blank %}
-            <span class="ps-title-line">{{ section.settings.heading_line_2 | escape }}</span>
+            <span class="ps-title-line ps-title-line--second">
+              {{ section.settings.heading_line_2 | escape }}
+              <!-- Hand-Drawn Orange Heart + Rays SVG Next to "Love" -->
+              <svg class="ps-love-heart-svg" viewBox="0 0 56 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M24 38C24 38 10 29 10 19C10 13.5 14.5 10 19 10C22 10 24 12 24 14.5C24 12 26 10 29 10C33.5 10 38 13.5 38 19C38 29 24 38 24 38Z" stroke="#FF6B00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="6" y1="8" x2="2" y2="4" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="44" y1="10" x2="50" y2="6" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="46" y1="22" x2="53" y2="22" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="42" y1="34" x2="48" y2="38" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </span>
           {% endif %}
         </{{ section.settings.heading_tag | default: 'h1' }}>
       </div>
+
     </div>
   </div>
 
-  <!-- ZONE B: 3-Column Bottom Bento Bar With Pets Locked to top: 0 of Each Card -->
+  <!-- ZONE B: 3-Column Bottom Bento Bar -->
   <div class="ps-bento-bar-outer">
     <div class="ps-bento-grid">
 
-      <!-- CARD 1: LEFT SOCIAL PROOF CARD + LEFT PEEKING PUPPY -->
+      <!-- COLUMN 1: LEFT SOCIAL PROOF CARD + LEFT PEEKING DACHSHUND -->
       <div class="ps-bento-card ps-bento-card--side ps-bento-card--left {% unless section.settings.show_side_pets_on_mobile %}ps-hide-side-pet-mobile{% endunless %}">
         <div class="ps-pet-wrap ps-pet-wrap--left">
           {% if section.settings.left_pet_image != blank %}
@@ -85,8 +186,8 @@
                   | image_url: width: 100
                   | image_tag:
                     loading: 'lazy',
-                    width: 38,
-                    height: 38,
+                    width: 40,
+                    height: 40,
                     alt: 'Happy customer',
                     class: 'ps-avatar-circle'
                 }}
@@ -97,8 +198,8 @@
                   | image_url: width: 100
                   | image_tag:
                     loading: 'lazy',
-                    width: 38,
-                    height: 38,
+                    width: 40,
+                    height: 40,
                     alt: 'Happy pet',
                     class: 'ps-avatar-circle'
                 }}
@@ -114,8 +215,8 @@
         </div>
       </div>
 
-      <!-- CARD 2: CENTER OBSIDIAN-NAVY CTA CARD + CENTER HERO GOLDEN RETRIEVER -->
-      <div class="ps-bento-card ps-bento-card--center">
+      <!-- COLUMN 2: CENTER ROUNDED OBSIDIAN-NAVY CARD + CENTER GOLDEN RETRIEVER -->
+      <div class="ps-bento-card ps-bento-card--center-wrap">
         <div class="ps-pet-wrap ps-pet-wrap--center">
           {% if section.settings.center_pet_image != blank %}
             {{
@@ -132,24 +233,42 @@
           {% endif %}
         </div>
 
-        <div class="ps-card-content">
-          {% if section.settings.center_card_heading != blank %}
-            <h2 class="ps-cta-heading">{{ section.settings.center_card_heading | newline_to_br }}</h2>
-          {% endif %}
-          {% if section.settings.cta_button_label != blank %}
-            <a href="{{ section.settings.cta_button_link | default: '/collections/all' }}" class="ps-cta-btn">
-              <span>{{ section.settings.cta_button_label | escape }}</span>
-              <span class="ps-cta-arrow" aria-hidden="true">
-                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4.16669 10H15.8334M15.8334 10L10.8334 5M15.8334 10L10.8334 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+        <div class="ps-bento-card--center-box">
+          <div class="ps-card-content ps-card-content--center">
+            <!-- Orange Paw Icon Between the Dog's Paws -->
+            <span class="ps-center-paw-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="16" cy="21" rx="7" ry="5.5"/>
+                <circle cx="8" cy="13" r="3"/>
+                <circle cx="13" cy="9" r="3"/>
+                <circle cx="19" cy="9" r="3"/>
+                <circle cx="24" cy="13" r="3"/>
+              </svg>
+            </span>
+
+            <h2 class="ps-cta-heading">
+              <span class="ps-cta-line-1">{{ section.settings.center_line_1 | default: 'Black Friday Sale' }}</span>
+              <span class="ps-cta-line-2">
+                <span class="ps-cta-upto">{{ section.settings.center_line_2_white | default: 'Up to ' }}</span>
+                <span class="ps-cta-orange">{{ section.settings.center_line_2_orange | default: '70% OFF' }}</span>
               </span>
-            </a>
-          {% endif %}
+            </h2>
+
+            {% if section.settings.cta_button_label != blank %}
+              <a href="{{ section.settings.cta_button_link | default: '/collections/all' }}" class="ps-cta-btn">
+                <span>{{ section.settings.cta_button_label | escape }}</span>
+                <span class="ps-cta-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.16669 10H15.8334M15.8334 10L10.8334 5M15.8334 10L10.8334 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
 
-      <!-- CARD 3: RIGHT RATING CARD + RIGHT PEEKING CAT -->
+      <!-- COLUMN 3: RIGHT RATING CARD + RIGHT PEEKING CAT -->
       <div class="ps-bento-card ps-bento-card--side ps-bento-card--right {% unless section.settings.show_side_pets_on_mobile %}ps-hide-side-pet-mobile{% endunless %}">
         <div class="ps-pet-wrap ps-pet-wrap--right">
           {% if section.settings.right_pet_image != blank %}
@@ -205,70 +324,231 @@
     box-sizing: border-box;
   }
 
-  /* ZONE A: Upper Stage — Airy, Editorial Canvas */
+  /* ZONE A: Upper Sky Stage */
   #petssify-hero-{{ section.id }} .ps-hero-upper {
     position: relative;
     z-index: 1;
-    padding-top: clamp(28px, 3.5vw, 52px);
-    padding-bottom: clamp(150px, 18.5vw, 245px);
+    padding-top: clamp(24px, 3.2vw, 46px);
+    padding-bottom: clamp(140px, calc(var(--ps-stage-space) * 0.85), var(--ps-stage-space));
   }
 
   #petssify-hero-{{ section.id }} .ps-hero-container {
     position: relative;
     max-width: var(--ps-max-w);
     margin: 0 auto;
-    padding: 0 clamp(16px, 3vw, 40px);
+    padding: 0 clamp(16px, 3.5vw, 44px);
   }
 
-  /* Center Headline Stack */
+  /* Decorative Sky-Blue Paw Watermarks */
+  #petssify-hero-{{ section.id }} .ps-bg-paw {
+    position: absolute;
+    width: clamp(38px, 3.4vw, 50px);
+    height: clamp(38px, 3.4vw, 50px);
+    color: #9EC3F5;
+    opacity: 0.72;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bg-paw--left {
+    left: 28%;
+    bottom: -50px;
+    transform: rotate(-18deg);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bg-paw--right {
+    right: 28%;
+    bottom: -52px;
+    transform: rotate(16deg);
+  }
+
+  /* TOP-LEFT FLOATING "BLACK FRIDAY UP TO 70% OFF" CARD */
+  #petssify-hero-{{ section.id }} .ps-bf-left-box {
+    position: absolute;
+    left: clamp(24px, 4.5vw, 76px) !important;
+    right: auto !important;
+    top: 6px !important;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-left-card-inner {
+    background-color: #0B111E;
+    border: 2px solid #FF6B00;
+    border-radius: 18px;
+    padding: 16px 22px 14px;
+    min-width: 212px;
+    box-shadow: 0 18px 36px rgba(11, 17, 30, 0.24);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-tag-svg {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-upto {
+    font-size: 17px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.1;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-big {
+    font-size: 56px;
+    font-weight: 900;
+    color: #FF6B00;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 2px 0;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-lc-off {
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-burst-rays {
+    width: 22px;
+    height: 44px;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-burst-rays--left {
+    left: -24px;
+    bottom: 16px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-burst-rays--right {
+    right: -24px;
+    bottom: 16px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-burst-rays--far-right {
+    right: -24px;
+    top: 32%;
+  }
+
+  /* TOP-RIGHT FLOATING "BLACK FRIDAY DEAL ENDS IN" 4-BOX TIMER CARD */
+  #petssify-hero-{{ section.id }} .ps-bf-right-box {
+    position: absolute;
+    right: clamp(24px, 4.5vw, 76px) !important;
+    left: auto !important;
+    top: 14px !important;
+    z-index: 4;
+    background-color: #0B111E;
+    border-radius: 18px;
+    padding: 16px 20px 14px;
+    box-shadow: 0 18px 36px rgba(11, 17, 30, 0.24);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 11px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-clock-circle {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-deal-white {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.03em;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-deal-orange {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #FF6B00;
+    letter-spacing: 0.03em;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 50px);
+    gap: 10px;
+    justify-content: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-orange-box {
+    width: 50px;
+    height: 48px;
+    border-radius: 10px;
+    background-color: #FF6B00;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-rc-unit-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 5px;
+    font-family: var(--font-body, 'Inter', sans-serif);
+  }
+
+  /* Center Giant Headline */
   #petssify-hero-{{ section.id }} .ps-hero-headline-box {
     text-align: center;
-    max-width: 1100px;
+    max-width: 980px;
     margin: 0 auto;
     position: relative;
     z-index: 2;
   }
 
-  /* High-Contrast Obsidian Black Eyebrow Pill with Pulsing Orange Dot */
-  #petssify-hero-{{ section.id }} .ps-eyebrow-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #090D16;
-    color: #FFFFFF;
-    border: 1.5px solid rgba(255, 107, 0, 0.6);
-    border-radius: 999px;
-    padding: 7px 18px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    box-shadow: 0 6px 18px rgba(9, 13, 22, 0.12);
-    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-eyebrow-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--ps-accent);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.28);
-    display: inline-block;
-    flex-shrink: 0;
-    animation: psEyebrowPulse 2s infinite;
-  }
-
-  @keyframes psEyebrowPulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.28); }
-    50% { box-shadow: 0 0 0 6px rgba(255, 107, 0, 0); }
-  }
-
-  /* Giant 2-Line Hero Display Headline */
   #petssify-hero-{{ section.id }} .ps-hero-title {
     margin: 0;
     color: var(--ps-heading-color);
-    font-size: clamp(2.75rem, 7.2vw, 6.75rem);
+    font-size: clamp(var(--ps-h1-mobile), 6.8vw, var(--ps-h1-desktop));
     font-weight: 800;
     line-height: 0.96;
     letter-spacing: -0.03em;
@@ -279,27 +559,34 @@
     display: block;
   }
 
-  /* ZONE B: 3-Column Bottom Bento Bar */
+  #petssify-hero-{{ section.id }} .ps-title-line--second {
+    position: relative;
+    display: inline-block;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-love-heart-svg {
+    position: absolute;
+    right: -46px;
+    top: -10px;
+    width: 44px;
+    height: 42px;
+    pointer-events: none;
+  }
+
+  /* ZONE B: Bottom 3-Column Bento Bar */
   #petssify-hero-{{ section.id }} .ps-bento-bar-outer {
     position: relative;
     z-index: 2;
     width: 100%;
-    background: linear-gradient(
-      90deg,
-      var(--ps-side-bg) 0%,
-      var(--ps-side-bg) 33%,
-      var(--ps-center-bg) 33%,
-      var(--ps-center-bg) 67%,
-      var(--ps-side-bg) 67%,
-      var(--ps-side-bg) 100%
-    );
+    background-color: var(--ps-side-bg);
+    padding-bottom: 12px;
   }
 
   #petssify-hero-{{ section.id }} .ps-bento-grid {
     max-width: var(--ps-max-w);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.14fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr) minmax(0, 1fr);
     align-items: stretch;
     gap: 0;
   }
@@ -307,8 +594,8 @@
   #petssify-hero-{{ section.id }} .ps-bento-card {
     position: relative;
     overflow: visible;
-    min-height: 215px;
-    padding: 48px 20px 32px;
+    min-height: 205px;
+    padding: 38px 20px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -316,23 +603,32 @@
     text-align: center;
   }
 
-  /* High Contrast: Deep Obsidian Navy text on Sky-Blue Cards (#ADC8ED) */
   #petssify-hero-{{ section.id }} .ps-bento-card--side {
-    background-color: var(--ps-side-bg);
-    color: #090D16 !important;
+    background-color: transparent;
+    color: var(--ps-side-text);
   }
 
-  /* Center Card: Deep Obsidian-Navy Gradient + Proper Breathing Room */
-  #petssify-hero-{{ section.id }} .ps-bento-card--center {
-    background: linear-gradient(180deg, #090D16 0%, #0A2540 100%) !important;
+  /* Center Column Wrapper */
+  #petssify-hero-{{ section.id }} .ps-bento-card--center-wrap {
+    padding: 0;
+    justify-content: flex-end;
+  }
+
+  /* Rounded Obsidian-Navy Center Card (Exact Match to image_ac7e5b.jpg) */
+  #petssify-hero-{{ section.id }} .ps-bento-card--center-box {
+    width: calc(100% - 16px);
+    margin: 0 auto 8px;
+    background-color: var(--ps-center-bg);
     color: var(--ps-center-text);
-    border-top: 3.5px solid var(--ps-accent);
-    min-height: 215px !important;
-    padding: 48px 24px 36px !important;
+    border-radius: 18px;
+    padding: 22px 24px 26px;
+    box-shadow: 0 14px 32px rgba(11, 19, 32, 0.24);
     z-index: 3;
+    position: relative;
+    box-sizing: border-box;
   }
 
-  /* CARD-TOP LEDGE ANCHOR: 66% on Left/Right, 71% Center */
+  /* Pet Cutouts Locked to top: 0 of Each Bento Card */
   #petssify-hero-{{ section.id }} .ps-pet-wrap {
     position: absolute;
     top: 0;
@@ -346,19 +642,19 @@
 
   #petssify-hero-{{ section.id }} .ps-pet-wrap--left {
     width: calc(var(--ps-left-w) * 1%);
-    max-width: 340px;
+    max-width: 330px;
     transform: translate(-50%, calc(-1% * var(--ps-left-ledge)));
   }
 
   #petssify-hero-{{ section.id }} .ps-pet-wrap--center {
     width: calc(var(--ps-center-w) * 1%);
-    max-width: 460px;
+    max-width: 450px;
     transform: translate(-50%, calc(-1% * var(--ps-center-ledge)));
   }
 
   #petssify-hero-{{ section.id }} .ps-pet-wrap--right {
     width: calc(var(--ps-right-w) * 1%);
-    max-width: 340px;
+    max-width: 330px;
     transform: translate(-50%, calc(-1% * var(--ps-right-ledge)));
   }
 
@@ -369,16 +665,24 @@
     object-fit: contain;
   }
 
-  /* Card Content */
+  /* Card Inner Content */
   #petssify-hero-{{ section.id }} .ps-card-content {
     position: relative;
     z-index: 6;
-    max-width: 300px;
+    max-width: 310px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-center-paw-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--ps-accent);
+    display: inline-flex;
+    margin-bottom: 2px;
   }
 
   #petssify-hero-{{ section.id }} .ps-stat-inline {
@@ -389,11 +693,11 @@
   }
 
   #petssify-hero-{{ section.id }} .ps-stat-big {
-    font-size: clamp(30px, 3vw, 46px);
+    font-size: clamp(34px, 3.2vw, 48px);
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.02em;
-    color: #090D16 !important;
+    color: #0B1320 !important;
     font-variant-numeric: tabular-nums;
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
@@ -404,8 +708,8 @@
   }
 
   #petssify-hero-{{ section.id }} .ps-avatar-circle {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ffffff;
@@ -417,10 +721,10 @@
   }
 
   #petssify-hero-{{ section.id }} .ps-plus-circle {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: #090D16;
+    background-color: #0B111E;
     color: #ffffff;
     display: inline-flex;
     align-items: center;
@@ -440,21 +744,40 @@
 
   #petssify-hero-{{ section.id }} .ps-card-caption {
     margin: 0;
-    font-size: clamp(13px, 1.05vw, 15px);
+    font-size: clamp(13.5px, 1.05vw, 15px);
     font-weight: 600;
     line-height: 1.4;
-    color: #090D16 !important;
-    opacity: 0.92;
+    color: #0B1320 !important;
     font-family: var(--font-body, 'Inter', sans-serif);
   }
 
   #petssify-hero-{{ section.id }} .ps-cta-heading {
     margin: 0 0 10px;
-    font-size: clamp(19px, 1.65vw, 25px);
-    font-weight: 800;
-    line-height: 1.22;
-    color: #FFFFFF !important;
+    line-height: 1.2;
+    text-align: center;
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-line-1 {
+    display: block;
+    font-size: clamp(20px, 1.7vw, 25px);
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-line-2 {
+    display: block;
+    font-size: clamp(22px, 1.9vw, 28px);
+    font-weight: 800;
+    margin-top: 2px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-upto {
+    color: #FFFFFF;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-cta-orange {
+    color: var(--ps-accent);
   }
 
   #petssify-hero-{{ section.id }} .ps-cta-btn {
@@ -462,25 +785,24 @@
     align-items: center;
     gap: 14px;
     background-color: var(--ps-accent);
-    color: #ffffff !important;
+    color: #ffffff;
     text-decoration: none;
-    padding: 7px 7px 7px 26px;
+    padding: 7px 8px 7px 26px;
     border-radius: 999px;
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.38);
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
 
   #petssify-hero-{{ section.id }} .ps-cta-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(255, 107, 0, 0.45);
+    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.38);
   }
 
   #petssify-hero-{{ section.id }} .ps-cta-arrow {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background-color: #ffffff;
     color: var(--ps-accent);
@@ -490,29 +812,63 @@
   }
 
   #petssify-hero-{{ section.id }} .ps-cta-arrow svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
+  }
+
+  /* Tablet & Compact Desktop Adaptation (< 1180px) */
+  @media screen and (max-width: 1179px) {
+    #petssify-hero-{{ section.id }} .ps-hero-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-hero-headline-box {
+      order: 1;
+      margin-bottom: 16px;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bf-left-box,
+    #petssify-hero-{{ section.id }} .ps-bf-right-box {
+      position: static !important;
+      margin: 8px auto;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bf-left-box {
+      order: 2;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bf-right-box {
+      order: 3;
+    }
   }
 
   @media screen and (max-width: 767px) {
     #petssify-hero-{{ section.id }} .ps-hero-upper {
-      padding-top: 24px;
-      padding-bottom: clamp(160px, 46vw, 220px);
+      padding-top: 16px;
+      padding-bottom: clamp(165px, 46vw, 220px);
     }
 
-    #petssify-hero-{{ section.id }} .ps-bento-bar-outer {
-      background: none;
+    #petssify-hero-{{ section.id }} .ps-love-heart-svg,
+    #petssify-hero-{{ section.id }} .ps-bg-paw {
+      display: none;
     }
 
     #petssify-hero-{{ section.id }} .ps-bento-grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    #petssify-hero-{{ section.id }} .ps-bento-card--center {
+    #petssify-hero-{{ section.id }} .ps-bento-card--center-wrap {
       grid-column: 1 / -1;
       order: 1;
-      min-height: 195px !important;
-      padding: 46px 20px 28px !important;
+      margin-bottom: 8px;
+    }
+
+    #petssify-hero-{{ section.id }} .ps-bento-card--center-box {
+      width: calc(100% - 20px);
+      margin: 0 auto 10px;
+      padding: 24px 20px 26px;
     }
 
     #petssify-hero-{{ section.id }} .ps-pet-wrap--center {
@@ -523,15 +879,14 @@
       grid-column: 1 / 2;
       order: 2;
       min-height: 135px;
-      padding: 20px 10px;
-      border-right: 1px solid rgba(9, 13, 22, 0.1);
+      padding: 18px 10px;
     }
 
     #petssify-hero-{{ section.id }} .ps-bento-card--right {
       grid-column: 2 / 3;
       order: 3;
       min-height: 135px;
-      padding: 20px 10px;
+      padding: 18px 10px;
     }
 
     #petssify-hero-{{ section.id }} .ps-hide-side-pet-mobile .ps-pet-wrap {
@@ -539,6 +894,42 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    var wrap = document.querySelector('#petssify-hero-{{ section.id }} [data-hero-bf-timer]');
+    if (!wrap) return;
+    var key = 'petssify_bfcm_deadline_v4';
+    var endStr = wrap.getAttribute('data-end-date');
+    var target = endStr ? new Date(endStr).getTime() : NaN;
+    var now = Date.now();
+
+    if (isNaN(target) || target <= now || (target - now) > (4 * 86400000)) {
+      var saved = localStorage.getItem(key);
+      if (saved && parseInt(saved, 10) > now) {
+        target = parseInt(saved, 10);
+      } else {
+        target = now + (2 * 86400000) + (14 * 3600000) + (37 * 60000) + 56000;
+        localStorage.setItem(key, String(target));
+      }
+    }
+
+    var dEl = wrap.querySelector('[data-d]');
+    var hEl = wrap.querySelector('[data-h]');
+    var mEl = wrap.querySelector('[data-m]');
+    var sEl = wrap.querySelector('[data-s]');
+
+    function tick() {
+      var diff = Math.max(0, target - Date.now());
+      if (dEl) dEl.textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
+      if (hEl) hEl.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+      if (mEl) mEl.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      if (sEl) sEl.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
 
 {% schema %}
 {
@@ -548,13 +939,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "1. Headline & Eyebrow"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow_text",
-      "label": "Top Eyebrow Pill Text",
-      "default": "BLACK FRIDAY EVENT • UP TO 70% OFF SITEWIDE"
+      "content": "1. Headline Typography"
     },
     {
       "type": "text",
@@ -579,8 +964,90 @@
       "default": "h1"
     },
     {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 56,
+      "max": 124,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Size (Desktop)",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 32,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Size (Mobile)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "upper_stage_space",
+      "min": 140,
+      "max": 360,
+      "step": 5,
+      "unit": "px",
+      "label": "Space Between Headline & Bottom Bar",
+      "default": 235
+    },
+    {
       "type": "header",
-      "content": "2. Pet Cutouts (Width & Ledge %)"
+      "content": "2. Left & Right BF Cards"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bf_widgets",
+      "label": "Show Left 70% OFF Card & Right Countdown Card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "left_box_title",
+      "label": "Left Card Title",
+      "default": "BLACK FRIDAY"
+    },
+    {
+      "type": "text",
+      "id": "left_box_top",
+      "label": "Left Card Top Label",
+      "default": "UP TO"
+    },
+    {
+      "type": "text",
+      "id": "left_box_stat",
+      "label": "Left Card Discount %",
+      "default": "70%"
+    },
+    {
+      "type": "text",
+      "id": "left_box_bottom",
+      "label": "Left Card Bottom Label",
+      "default": "OFF"
+    },
+    {
+      "type": "text",
+      "id": "right_box_title",
+      "label": "Right Timer Title (White)",
+      "default": "BLACK FRIDAY DEAL"
+    },
+    {
+      "type": "text",
+      "id": "right_box_accent",
+      "label": "Right Timer Accent (Orange)",
+      "default": "ENDS IN"
+    },
+    {
+      "type": "text",
+      "id": "bf_end_date",
+      "label": "Countdown End Date (Optional ISO)",
+      "default": "2026-11-30T23:59:59"
+    },
+    {
+      "type": "header",
+      "content": "3. Pet Cutouts (Width & Ledge %)"
     },
     {
       "type": "image_picker",
@@ -683,7 +1150,7 @@
     },
     {
       "type": "header",
-      "content": "3. Bento Cards Content"
+      "content": "4. Bottom Bento Cards Content"
     },
     {
       "type": "text",
@@ -714,10 +1181,22 @@
       "default": "Happy Clients and Their Pets\nSaving Big This Black Friday"
     },
     {
-      "type": "textarea",
-      "id": "center_card_heading",
-      "label": "Center Card Heading",
-      "default": "Black Friday Sale\nUp to 70% OFF"
+      "type": "text",
+      "id": "center_line_1",
+      "label": "Center Card Line 1",
+      "default": "Black Friday Sale"
+    },
+    {
+      "type": "text",
+      "id": "center_line_2_white",
+      "label": "Center Card Line 2 (White Text)",
+      "default": "Up to "
+    },
+    {
+      "type": "text",
+      "id": "center_line_2_orange",
+      "label": "Center Card Line 2 (Orange Text)",
+      "default": "70% OFF"
     },
     {
       "type": "text",
@@ -750,37 +1229,37 @@
     },
     {
       "type": "header",
-      "content": "4. Colors & Max Width"
+      "content": "5. Colors & Max Width"
     },
     {
       "type": "color",
       "id": "upper_bg_color",
       "label": "Upper Stage Background",
-      "default": "#EDF4FD"
+      "default": "#EBF3FE"
     },
     {
       "type": "color",
       "id": "heading_color",
       "label": "Headline Color",
-      "default": "#090D16"
+      "default": "#0B1320"
     },
     {
       "type": "color",
       "id": "side_cards_bg_color",
-      "label": "Side Cards Background",
-      "default": "#ADC8ED"
+      "label": "Bottom Bar Background",
+      "default": "#B7D2F7"
     },
     {
       "type": "color",
       "id": "side_cards_text_color",
       "label": "Side Cards Text Color",
-      "default": "#090D16"
+      "default": "#0B1320"
     },
     {
       "type": "color",
       "id": "center_card_bg_color",
       "label": "Center Card Background",
-      "default": "#0A2540"
+      "default": "#0B1320"
     },
     {
       "type": "color",
