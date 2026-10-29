@@ -511,7 +511,7 @@ h1, h2, h3, h4, h5, h6,
 .petssify-product-card__rating {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   margin: 4px 0 6px 0;
   position: relative;
   z-index: 2;
@@ -534,7 +534,7 @@ h1, h2, h3, h4, h5, h6,
   align-items: center;
   width: 82px;
   height: 14px;
-  color: #E2E8F0;
+  color: #0A2540;
 }
 
 .petssify-rating__stars-fill {
@@ -552,7 +552,7 @@ h1, h2, h3, h4, h5, h6,
   align-items: center;
   width: 82px;
   height: 14px;
-  color: var(--petssify-star-color, #FFA41C);
+  color: #0A2540;
 }
 
 .petssify-rating__star-icon {
@@ -562,32 +562,19 @@ h1, h2, h3, h4, h5, h6,
   display: block;
 }
 
-.petssify-rating__value,
-.petssify-product-card__rating-value {
-  font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #0F172A;
-  letter-spacing: -0.01em;
-  margin-left: 2px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
 .petssify-rating__count,
 .petssify-product-card__rating-count {
   font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
-  color: #64748B;
+  color: #0A2540;
   letter-spacing: 0;
-  margin-left: 1px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .petssify-product-card__star {
-  color: var(--petssify-star-color, #FFA41C);
+  color: #0A2540;
   font-size: 14px;
   line-height: 1;
 }

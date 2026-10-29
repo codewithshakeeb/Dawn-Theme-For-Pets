@@ -1,8 +1,10 @@
 {%- comment -%}
-  Petssify 5-Star Rating Component (UI/UX Pro Max Edition)
-  - 14px Crisp 5-point star SVGs with balanced spacing
-  - Vibrant Golden Amber color (#FFA41C) with #E2E8F0 empty track
-  - Clean tabular score and review count typography
+  Petssify Star Rating Component (Reference-Matched to media_1793303178270_5e35a55b.png)
+  - 100% Backend-Grounded: Renders ONLY if product has real customer reviews in Shopify/Judge.me
+  - Clean Deep Navy (#0A2540) 5-star icons matching brand typography
+  - Fractional fill support with subtle navy outline for partial stars (e.g. ★★★★☆)
+  - Star icons followed directly by count in parentheses e.g. ★★★★☆ (3) - NO fake scores or numbers
+  - Zero output for products without reviews (remains completely empty)
 {%- endcomment -%}
 
 {%- liquid
@@ -30,14 +32,8 @@
       endif
     elsif target_product.metafields.custom.rating != blank
       assign val = target_product.metafields.custom.rating.value | default: target_product.metafields.custom.rating | times: 1.0
-      assign cnt = target_product.metafields.custom.review_count.value | default: target_product.metafields.custom.review_count | default: target_product.metafields.custom.reviews_count | default: 1 | plus: 0
+      assign cnt = target_product.metafields.custom.review_count.value | default: target_product.metafields.custom.review_count | default: target_product.metafields.custom.reviews_count | default: 0 | plus: 0
     endif
-  endif
-
-  # Fallback for products without reviews (e.g. Signe) so every product card renders a consistent, high-converting 5-star rating
-  if val == nil or val == blank or val <= 0 or cnt == nil or cnt == blank or cnt <= 0
-    assign val = 5.0
-    assign cnt = 1
   endif
 -%}
 
@@ -45,15 +41,10 @@
   {%- liquid
     assign score = val | at_most: 5.0 | at_least: 0.0
     assign fill_percent = score | times: 100.0 | divided_by: 5.0 | round: 1
-    assign score_rounded = score | round: 1
-    assign score_str = score_rounded | append: ''
-    unless score_str contains '.'
-      assign score_str = score_str | append: '.0'
-    endunless
 
     assign color_star = star_color
     if color_star == blank
-      assign color_star = settings.star_rating_color | default: '#FFA41C'
+      assign color_star = '#0A2540'
     endif
 
     if cnt == 1
@@ -66,13 +57,13 @@
   <div
     class="petssify-rating{% if class != blank %} {{ class }}{% endif %}"
     role="img"
-    aria-label="Rated {{ score_str }} out of 5 stars based on {{ cnt }} {{ review_word }}"
+    aria-label="{{ score }} out of 5 stars from {{ cnt }} {{ review_word }}"
     style="--petssify-star-color: {{ color_star }};"
   >
     <div class="petssify-rating__stars" aria-hidden="true">
       <div class="petssify-rating__stars-bg">
         {%- for i in (1..5) -%}
-          <svg class="petssify-rating__star-icon" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="petssify-rating__star-icon" viewBox="0 0 24 24" fill="none" stroke="{{ color_star }}" stroke-width="1.8" stroke-linejoin="round">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
           </svg>
         {%- endfor -%}
@@ -80,14 +71,13 @@
       <div class="petssify-rating__stars-fill" style="width: {{ fill_percent }}%;">
         <div class="petssify-rating__stars-fill-inner">
           {%- for i in (1..5) -%}
-            <svg class="petssify-rating__star-icon" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="petssify-rating__star-icon" viewBox="0 0 24 24" fill="{{ color_star }}" stroke="{{ color_star }}" stroke-width="1.8" stroke-linejoin="round">
               <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
             </svg>
           {%- endfor -%}
         </div>
       </div>
     </div>
-    <span class="petssify-rating__value" aria-hidden="true">{{ score_str }}</span>
     <span class="petssify-rating__count" aria-hidden="true">({{ cnt }})</span>
   </div>
 
@@ -96,7 +86,7 @@
       display: inline-flex !important;
       align-items: center !important;
       vertical-align: middle !important;
-      gap: 5px !important;
+      gap: 6px !important;
       margin: 4px 0 6px 0 !important;
       line-height: 1 !important;
       position: relative !important;
@@ -116,7 +106,7 @@
       align-items: center !important;
       width: 82px !important;
       height: 14px !important;
-      color: #E2E8F0 !important;
+      color: #0A2540 !important;
     }
     .petssify-rating__stars-fill {
       position: absolute !important;
@@ -132,7 +122,7 @@
       align-items: center !important;
       width: 82px !important;
       height: 14px !important;
-      color: var(--petssify-star-color, #FFA41C) !important;
+      color: #0A2540 !important;
     }
     .petssify-rating__star-icon {
       width: 14px !important;
@@ -140,23 +130,12 @@
       flex-shrink: 0 !important;
       display: block !important;
     }
-    .petssify-rating__value {
-      font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif) !important;
-      font-size: 13.5px !important;
-      font-weight: 700 !important;
-      color: #0F172A !important;
-      letter-spacing: -0.01em !important;
-      margin-left: 2px !important;
-      line-height: 1 !important;
-      font-variant-numeric: tabular-nums !important;
-    }
     .petssify-rating__count {
       font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif) !important;
-      font-size: 13px !important;
+      font-size: 13.5px !important;
       font-weight: 500 !important;
-      color: #64748B !important;
+      color: #0A2540 !important;
       letter-spacing: 0 !important;
-      margin-left: 1px !important;
       line-height: 1 !important;
       font-variant-numeric: tabular-nums !important;
     }
