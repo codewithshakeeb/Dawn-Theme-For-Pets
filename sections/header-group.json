@@ -8,21 +8,21 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "🖤 BLACK FRIDAY SALE LIVE NOW: Up to 70% OFF Entire Website + Extra 20% OFF at Checkout →",
+            "text": "BLACK FRIDAY SALE: Up to 70% OFF Sitewide + Extra 20% Auto-Applied at Checkout →",
             "link": "/collections/all"
           }
         },
         "announcement_2": {
           "type": "announcement",
           "settings": {
-            "text": "📦 Free Tracked Shipping on Orders $50+ (US & Int'l) • 1–2 Business Day Dispatch",
+            "text": "Free Tracked Shipping on Orders $50+ (US & Int'l) • 1–2 Business Day Dispatch",
             "link": "/collections/all"
           }
         },
         "announcement_3": {
           "type": "announcement",
           "settings": {
-            "text": "🛡️ 30-Day Money-Back Guarantee • Easy Returns & 24/7 Support (+1 888-999-0624)",
+            "text": "30-Day Money-Back Guarantee • Easy Returns & Support (+1 888-999-0624)",
             "link": "/collections/all"
           }
         }

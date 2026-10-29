@@ -9,7 +9,7 @@
 <div class="petssify-shipping-bar{% if cart_total >= free_shipping_threshold %} is-unlocked{% endif %}" data-threshold="{{ free_shipping_threshold }}">
   <div class="petssify-shipping-bar__message">
     {%- if cart_total >= free_shipping_threshold -%}
-      <span>🎉 You've unlocked <strong>FREE Tracked US Shipping!</strong></span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>You've unlocked <strong>FREE Tracked US Shipping!</strong></span>
     {%- else -%}
       {%- assign remaining_cents = free_shipping_threshold | minus: cart_total -%}
       {%- assign remaining_money = remaining_cents | money -%}

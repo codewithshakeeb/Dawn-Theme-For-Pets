@@ -156,11 +156,6 @@
         "padding_bottom": 12
       }
     },
-    "petssify_details_tabs": {
-      "type": "petssify-details-tabs",
-      "disabled": true,
-      "settings": {}
-    },
     "17683278085186f09e": {
       "type": "apps",
       "blocks": {
@@ -207,7 +202,6 @@
   "order": [
     "custom_liquid_cFdme7",
     "main",
-    "petssify_details_tabs",
     "17683278085186f09e",
     "related-products"
   ]

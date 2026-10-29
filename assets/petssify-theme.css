@@ -4475,3 +4475,91 @@ details[open] .modal-overlay::after {
 }
 
 
+
+
+/* ==========================================================================
+   UI/UX Pro Max Design System & Contrast Refinements (Spec 7.0)
+   ========================================================================== */
+
+/* 1. Global Numerical Alignment (Tabular Numerals) */
+.price,
+.price-item,
+.petssify-product-card__price-current,
+.petssify-product-card__price-compare,
+.petssify-product-card__save-badge,
+.ps-bfcm-countdown,
+.ps-price-current,
+.ps-price-compare,
+.ps-save-pill,
+.ps-stat-big,
+.petssify-rating__number {
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* 2. Standardized Section Vertical Rhythm */
+.section-vertical-rhythm,
+.petssify-bento-section,
+.petssify-value-props-section,
+.petssify-faq-section,
+.petssify-reviews-section {
+  padding-top: clamp(48px, 6vw, 84px);
+  padding-bottom: clamp(48px, 6vw, 84px);
+}
+
+/* 3. Section H2 Typographic Scale */
+.petssify-bento-title,
+.petssify-value-props-title,
+.petssify-faq-title,
+.petssify-reviews-title {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #090D16;
+}
+
+/* 4. PDP Title H1 Typographic Scale */
+.product__title h1 {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #090D16;
+}
+
+/* 5. Readability & Line Measure (Max 68ch for prose) */
+.product__description,
+.petssify-faq-answer,
+.rte,
+.article__content,
+.page__content {
+  max-width: 68ch;
+  line-height: 1.65;
+  color: #1E293B;
+  font-size: 15px;
+}
+
+@media screen and (min-width: 750px) {
+  .product__description,
+  .petssify-faq-answer,
+  .rte,
+  .article__content,
+  .page__content {
+    font-size: 16px;
+  }
+}
+
+/* 6. Card Border & Shadow Tokens */
+.petssify-product-card,
+.petssify-value-prop-card,
+.petssify-faq-item {
+  border-radius: 16px;
+}
+
+/* 7. Button & Input Radius Tokens */
+.button:not(.button--round):not(.ps-cta-btn),
+.field__input,
+.select__select {
+  border-radius: 10px;
+}

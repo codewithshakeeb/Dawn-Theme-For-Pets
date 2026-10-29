@@ -1,9 +1,11 @@
 {% comment %}
-  Petssify 3D Bento Hero — Luxury Black Friday Edition (Fixed Layout)
-  - Fixes left/right floating widget collision (Hanging Tag on Left, Frosted Countdown Card on Right)
-  - Fixes headline-to-dog gap and white strip under Left Puppy paws
-  - Fixes washed-out side card contrast (#090D16 text on #ADC8ED sky-blue cards)
-  - Centers CTA button with generous padding
+  Petssify 3D Bento Hero — Editorial Sky-Frost DTC Edition
+  - Clean, airy Sky-Frost canvas (#EDF4FD) with zero floating sticker collisions
+  - Single high-contrast Obsidian Black Eyebrow Pill (#090D16) with pulsing #FF6B00 dot
+  - Giant 2-line H1 ("Everything" / "Your Pets Love")
+  - 3 peeking pets anchored to top: 0 of the 3-column bottom bento bar
+  - Enforced WCAG AAA contrast: Deep Obsidian Navy (#090D16) on Sky-Blue (#ADC8ED)
+  - Deep Obsidian-Navy gradient center card with high-impact #FF6B00 CTA
 {% endcomment %}
 
 <section
@@ -17,8 +19,6 @@
     --ps-center-bg: {{ section.settings.center_card_bg_color | default: '#0A2540' }};
     --ps-center-text: {{ section.settings.center_card_text_color | default: '#FFFFFF' }};
     --ps-accent: {{ section.settings.accent_orange_color | default: '#FF6B00' }};
-    --ps-h1-desktop: {{ section.settings.heading_size_desktop | default: 112 }}px;
-    --ps-h1-mobile: {{ section.settings.heading_size_mobile | default: 42 }}px;
     --ps-stage-space: {{ section.settings.upper_stage_space | default: 230 }}px;
     --ps-left-w: {{ section.settings.left_pet_width_pct | default: 72 }};
     --ps-left-ledge: {{ section.settings.left_pet_ledge_pct | default: 66 }};
@@ -29,42 +29,9 @@
     --ps-max-w: {{ section.settings.container_max_width | default: '1680px' }};
   "
 >
-  <!-- ZONE A: Upper Sky-Frost Stage, Floating Left/Right Widgets & Giant Headline -->
+  <!-- ZONE A: Upper Sky-Frost Stage with Centered Eyebrow & Giant Headline -->
   <div class="ps-hero-upper">
     <div class="ps-hero-container">
-
-      {% if section.settings.enable_bf_widgets %}
-        <!-- LEFT FLOATING WIDGET: 3D Hanging Black Price Tag (Strictly Left) -->
-        <div class="ps-bf-left-tag" aria-hidden="true">
-          <div class="ps-tag-cord"></div>
-          <div class="ps-tag-body">
-            <span class="ps-tag-hole"></span>
-            <span class="ps-tag-eyebrow">{{ section.settings.left_tag_eyebrow | default: 'BLACK FRIDAY' }}</span>
-            <span class="ps-tag-upto">{{ section.settings.left_tag_top | default: 'UP TO' }}</span>
-            <span class="ps-tag-big">{{ section.settings.left_tag_stat | default: '70%' }}</span>
-            <span class="ps-tag-off">{{ section.settings.left_tag_bottom | default: 'OFF' }}</span>
-            <span class="ps-tag-pill">{{ section.settings.left_tag_pill | default: 'ENTIRE WEBSITE' }}</span>
-          </div>
-        </div>
-
-        <!-- RIGHT FLOATING WIDGET: Frosted Glass & Obsidian Live Countdown Card (Strictly Right) -->
-        <div class="ps-bf-right-card" data-hero-bf-timer>
-          <span class="ps-rc-pill">{{ section.settings.right_card_pill | default: '⚡ EXTRA 20% OFF SALE' }}</span>
-          <p class="ps-rc-title">{{ section.settings.right_card_title | default: 'Auto-Applied at Checkout' }}</p>
-          <div class="ps-rc-timer" data-hero-clock>
-            <div class="ps-rc-unit"><span data-d>01</span><small>D</small></div>
-            <span class="ps-rc-sep">:</span>
-            <div class="ps-rc-unit"><span data-h>18</span><small>H</small></div>
-            <span class="ps-rc-sep">:</span>
-            <div class="ps-rc-unit"><span data-m>45</span><small>M</small></div>
-            <span class="ps-rc-sep">:</span>
-            <div class="ps-rc-unit"><span data-s>12</span><small>S</small></div>
-          </div>
-          <span class="ps-rc-sub">{{ section.settings.right_card_sub | default: 'Valid on All Dog & Cat Gear' }}</span>
-        </div>
-      {% endif %}
-
-      <!-- CENTER HEADLINE STACK -->
       <div class="ps-hero-headline-box">
         {% if section.settings.eyebrow_text != blank %}
           <div class="ps-eyebrow-pill">
@@ -81,20 +48,11 @@
             <span class="ps-title-line">{{ section.settings.heading_line_2 | escape }}</span>
           {% endif %}
         </{{ section.settings.heading_tag | default: 'h1' }}>
-
-        {% if section.settings.enable_bf_widgets %}
-          <!-- Compact Mobile Promo Pills (Visible Only Below 1024px) -->
-          <div class="ps-mobile-bf-pills" aria-label="Black Friday Mobile Deals">
-            <span class="ps-mob-pill ps-mob-pill--dark">🏷️ Up to 70% OFF Sitewide</span>
-            <span class="ps-mob-pill ps-mob-pill--orange">⚡ Extra 20% OFF at Checkout</span>
-          </div>
-        {% endif %}
       </div>
-
     </div>
   </div>
 
-  <!-- ZONE B: 3-Column Bottom Bento Bar With Pets Locked to `top: 0` of Each Card -->
+  <!-- ZONE B: 3-Column Bottom Bento Bar With Pets Locked to top: 0 of Each Card -->
   <div class="ps-bento-bar-outer">
     <div class="ps-bento-grid">
 
@@ -247,11 +205,11 @@
     box-sizing: border-box;
   }
 
-  /* ZONE A: Upper Stage — Reduced bottom padding to lock headline and Golden Retriever */
+  /* ZONE A: Upper Stage — Airy, Editorial Canvas */
   #petssify-hero-{{ section.id }} .ps-hero-upper {
     position: relative;
     z-index: 1;
-    padding-top: clamp(18px, 2.2vw, 34px);
+    padding-top: clamp(28px, 3.5vw, 52px);
     padding-bottom: clamp(150px, 18.5vw, 245px);
   }
 
@@ -262,204 +220,7 @@
     padding: 0 clamp(16px, 3vw, 40px);
   }
 
-  /* LEFT FLOATING HANGING TAG (Strictly Left — Zero Collision) */
-  #petssify-hero-{{ section.id }} .ps-bf-left-tag {
-    position: absolute;
-    left: clamp(28px, 5.5vw, 90px) !important;
-    right: auto !important;
-    top: 0 !important;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: rotate(-6deg);
-    transform-origin: top center;
-    animation: psTagSwing 4.5s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-cord {
-    width: 2px;
-    height: 56px;
-    background-color: #090D16;
-    margin: 0 auto;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-body {
-    background: linear-gradient(145deg, #141C2E 0%, #090D16 100%);
-    color: #FFFFFF;
-    border: 2px solid var(--ps-accent);
-    border-radius: 14px;
-    padding: 14px 20px 14px;
-    box-shadow: 0 16px 32px rgba(9, 13, 22, 0.22);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-width: 140px;
-    box-sizing: border-box;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-hole {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--ps-upper-bg);
-    border: 2px solid var(--ps-accent);
-    margin-bottom: 8px;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-eyebrow {
-    font-size: 10px;
-    font-weight: 800;
-    color: var(--ps-accent);
-    letter-spacing: 0.08em;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-upto {
-    font-size: 13px;
-    font-weight: 800;
-    color: #FFFFFF;
-    letter-spacing: 0.04em;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-big {
-    font-size: 44px;
-    font-weight: 900;
-    line-height: 0.92;
-    color: #FFFFFF;
-    letter-spacing: -0.03em;
-    margin: 2px 0;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-off {
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 1;
-    color: #FFFFFF;
-    margin-bottom: 8px;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-tag-pill {
-    background-color: var(--ps-accent);
-    color: #FFFFFF;
-    font-size: 9.5px;
-    font-weight: 800;
-    padding: 3px 9px;
-    border-radius: 999px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-family: var(--font-heading, sans-serif);
-    display: inline-block;
-  }
-
-  /* RIGHT FLOATING FROSTED GLASS & BLACK COUNTDOWN CARD (Strictly Right — Zero Collision) */
-  #petssify-hero-{{ section.id }} .ps-bf-right-card {
-    position: absolute;
-    right: clamp(28px, 5.5vw, 90px) !important;
-    left: auto !important;
-    top: 88px !important;
-    z-index: 3;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(9, 13, 22, 0.12);
-    border-radius: 18px;
-    padding: 16px 20px;
-    box-shadow: 0 20px 40px rgba(9, 37, 64, 0.12);
-    width: 220px;
-    text-align: center;
-    transform: rotate(4deg);
-    animation: psCardFloat 5s ease-in-out infinite;
-    pointer-events: none;
-    box-sizing: border-box;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-pill {
-    display: inline-block;
-    background-color: #090D16;
-    color: #FF6B00;
-    font-size: 10.5px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 999px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-title {
-    margin: 8px 0 6px;
-    font-size: 15px;
-    font-weight: 800;
-    color: #090D16;
-    line-height: 1.2;
-    font-family: var(--font-heading, sans-serif);
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-timer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    margin-bottom: 6px;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-unit {
-    background-color: #090D16;
-    color: #FFFFFF;
-    border-radius: 6px;
-    padding: 4px 6px;
-    min-width: 36px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-unit span {
-    font-size: 13px;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-unit small {
-    font-size: 8px;
-    color: #FF6B00;
-    font-weight: 700;
-    margin-top: 2px;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-sep {
-    font-weight: 800;
-    color: #090D16;
-    font-size: 12px;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-rc-sub {
-    display: block;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #475569;
-  }
-
-  @keyframes psTagSwing {
-    0%, 100% { transform: rotate(-6deg) translateY(0); }
-    50% { transform: rotate(-4deg) translateY(-5px); }
-  }
-
-  @keyframes psCardFloat {
-    0%, 100% { transform: rotate(4deg) translateY(0); }
-    50% { transform: rotate(2.5deg) translateY(-6px); }
-  }
-
-  /* Center Headline Box */
+  /* Center Headline Stack */
   #petssify-hero-{{ section.id }} .ps-hero-headline-box {
     text-align: center;
     max-width: 1100px;
@@ -468,7 +229,7 @@
     z-index: 2;
   }
 
-  /* Single pulsing dot Eyebrow Pill */
+  /* High-Contrast Obsidian Black Eyebrow Pill with Pulsing Orange Dot */
   #petssify-hero-{{ section.id }} .ps-eyebrow-pill {
     display: inline-flex;
     align-items: center;
@@ -482,8 +243,8 @@
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    margin-bottom: 14px;
-    box-shadow: 0 6px 18px rgba(9, 13, 22, 0.14);
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(9, 13, 22, 0.12);
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
 
@@ -503,22 +264,19 @@
     50% { box-shadow: 0 0 0 6px rgba(255, 107, 0, 0); }
   }
 
+  /* Giant 2-Line Hero Display Headline */
   #petssify-hero-{{ section.id }} .ps-hero-title {
     margin: 0;
     color: var(--ps-heading-color);
-    font-size: clamp(48px, 7.8vw, 118px);
+    font-size: clamp(2.75rem, 7.2vw, 6.75rem);
     font-weight: 800;
-    line-height: 0.94;
-    letter-spacing: -0.035em;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
 
   #petssify-hero-{{ section.id }} .ps-title-line {
     display: block;
-  }
-
-  #petssify-hero-{{ section.id }} .ps-mobile-bf-pills {
-    display: none;
   }
 
   /* ZONE B: 3-Column Bottom Bento Bar */
@@ -558,13 +316,13 @@
     text-align: center;
   }
 
-  /* High contrast: Deep Obsidian Navy text on Sky-Blue Cards (Bug #4 Fix) */
+  /* High Contrast: Deep Obsidian Navy text on Sky-Blue Cards (#ADC8ED) */
   #petssify-hero-{{ section.id }} .ps-bento-card--side {
     background-color: var(--ps-side-bg);
     color: #090D16 !important;
   }
 
-  /* Center Card: Deep Gradient + Proper Breathing Room (Bug #5 Fix) */
+  /* Center Card: Deep Obsidian-Navy Gradient + Proper Breathing Room */
   #petssify-hero-{{ section.id }} .ps-bento-card--center {
     background: linear-gradient(180deg, #090D16 0%, #0A2540 100%) !important;
     color: var(--ps-center-text);
@@ -574,7 +332,7 @@
     z-index: 3;
   }
 
-  /* CARD-TOP LEDGE ANCHOR (Bug #3 Fix: 66% on Left/Right, 71% Center) */
+  /* CARD-TOP LEDGE ANCHOR: 66% on Left/Right, 71% Center */
   #petssify-hero-{{ section.id }} .ps-pet-wrap {
     position: absolute;
     top: 0;
@@ -636,6 +394,7 @@
     line-height: 1;
     letter-spacing: -0.02em;
     color: #090D16 !important;
+    font-variant-numeric: tabular-nums;
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
 
@@ -735,45 +494,9 @@
     height: 18px;
   }
 
-  /* Tablet & Mobile (< 1100px): Replace Floating Side Cards with Clean Inline Pills */
-  @media screen and (max-width: 1099px) {
-    #petssify-hero-{{ section.id }} .ps-bf-left-tag,
-    #petssify-hero-{{ section.id }} .ps-bf-right-card {
-      display: none !important;
-    }
-
-    #petssify-hero-{{ section.id }} .ps-mobile-bf-pills {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    #petssify-hero-{{ section.id }} .ps-mob-pill {
-      font-size: 11.5px;
-      font-weight: 800;
-      padding: 5px 14px;
-      border-radius: 999px;
-      letter-spacing: 0.02em;
-      font-family: var(--font-heading, sans-serif);
-    }
-
-    #petssify-hero-{{ section.id }} .ps-mob-pill--dark {
-      background-color: #090D16;
-      color: #FFFFFF;
-      border: 1px solid var(--ps-accent);
-    }
-
-    #petssify-hero-{{ section.id }} .ps-mob-pill--orange {
-      background-color: var(--ps-accent);
-      color: #FFFFFF;
-    }
-  }
-
   @media screen and (max-width: 767px) {
     #petssify-hero-{{ section.id }} .ps-hero-upper {
-      padding-top: 16px;
+      padding-top: 24px;
       padding-bottom: clamp(160px, 46vw, 220px);
     }
 
@@ -817,33 +540,6 @@
   }
 </style>
 
-<script>
-  (function() {
-    var timerWrap = document.querySelector('#petssify-hero-{{ section.id }} [data-hero-clock]');
-    if (!timerWrap) return;
-    var key = 'petssify_hero_bf_timer_v3';
-    var now = Date.now();
-    var saved = localStorage.getItem(key);
-    var target = (saved && parseInt(saved, 10) > now) ? parseInt(saved, 10) : (now + (2 * 86400000) + (14 * 3600000) + (38 * 60000) + 19000);
-    try { localStorage.setItem(key, String(target)); } catch(e){}
-
-    var dEl = timerWrap.querySelector('[data-d]');
-    var hEl = timerWrap.querySelector('[data-h]');
-    var mEl = timerWrap.querySelector('[data-m]');
-    var sEl = timerWrap.querySelector('[data-s]');
-
-    function tick() {
-      var diff = Math.max(0, target - Date.now());
-      if (dEl) dEl.textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
-      if (hEl) hEl.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
-      if (mEl) mEl.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-      if (sEl) sEl.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-    }
-    tick();
-    setInterval(tick, 1000);
-  })();
-</script>
-
 {% schema %}
 {
   "name": "Petssify 3D Bento Hero",
@@ -852,13 +548,13 @@
   "settings": [
     {
       "type": "header",
-      "content": "1. Headline & Black Friday Eyebrow"
+      "content": "1. Headline & Eyebrow"
     },
     {
       "type": "text",
       "id": "eyebrow_text",
-      "label": "Top Black Friday Eyebrow Pill",
-      "default": "BLACK FRIDAY SALE LIVE NOW — UP TO 70% OFF SITEWIDE"
+      "label": "Top Eyebrow Pill Text",
+      "default": "BLACK FRIDAY EVENT • UP TO 70% OFF SITEWIDE"
     },
     {
       "type": "text",
@@ -883,96 +579,8 @@
       "default": "h1"
     },
     {
-      "type": "range",
-      "id": "heading_size_desktop",
-      "min": 56,
-      "max": 136,
-      "step": 2,
-      "unit": "px",
-      "label": "Headline Size (Desktop)",
-      "default": 112
-    },
-    {
-      "type": "range",
-      "id": "heading_size_mobile",
-      "min": 32,
-      "max": 64,
-      "step": 2,
-      "unit": "px",
-      "label": "Headline Size (Mobile)",
-      "default": 42
-    },
-    {
-      "type": "range",
-      "id": "upper_stage_space",
-      "min": 130,
-      "max": 380,
-      "step": 5,
-      "unit": "px",
-      "label": "Space Between Headline & Bottom Bar",
-      "default": 230
-    },
-    {
       "type": "header",
-      "content": "Black Friday Floating Widgets"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_bf_widgets",
-      "label": "Show Left Hanging Tag & Right Countdown Card",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "left_tag_eyebrow",
-      "label": "Left Tag Eyebrow",
-      "default": "BLACK FRIDAY"
-    },
-    {
-      "type": "text",
-      "id": "left_tag_top",
-      "label": "Left Tag Top Text",
-      "default": "UP TO"
-    },
-    {
-      "type": "text",
-      "id": "left_tag_stat",
-      "label": "Left Tag Discount",
-      "default": "70%"
-    },
-    {
-      "type": "text",
-      "id": "left_tag_bottom",
-      "label": "Left Tag Bottom Text",
-      "default": "OFF"
-    },
-    {
-      "type": "text",
-      "id": "left_tag_pill",
-      "label": "Left Tag Bottom Pill",
-      "default": "ENTIRE WEBSITE"
-    },
-    {
-      "type": "text",
-      "id": "right_card_pill",
-      "label": "Right Card Pill",
-      "default": "⚡ EXTRA 20% OFF SALE"
-    },
-    {
-      "type": "text",
-      "id": "right_card_title",
-      "label": "Right Card Title",
-      "default": "Auto-Applied at Checkout"
-    },
-    {
-      "type": "text",
-      "id": "right_card_sub",
-      "label": "Right Card Subtitle",
-      "default": "Valid on All Dog & Cat Gear"
-    },
-    {
-      "type": "header",
-      "content": "2. Pet Cutouts (Width % & Vertical Ledge %)"
+      "content": "2. Pet Cutouts (Width & Ledge %)"
     },
     {
       "type": "image_picker",
@@ -1075,7 +683,7 @@
     },
     {
       "type": "header",
-      "content": "3. Bottom Bento Cards Content"
+      "content": "3. Bento Cards Content"
     },
     {
       "type": "text",

@@ -42,18 +42,14 @@
         "accent_orange_color": "#FF6B00",
         "container_max_width": "1680px",
         "show_bfcm_badge": true,
-        "bfcm_badge_text": "🔥 BLACK FRIDAY SALE LIVE NOW — UP TO 70% OFF ENTIRE WEBSITE",
-        "show_hanging_tag": true,
-        "show_promo_card": true,
-        "eyebrow_text": "BLACK FRIDAY SALE LIVE NOW — UP TO 70% OFF SITEWIDE",
-        "enable_bf_widgets": true
+        "eyebrow_text": "BLACK FRIDAY EVENT • UP TO 70% OFF SITEWIDE"
       }
     },
     "petssify_hero": {
       "type": "petssify-hero",
       "settings": {
         "image_opacity": 45,
-        "badge_text": "🖤 Black Friday Mega Sale: Up to 70% OFF Storewide",
+        "badge_text": "Black Friday Mega Sale: Up to 70% OFF Storewide",
         "heading": "Black Friday Mega Sale — Up to 70% OFF Dog & Cat Supplies",
         "subheading": "Shop premium 304 stainless steel fountains, whisper-quiet LED nail grinders, interactive puzzle toys, and escape-proof harnesses with automatic holiday discounts. No code needed.",
         "primary_button_label": "Shop Black Friday Deals",
@@ -113,7 +109,7 @@
         "bento_1": {
           "type": "bento_card",
           "settings": {
-            "tag": "🖤 UP TO 70% OFF",
+            "tag": "UP TO 70% OFF",
             "title": "Pet Food & Bowls",
             "subtext": "Automatic holiday discount at checkout",
             "button_label": "Shop Food",
@@ -124,7 +120,7 @@
         "bento_2": {
           "type": "bento_card",
           "settings": {
-            "tag": "🖤 BESTSELLER • 50% OFF",
+            "tag": "BESTSELLER • 50% OFF",
             "title": "50% Off Toys & Gear",
             "subtext": "Interactive puzzles & play essentials",
             "button_label": "Shop Toys",
@@ -135,7 +131,7 @@
         "bento_3": {
           "type": "bento_card",
           "settings": {
-            "tag": "🖤 DOORBUSTER • 60% OFF",
+            "tag": "DOORBUSTER • 60% OFF",
             "title": "Healthy Feeders & Care",
             "subtext": "Nutritious & slow-feeding blends",
             "button_label": "Explore Feeding",
@@ -146,7 +142,7 @@
         "bento_4": {
           "type": "bento_card",
           "settings": {
-            "tag": "🖤 TOP PICK • 40% OFF",
+            "tag": "TOP PICK • 40% OFF",
             "title": "Up to 60% Off Grooming",
             "subtext": "Whisper-quiet LED nail grinders & coats",
             "button_label": "Shop Grooming",
@@ -157,7 +153,7 @@
         "bento_5": {
           "type": "bento_card",
           "settings": {
-            "tag": "🖤 HOLIDAY DEAL • 70% OFF",
+            "tag": "HOLIDAY DEAL • 70% OFF",
             "title": "Up to 70% Off Cat Care",
             "subtext": "Premium fountains & beds storewide",
             "button_label": "Shop Cat Care",
@@ -174,8 +170,8 @@
         "bento_5"
       ],
       "settings": {
-        "heading": "🖤 Black Friday Sales Live Now — Up to 70% OFF All Categories",
-        "subheading": "Sitewide doorbusters across every dog and cat category — plus take a further 20% OFF automatically at checkout.",
+        "heading": "Black Friday Sale • Up to 70% Off All Categories",
+        "subheading": "Sitewide doorbusters across every dog and cat category • Extra 20% off automatically applied at checkout.",
         "mobile_layout": "carousel",
         "padding_top": 48,
         "padding_bottom": 48
@@ -835,7 +831,7 @@
         "popout_offset": 45,
         "card_max_width": 1140,
         "content_gap": 40,
-        "subheading": "🔥 BLACK FRIDAY FLASH SALE",
+        "subheading": "BLACK FRIDAY FLASH SALE",
         "heading": "Black Friday Mega Deal",
         "subtext": "Up to 40% OFF + Extra 20% OFF at Checkout • Automatic Holiday Savings",
         "button_label": "Shop Black Friday Deals",
