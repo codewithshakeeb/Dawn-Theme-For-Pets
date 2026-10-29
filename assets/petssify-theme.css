@@ -512,7 +512,7 @@ h1, h2, h3, h4, h5, h6,
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin: 2px 0 6px 0;
+  margin: 4px 0 6px 0;
   position: relative;
   z-index: 2;
   line-height: 1;
@@ -522,8 +522,8 @@ h1, h2, h3, h4, h5, h6,
 .petssify-rating__stars {
   position: relative;
   display: inline-flex;
-  width: 72px;
-  height: 13px;
+  width: 82px;
+  height: 14px;
   flex-shrink: 0;
   line-height: 1;
 }
@@ -532,8 +532,8 @@ h1, h2, h3, h4, h5, h6,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 72px;
-  height: 13px;
+  width: 82px;
+  height: 14px;
   color: #E2E8F0;
 }
 
@@ -543,21 +543,21 @@ h1, h2, h3, h4, h5, h6,
   left: 0;
   bottom: 0;
   overflow: hidden;
-  height: 13px;
+  height: 14px;
 }
 
 .petssify-rating__stars-fill-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 72px;
-  height: 13px;
-  color: var(--petssify-star-color, #F59E0B);
+  width: 82px;
+  height: 14px;
+  color: var(--petssify-star-color, #FFA41C);
 }
 
 .petssify-rating__star-icon {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   display: block;
 }
@@ -565,25 +565,30 @@ h1, h2, h3, h4, h5, h6,
 .petssify-rating__value,
 .petssify-product-card__rating-value {
   font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0F172A;
   letter-spacing: -0.01em;
-  margin-left: 1px;
+  margin-left: 2px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .petssify-rating__count,
 .petssify-product-card__rating-count {
   font-family: var(--font-body-family, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: 13px;
-  font-weight: 400;
-  color: #6B7280;
+  font-weight: 500;
+  color: #64748B;
   letter-spacing: 0;
+  margin-left: 1px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .petssify-product-card__star {
-  color: var(--petssify-star-color, #F59E0B);
-  font-size: 13px;
+  color: var(--petssify-star-color, #FFA41C);
+  font-size: 14px;
   line-height: 1;
 }
 
