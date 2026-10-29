@@ -102,8 +102,8 @@
           {{ 'products.product.sold_out' | t | default: 'Sold out' }}
         </span>
       {%- elsif on_sale and show_sale_badge -%}
-        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="{{ 'products.product.on_sale' | t | default: 'Sale' }}">
-          {{ 'products.product.on_sale' | t | default: 'Sale' }}
+        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="Black Friday Sale">
+          🖤 BLACK FRIDAY -{{ discount_pct }}%
         </span>
       {%- endif -%}
 
@@ -241,9 +241,7 @@
             From {{ target_product.price_min | money }}
           </span>
           {%- if on_sale and compare_at_price > price -%}
-            <span class="petssify-product-card__save-badge">
-              Save {{ savings_amount | money }}
-            </span>
+            <span class="petssify-product-card__save-badge">SAVE {{ discount_pct }}% OFF</span>
           {%- endif -%}
         {%- else -%}
           {%- if on_sale and compare_at_price > price -%}
@@ -253,9 +251,7 @@
             <span class="petssify-product-card__price-current petssify-product-card__price-current--sale">
               {{ price | money }}
             </span>
-            <span class="petssify-product-card__save-badge">
-              Save {{ savings_amount | money }}
-            </span>
+            <span class="petssify-product-card__save-badge">SAVE {{ discount_pct }}% OFF</span>
           {%- else -%}
             <span class="petssify-product-card__price-current">
               {{ price | money }}
@@ -298,3 +294,37 @@
     </div>
   </div>
 {%- endif -%}
+
+<style>
+  .petssify-product-card__badge--sale {
+    background-color: #090D16 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #FF6B00 !important;
+    box-shadow: 0 4px 14px rgba(9, 13, 22, 0.35) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+  }
+  .petssify-product-card__badge--sold-out {
+    background-color: #DC2626 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35) !important;
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+  }
+  .petssify-product-card__save-badge {
+    background-color: #0A2540 !important;
+    color: #FFFFFF !important;
+    border-radius: 999px !important;
+    padding: 3px 10px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    display: inline-block !important;
+  }
+</style>

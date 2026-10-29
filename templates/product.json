@@ -52,10 +52,6 @@
             "swatch_shape": "square"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
         "custom_liquid_gMxHBy": {
           "type": "custom_liquid",
           "disabled": true,
@@ -134,7 +130,6 @@
         "custom_liquid_k8nVae",
         "variant_picker",
         "custom_liquid_bf_deal",
-        "quantity_selector",
         "buy_buttons",
         "custom_liquid_trust_row",
         "custom_liquid_xgN7Mk",

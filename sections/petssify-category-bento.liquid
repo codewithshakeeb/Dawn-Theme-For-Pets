@@ -138,7 +138,23 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
-  </div>
+  
+    <!-- High-Impact Black Friday Promo Banner Strip (Modeled on Attached Image 2) -->
+    <div class="ps-bfcm-stencil-strip">
+      <div class="ps-stencil-strip-bg-glow" aria-hidden="true">20%</div>
+      <div class="ps-stencil-strip-content">
+        <div class="ps-stencil-strip-left">
+          <span class="ps-stencil-strip-eyebrow">BLACK FRIDAY SPECIAL</span>
+          <h3 class="ps-stencil-strip-heading">BLACK FRIDAY SITEWIDE SALE — UP TO 70% OFF ALL CATEGORIES</h3>
+        </div>
+        <div class="ps-stencil-strip-right">
+          <div class="ps-stencil-strip-badge">TAKE A FURTHER 20% OFF SALE</div>
+          <div class="ps-stencil-strip-code">EXTRA 20% AUTO-APPLIED AT CHECKOUT</div>
+        </div>
+      </div>
+    </div>
+
+</div>
 </div>
 
 <style>
@@ -481,6 +497,110 @@
       grid-column: span 2;
     }
   }
+
+  /* High-Impact Black Friday Promo Banner Strip (Attached Image 2) */
+  .ps-bfcm-stencil-strip {
+    background: #090D16;
+    border: 1.5px solid #FF6B00;
+    border-radius: 16px;
+    margin-top: 28px;
+    padding: 20px 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(9, 13, 22, 0.35);
+  }
+  .ps-stencil-strip-bg-glow {
+    font-size: 140px;
+    font-weight: 900;
+    color: rgba(255, 107, 0, 0.14);
+    position: absolute;
+    right: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-family: var(--font-heading, sans-serif);
+    letter-spacing: -4px;
+    line-height: 1;
+    filter: blur(0.5px);
+  }
+  .ps-stencil-strip-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .ps-stencil-strip-left {
+    max-width: 600px;
+  }
+  .ps-stencil-strip-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    color: #FF6B00;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--font-heading, sans-serif);
+  }
+  .ps-stencil-strip-heading {
+    color: #FFFFFF !important;
+    font-size: clamp(17px, 2.2vw, 22px);
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .ps-stencil-strip-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .ps-stencil-strip-badge {
+    background: #FF6B00;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 6px 16px;
+    border-radius: 8px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-family: var(--font-heading, sans-serif);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+  }
+  .ps-stencil-strip-code {
+    border: 1px solid rgba(255, 107, 0, 0.8);
+    background: rgba(255, 107, 0, 0.12);
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    font-family: var(--font-heading, sans-serif);
+  }
+  @media screen and (max-width: 767px) {
+    .ps-bfcm-stencil-strip {
+      padding: 16px 18px;
+    }
+    .ps-stencil-strip-content {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .ps-stencil-strip-right {
+      align-items: flex-start;
+      width: 100%;
+    }
+    .ps-stencil-strip-badge {
+      font-size: 12px;
+      padding: 5px 12px;
+    }
+  }
+
 </style>
 
 <script>

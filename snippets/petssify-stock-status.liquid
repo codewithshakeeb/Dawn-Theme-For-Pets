@@ -1,13 +1,192 @@
 {%- comment -%}
-  Petssify: In-Stock Status Pill (Spec image_c8b0a8.png)
-  Pulsing green dot on #E6EFE9 pill surface reading IN STOCK — READY TO SHIP WITHIN 24 HOURS
+  Petssify: Real-Time Dynamic In-Stock / Out-of-Stock Status Engine (Spec image_c8b0a8.png)
+  - When in stock: Green pill (#E6EFE9), pulsing green dot (#22C55E), text "IN STOCK — READY TO SHIP WITHIN 1–2 BUSINESS DAYS"
+  - When out of stock: Red pill (#FEF2F2), pulsing crimson red dot (#DC2626), text "OUT OF STOCK — THIS VARIANT IS CURRENTLY SOLD OUT"
+  - Dynamically updates on variant radio clicks, select changes, and form input mutations without page reload
 {%- endcomment -%}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign is_in_stock = current_variant.available -%}
 
-<div id="Inventory-{{ section.id }}" class="petssify-inventory-wrapper" role="status">
-  <div class="ps-stock-pill" style="margin-bottom: 0;">
+<div id="Inventory-{{ section.id }}" class="petssify-inventory-wrapper" role="status" aria-live="polite">
+  <div
+    class="ps-stock-pill {% if is_in_stock %}is-in-stock{% else %}is-out-of-stock{% endif %}"
+    id="ps-stock-pill-{{ section.id }}"
+    data-in-stock="{{ is_in_stock }}"
+    style="margin-bottom: 0;"
+  >
     <span class="ps-stock-dot" aria-hidden="true"></span>
-    <span>{{ section.settings.stock_badge_text | default: 'IN STOCK — READY TO SHIP WITHIN 24 HOURS' }}</span>
+    <span class="ps-stock-text" id="ps-stock-text-{{ section.id }}">
+      {%- if is_in_stock -%}
+        IN STOCK — READY TO SHIP WITHIN 1–2 BUSINESS DAYS
+      {%- else -%}
+        OUT OF STOCK — THIS VARIANT IS CURRENTLY SOLD OUT
+      {%- endif -%}
+    </span>
   </div>
+
+  <!-- Variant Inventory Map for Real-time Switching -->
+  <script type="application/json" id="ps-variant-stock-json-{{ section.id }}">
+  {
+    {%- for variant in product.variants -%}
+      "{{ variant.id }}": {{ variant.available | json }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  }
+  </script>
+
+  <script>
+    (function() {
+      function initStockStatus() {
+        var sectionId = '{{ section.id }}';
+        var pill = document.getElementById('ps-stock-pill-' + sectionId);
+        var textEl = document.getElementById('ps-stock-text-' + sectionId);
+        var jsonEl = document.getElementById('ps-variant-stock-json-' + sectionId);
+        if (!pill || !textEl || !jsonEl) return;
+
+        var stockMap = {};
+        try {
+          stockMap = JSON.parse(jsonEl.textContent);
+        } catch(e) {
+          console.error('[Petssify Stock] JSON parse error:', e);
+          return;
+        }
+
+        function updateStockDisplay(variantId) {
+          if (!variantId || typeof stockMap[variantId] === 'undefined') return;
+          var available = Boolean(stockMap[variantId]);
+
+          if (available) {
+            pill.classList.remove('is-out-of-stock');
+            pill.classList.add('is-in-stock');
+            pill.setAttribute('data-in-stock', 'true');
+            textEl.textContent = 'IN STOCK — READY TO SHIP WITHIN 1–2 BUSINESS DAYS';
+          } else {
+            pill.classList.remove('is-in-stock');
+            pill.classList.add('is-out-of-stock');
+            pill.setAttribute('data-in-stock', 'false');
+            textEl.textContent = 'OUT OF STOCK — THIS VARIANT IS CURRENTLY SOLD OUT';
+          }
+        }
+
+        // 1. Listen for standard product form input mutations (Dawn variant-radios / variant-selects)
+        var productForm = document.querySelector('product-form[data-section-id="' + sectionId + '"]') || document.querySelector('form[action*="/cart/add"]');
+        if (productForm) {
+          var idInput = productForm.querySelector('input[name="id"]');
+          if (idInput) {
+            var observer = new MutationObserver(function(mutations) {
+              mutations.forEach(function(m) {
+                if (m.type === 'attributes' && m.attributeName === 'value') {
+                  updateStockDisplay(idInput.value);
+                }
+              });
+            });
+            observer.observe(idInput, { attributes: true });
+
+            idInput.addEventListener('change', function() {
+              updateStockDisplay(idInput.value);
+            });
+          }
+        }
+
+        // 2. Listen for clicks and changes on variant option inputs
+        var variantContainers = document.querySelectorAll('variant-radios, variant-selects, .product-form__input');
+        variantContainers.forEach(function(container) {
+          container.addEventListener('change', function() {
+            setTimeout(function() {
+              var idInp = document.querySelector('form[action*="/cart/add"] input[name="id"]');
+              if (idInp && idInp.value) {
+                updateStockDisplay(idInp.value);
+              }
+            }, 60);
+          });
+        });
+
+        // 3. Listen to URL param changes (?variant=...)
+        var lastVariantId = new URLSearchParams(window.location.search).get('variant');
+        setInterval(function() {
+          var currentId = new URLSearchParams(window.location.search).get('variant');
+          if (currentId && currentId !== lastVariantId) {
+            lastVariantId = currentId;
+            updateStockDisplay(currentId);
+          }
+        }, 300);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initStockStatus);
+      } else {
+        initStockStatus();
+      }
+      document.addEventListener('shopify:section:load', initStockStatus);
+    })();
+  </script>
 </div>
+
+<style>
+  .ps-stock-pill {
+    border-radius: 8px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* In Stock State: Green */
+  .ps-stock-pill.is-in-stock {
+    background: #E6EFE9 !important;
+    color: #0F291E !important;
+    border: 1px solid #BBF7D0 !important;
+  }
+
+  .ps-stock-pill.is-in-stock .ps-stock-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22C55E !important;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.24);
+    animation: psStockPulseGreen 2s infinite;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  @keyframes psStockPulseGreen {
+    0%, 100% {
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.24);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+  }
+
+  /* Out of Stock State: Red */
+  .ps-stock-pill.is-out-of-stock {
+    background: #FEF2F2 !important;
+    color: #991B1B !important;
+    border: 1px solid #FECACA !important;
+  }
+
+  .ps-stock-pill.is-out-of-stock .ps-stock-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #DC2626 !important;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22);
+    animation: psStockPulseRed 2s infinite;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  @keyframes psStockPulseRed {
+    0%, 100% {
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+    }
+  }
+</style>

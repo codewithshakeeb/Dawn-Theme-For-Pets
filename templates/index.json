@@ -40,7 +40,11 @@
         "center_card_bg_color": "#00205B",
         "center_card_text_color": "#FFFFFF",
         "accent_orange_color": "#FF7A29",
-        "container_max_width": "1680px"
+        "container_max_width": "1680px",
+        "show_bfcm_badge": true,
+        "bfcm_badge_text": "🔥 BLACK FRIDAY SALE LIVE NOW — UP TO 70% OFF ENTIRE WEBSITE",
+        "show_hanging_tag": true,
+        "show_promo_card": true
       }
     },
     "petssify_hero": {
@@ -107,7 +111,7 @@
         "bento_1": {
           "type": "bento_card",
           "settings": {
-            "tag": "UP TO 70% OFF",
+            "tag": "🖤 UP TO 70% OFF",
             "title": "Pet Food & Bowls",
             "subtext": "Automatic holiday discount at checkout",
             "button_label": "Shop Food",
@@ -118,7 +122,7 @@
         "bento_2": {
           "type": "bento_card",
           "settings": {
-            "tag": "FREE SHIPPING $50+",
+            "tag": "🖤 BESTSELLER • 50% OFF",
             "title": "50% Off Toys & Gear",
             "subtext": "Interactive puzzles & play essentials",
             "button_label": "Shop Toys",
@@ -129,7 +133,7 @@
         "bento_3": {
           "type": "bento_card",
           "settings": {
-            "tag": "DOORBUSTER",
+            "tag": "🖤 DOORBUSTER • 60% OFF",
             "title": "Healthy Feeders & Care",
             "subtext": "Nutritious & slow-feeding blends",
             "button_label": "Explore Feeding",
@@ -140,7 +144,7 @@
         "bento_4": {
           "type": "bento_card",
           "settings": {
-            "tag": "BLACK FRIDAY DEAL",
+            "tag": "🖤 TOP PICK • 40% OFF",
             "title": "Up to 60% Off Grooming",
             "subtext": "Whisper-quiet LED nail grinders & coats",
             "button_label": "Shop Grooming",
@@ -151,7 +155,7 @@
         "bento_5": {
           "type": "bento_card",
           "settings": {
-            "tag": "HOLIDAY GIFT",
+            "tag": "🖤 HOLIDAY DEAL • 70% OFF",
             "title": "Up to 70% Off Cat Care",
             "subtext": "Premium fountains & beds storewide",
             "button_label": "Shop Cat Care",
@@ -168,8 +172,8 @@
         "bento_5"
       ],
       "settings": {
-        "heading": "🖤 Black Friday Doorbusters & Categories",
-        "subheading": "Save up to 70% across food, interactive toys, grooming essentials, and gear — no code needed",
+        "heading": "🖤 Black Friday Sales Live Now — Up to 70% OFF All Categories",
+        "subheading": "Sitewide doorbusters across every dog and cat category — plus take a further 20% OFF automatically at checkout.",
         "mobile_layout": "carousel",
         "padding_top": 48,
         "padding_bottom": 48

@@ -37,14 +37,52 @@
   <!-- ZONE A: Upper Mint-White Canvas & Giant 2-Line Headline -->
   <div class="ps-hero-upper">
     <div class="ps-hero-container">
+
+      <!-- UPPER-LEFT FLOATING WIDGET: 3D Tilted Matte-Black Hanging Price Tag (Attached Image 1) -->
+      {% if section.settings.show_hanging_tag != false %}
+        <aside class="ps-floating-tag" aria-label="Black Friday Offer Tag">
+          <div class="ps-tag-cord-svg" aria-hidden="true">
+            <svg width="38" height="42" viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 2C24 8 28 16 21 28C19 31 19 34 19 38" stroke="#FF6B00" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <circle cx="19" cy="38" r="3" fill="#090D16" stroke="#FFFFFF" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="ps-tag-body">
+            <div class="ps-tag-hole" aria-hidden="true"></div>
+            <div class="ps-tag-eyebrow">{{ section.settings.tag_eyebrow | default: 'BLACK FRIDAY' }}</div>
+            <div class="ps-tag-line1">{{ section.settings.tag_line1 | default: 'UP TO' }}</div>
+            <div class="ps-tag-discount">{{ section.settings.tag_discount | default: '70%' }}</div>
+            <div class="ps-tag-line2">{{ section.settings.tag_line2 | default: 'OFF' }}</div>
+            <div class="ps-tag-micropill">{{ section.settings.tag_pill | default: 'ENTIRE WEBSITE' }}</div>
+          </div>
+        </aside>
+      {% endif %}
+
+      <!-- UPPER-RIGHT FLOATING WIDGET: Stencil Promo Card (Attached Image 2) -->
+      {% if section.settings.show_promo_card != false %}
+        <aside class="ps-floating-promo" aria-label="Black Friday Promo Card">
+          <div class="ps-stencil-watermark" aria-hidden="true">20%</div>
+          <div class="ps-promo-inner">
+            <div class="ps-promo-eyebrow">{{ section.settings.promo_eyebrow | default: 'BLACK FRIDAY SPECIAL' }}</div>
+            <div class="ps-promo-line1">{{ section.settings.promo_line1 | default: 'TAKE A FURTHER' }}</div>
+            <div class="ps-promo-line2">{{ section.settings.promo_line2 | default: '20% OFF SALE' }}</div>
+            <div class="ps-promo-codebox">
+              <span>{{ section.settings.promo_code | default: 'EXTRA 20% AT CHECKOUT' }}</span>
+            </div>
+          </div>
+        </aside>
+      {% endif %}
+
       <div class="ps-hero-headline-box">
-        {% if section.settings.show_bfcm_badge %}
+        {% if section.settings.show_bfcm_badge != false %}
           <div class="ps-hero-bfcm-badge-wrap">
             <span class="ps-hero-bfcm-badge">
-              {{ section.settings.bfcm_badge_text | default: '🔥 BLACK FRIDAY EARLY ACCESS — UP TO 40% OFF' }}
+              <span class="ps-bfcm-pulsing-dot" aria-hidden="true"></span>
+              {{ section.settings.bfcm_badge_text | default: '🔥 BLACK FRIDAY SALE LIVE NOW — UP TO 70% OFF ENTIRE WEBSITE' }}
             </span>
           </div>
         {% endif %}
+
         <h1 class="ps-hero-title">
           {% if section.settings.heading_line_1 != blank %}
             <span class="ps-title-line ps-title-line--1">{{ section.settings.heading_line_1 | escape }}</span>
@@ -53,7 +91,14 @@
             <span class="ps-title-line ps-title-line--2">{{ section.settings.heading_line_2 | escape }}</span>
           {% endif %}
         </h1>
+
+        <!-- Mobile & Tablet 2-Badge Row (Shown below headline on < 1024px to prevent pet overlap) -->
+        <div class="ps-hero-mobile-badges" aria-label="Black Friday Highlights">
+          <span class="ps-mobile-badge ps-mobile-badge--tag">🏷️ UP TO 70% OFF SITEWIDE</span>
+          <span class="ps-mobile-badge ps-mobile-badge--promo">🔥 EXTRA 20% OFF SALE</span>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -549,6 +594,317 @@
       display: none;
     }
   }
+
+  /* =========================================================================
+     Petssify Black Friday Floating Widgets & Hero Bento Upgrades
+     ========================================================================= */
+  #petssify-hero-{{ section.id }} .ps-hero-container {
+    position: relative;
+  }
+
+  /* Eyebrow Badge & Pulsing Dot */
+  #petssify-hero-{{ section.id }} .ps-hero-bfcm-badge-wrap {
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-hero-bfcm-badge {
+    background: #090D16 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #FF6B00 !important;
+    box-shadow: 0 6px 20px rgba(9, 13, 22, 0.22);
+    border-radius: 999px;
+    padding: 7px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bfcm-pulsing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FF6B00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.35);
+    animation: psHeroPulseOrange 1.8s infinite;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  @keyframes psHeroPulseOrange {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.35); }
+    50% { box-shadow: 0 0 0 7px rgba(255, 107, 0, 0); }
+  }
+
+  /* Left Floating Tag (Attached Image 1) */
+  #petssify-hero-{{ section.id }} .ps-floating-tag {
+    position: absolute;
+    left: clamp(8px, 3.2vw, 56px);
+    top: clamp(12px, 3.5vw, 48px);
+    z-index: 5;
+    transform: rotate(-10deg);
+    transform-origin: top center;
+    animation: psTagFloat 4s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: auto;
+  }
+
+  @keyframes psTagFloat {
+    0%, 100% { transform: rotate(-10deg) translateY(0); }
+    50% { transform: rotate(-10deg) translateY(-8px); }
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-cord-svg {
+    margin-bottom: -6px;
+    z-index: 2;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-body {
+    background: linear-gradient(145deg, #141B2D 0%, #090D16 100%);
+    color: #FFFFFF;
+    border: 2px solid #FF6B00;
+    border-radius: 16px;
+    padding: 16px 22px 14px;
+    box-shadow: 0 18px 36px rgba(9, 13, 22, 0.28), 0 4px 12px rgba(255, 107, 0, 0.15);
+    text-align: center;
+    width: 172px;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-hole {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #EDF4FD;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+    margin: 0 auto 6px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    color: #FF6B00;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-line1 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-top: 2px;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-discount {
+    font-size: 46px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 2px 0;
+    font-family: var(--font-heading, sans-serif);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-line2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-tag-micropill {
+    background: #FF6B00;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 8px;
+    display: inline-block;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: var(--font-heading, sans-serif);
+    box-shadow: 0 2px 6px rgba(255, 107, 0, 0.4);
+  }
+
+  /* Right Floating Stencil Promo (Attached Image 2) */
+  #petssify-hero-{{ section.id }} .ps-floating-promo {
+    position: absolute;
+    right: clamp(8px, 3.2vw, 56px);
+    top: clamp(12px, 3.5vw, 48px);
+    z-index: 5;
+    transform: rotate(6deg);
+    transform-origin: top center;
+    animation: psPromoFloat 4.2s ease-in-out infinite 0.5s;
+    background: #090D16;
+    color: #FFFFFF;
+    border: 1.5px solid rgba(255, 107, 0, 0.7);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 36px rgba(9, 13, 22, 0.26), 0 4px 14px rgba(255, 107, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    max-width: 220px;
+    text-align: center;
+    pointer-events: auto;
+    box-sizing: border-box;
+  }
+
+  @keyframes psPromoFloat {
+    0%, 100% { transform: rotate(6deg) translateY(0); }
+    50% { transform: rotate(6deg) translateY(-7px); }
+  }
+
+  #petssify-hero-{{ section.id }} .ps-stencil-watermark {
+    font-size: 96px;
+    font-weight: 900;
+    color: rgba(255, 107, 0, 0.18);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    filter: blur(0.5px);
+    font-family: var(--font-heading, sans-serif);
+    user-select: none;
+    line-height: 1;
+    letter-spacing: -3px;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-promo-inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-promo-eyebrow {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #FF6B00;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-promo-line1 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-promo-line2 {
+    font-size: 24px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 3px 0 8px;
+    font-family: var(--font-heading, sans-serif);
+  }
+
+  #petssify-hero-{{ section.id }} .ps-promo-codebox {
+    border: 1.5px solid #FF6B00;
+    background: rgba(255, 107, 0, 0.14);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+    display: inline-block;
+    font-family: var(--font-heading, sans-serif);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Bottom-Center Bento Card Upgrade */
+  #petssify-hero-{{ section.id }} .ps-bento-card--center {
+    background: linear-gradient(180deg, #090D16 0%, #00205B 100%) !important;
+    border-top: 3.5px solid #FF6B00 !important;
+    box-shadow: 0 12px 36px rgba(9, 13, 22, 0.35) !important;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--center .ps-cta-heading {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--center .ps-cta-btn {
+    background-color: #FF6B00 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.38) !important;
+    font-weight: 800 !important;
+  }
+
+  #petssify-hero-{{ section.id }} .ps-bento-card--center .ps-cta-btn:hover {
+    background-color: #E8681B !important;
+    transform: translateY(-2px);
+  }
+
+  /* Responsive Rules: Mobile & Tablet */
+  @media screen and (max-width: 1023px) {
+    #petssify-hero-{{ section.id }} .ps-floating-tag,
+    #petssify-hero-{{ section.id }} .ps-floating-promo {
+      display: none !important;
+    }
+    #petssify-hero-{{ section.id }} .ps-hero-mobile-badges {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 3;
+    }
+    #petssify-hero-{{ section.id }} .ps-mobile-badge {
+      background: #090D16;
+      color: #FFFFFF;
+      border: 1.2px solid #FF6B00;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(9, 13, 22, 0.25);
+      font-family: var(--font-heading, sans-serif);
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    #petssify-hero-{{ section.id }} .ps-hero-mobile-badges {
+      display: none !important;
+    }
+    #petssify-hero-{{ section.id }} .ps-hero-headline-box {
+      max-width: 820px;
+    }
+  }
+
 </style>
 
 {% schema %}
@@ -557,6 +913,76 @@
   "tag": "section",
   "class": "section-petssify-hero-bento",
   "settings": [
+    {
+      "type": "header",
+      "content": "Black Friday Floating Widgets (Attached Images 1 & 2)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hanging_tag",
+      "label": "Show Hanging Price Tag (Upper-Left)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tag_eyebrow",
+      "label": "Tag Eyebrow",
+      "default": "BLACK FRIDAY"
+    },
+    {
+      "type": "text",
+      "id": "tag_line1",
+      "label": "Tag Line 1",
+      "default": "UP TO"
+    },
+    {
+      "type": "text",
+      "id": "tag_discount",
+      "label": "Tag Discount",
+      "default": "70%"
+    },
+    {
+      "type": "text",
+      "id": "tag_line2",
+      "label": "Tag Line 2",
+      "default": "OFF"
+    },
+    {
+      "type": "text",
+      "id": "tag_pill",
+      "label": "Tag Bottom Micro-Pill",
+      "default": "ENTIRE WEBSITE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_card",
+      "label": "Show Stencil Promo Card (Upper-Right)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_eyebrow",
+      "label": "Promo Eyebrow",
+      "default": "BLACK FRIDAY SPECIAL"
+    },
+    {
+      "type": "text",
+      "id": "promo_line1",
+      "label": "Promo Line 1",
+      "default": "TAKE A FURTHER"
+    },
+    {
+      "type": "text",
+      "id": "promo_line2",
+      "label": "Promo Line 2",
+      "default": "20% OFF SALE"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Promo Code Box Text",
+      "default": "EXTRA 20% AT CHECKOUT"
+    },
     {
       "type": "header",
       "content": "Black Friday Sale Badge"

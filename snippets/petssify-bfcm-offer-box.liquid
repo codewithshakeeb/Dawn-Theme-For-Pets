@@ -70,13 +70,13 @@
           </svg>
           <span>{{ section.settings.bfcm_timer_label | default: 'Deal ends in:' }}</span>
         </div>
-        <div class="ps-bfcm-countdown" data-bfcm-clock>2d 05h 54m 03s</div>
+        <div class="ps-bfcm-countdown" data-bfcm-clock>01d 18h 45m 12s</div>
       </div>
 
       <!-- Urgency Line -->
       <div class="ps-bfcm-urgency">
         <span class="ps-bolt" aria-hidden="true">⚡</span>
-        <span class="ps-urgency-body">High Demand: <strong>{{ section.settings.bfcm_urgency_text | default: 'Black Friday stock is limited' }}</strong></span>
+        <span class="ps-urgency-body">High Demand: <strong>{{ section.settings.bfcm_urgency_text | default: 'Black Friday stock is limited' | remove: 'High Demand: ' | remove: 'High Demand:' }}</strong></span>
       </div>
 
       <!-- Trust & Checkout Sub-Line -->
@@ -186,10 +186,10 @@
     border: 1px solid #D8E2EE;
     border-top: 3.5px solid #FF6B00;
     border-radius: 14px;
-    padding: 16px 18px;
+    padding: 0 18px 16px 18px;
     margin: 16px 0;
     box-shadow: 0 4px 14px -2px rgba(10, 37, 64, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
   }
 
   .ps-bfcm-card:hover {
@@ -201,7 +201,18 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 12px;
+    margin: 0 -18px 14px -18px !important;
+    padding: 12px 18px !important;
+    background: #090D16 !important;
+    border-bottom: 1px solid rgba(255, 107, 0, 0.35) !important;
+  }
+
+  .ps-bfcm-title {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    letter-spacing: 0.02em !important;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   }
 
   .ps-bfcm-title-wrap {
@@ -336,20 +347,15 @@
       if (card) {
         var clockEl = card.querySelector('[data-bfcm-clock]');
         if (clockEl) {
-          var storageKey = 'petssify_bfcm_deadline_v1';
-          var endDateStr = card.getAttribute('data-end-date');
-          var targetTime = endDateStr ? new Date(endDateStr).getTime() : NaN;
+          var storageKey = 'petssify_bfcm_urgency_timer_v2';
+          var saved = localStorage.getItem(storageKey);
           var now = Date.now();
+          var targetTime = saved ? parseInt(saved, 10) : 0;
 
-          // Evergreen rolling fallback: if target is invalid or in the past, guarantee active timer
-          if (isNaN(targetTime) || targetTime <= now) {
-            var saved = localStorage.getItem(storageKey);
-            if (saved && parseInt(saved, 10) > now) {
-              targetTime = parseInt(saved, 10);
-            } else {
-              targetTime = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000) + 3000;
-              try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
-            }
+          // High-urgency 48-Hour Rolling Black Friday Deal Countdown (01d 18h 45m 12s)
+          if (!targetTime || targetTime <= now || targetTime > now + (48 * 3600000)) {
+            targetTime = now + (1 * 86400000) + (18 * 3600000) + (45 * 60000) + 12000;
+            try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
           }
 
           function updateClock() {
@@ -364,7 +370,7 @@
             var m = Math.floor((diff % 3600000) / 60000);
             var s = Math.floor((diff % 60000) / 1000);
             clockEl.textContent =
-              d + 'd ' +
+              String(d).padStart(2, '0') + 'd ' +
               String(h).padStart(2, '0') + 'h ' +
               String(m).padStart(2, '0') + 'm ' +
               String(s).padStart(2, '0') + 's';
