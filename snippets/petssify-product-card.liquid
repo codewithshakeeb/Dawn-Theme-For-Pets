@@ -227,7 +227,7 @@
         </a>
       </h3>
 
-      {%- comment -%} 5-Star Rating Block (renders ONLY if reviews exist) {%- endcomment -%}
+      {%- comment -%} 5-Star Rating Block (renders real reviews or high-converting 5.0 fallback) {%- endcomment -%}
       {%- if show_rating -%}
         {%- render 'petssify-rating', product: target_product -%}
       {%- endif -%}

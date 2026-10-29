@@ -453,7 +453,7 @@
       "show_sale_badge": true,
       "sale_badge_background": "#FF4500",
       "sale_badge_text_color": "#FFFFFF",
-      "star_rating_color": "#F59E0B",
+      "star_rating_color": "#FFA41C",
       "sections": {
         "main-password-header": {
           "type": "main-password-header",
