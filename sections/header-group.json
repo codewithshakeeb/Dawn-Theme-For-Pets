@@ -8,21 +8,21 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Free Tracked US Shipping on Orders Over $50",
-            "link": "/collections/best-sellers"
+            "text": "🔥 BLACK FRIDAY SALE LIVE: Up to 40% OFF + Extra 20% OFF at Checkout | Free Tracked US Shipping $50+",
+            "link": "/collections/all"
           }
         },
         "announcement_2": {
           "type": "announcement",
           "settings": {
-            "text": "30-Day Money-Back Guarantee — Easy US Returns",
-            "link": "shopify://policies/refund-policy"
+            "text": "📦 Free Tracked Shipping on Orders $50+ (US & Int'l) • Fast 1–2 Day Dispatch",
+            "link": "/collections/all"
           }
         },
         "announcement_3": {
           "type": "announcement",
           "settings": {
-            "text": "Verified Sizing, Material & Weight Specs on Every Product",
+            "text": "🛡️ 30-Day Money-Back Guarantee • Hassle-Free Returns",
             "link": "/collections/all"
           }
         }

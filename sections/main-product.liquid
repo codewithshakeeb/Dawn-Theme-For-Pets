@@ -100,11 +100,6 @@
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
                   <h1>{{ product.title | escape }}</h1>
-                  <a href="{{ product.url }}" class="product__title">
-                    <h2 class="h1">
-                      {{ product.title | escape }}
-                    </h2>
-                  </a>
                 </div>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
@@ -170,6 +165,8 @@
                   <span class="visually-hidden">{{ 'products.product.sku' | t }}:</span>
                   {{- product.selected_or_first_available_variant.sku -}}
                 </p>
+              {%- when 'petssify_bfcm_box' -%}
+                {% render 'petssify-bfcm-offer-box', product: product, section: section, block: block %}
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
               {%- when 'collapsible_tab' -%}
@@ -178,9 +175,9 @@
                     <summary>
                       <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
-                        <h2 class="h4 accordion__title inline-richtext">
+                        <h3 class="h4 accordion__title inline-richtext">
                           {{ block.settings.heading | default: block.settings.page.title | escape }}
-                        </h2>
+                        </h3>
                       </div>
                       {{- 'icon-caret.svg' | inline_asset_content -}}
                     </summary>
@@ -449,7 +446,9 @@
                 %}
 
               {%- when 'variant_picker' -%}
-                {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+                {%- unless product.has_only_default_variant -%}
+                  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+                {%- endunless -%}
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
@@ -2064,6 +2063,58 @@
     }
   ],
   "settings": [
+    {
+      "type": "header",
+      "content": "Black Friday Special Offer & Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bfcm_box",
+      "default": true,
+      "label": "Enable Black Friday Special Offer Box"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_title",
+      "default": "Black Friday Special Offer",
+      "label": "Black Friday Box Title"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_badge_text",
+      "default": "SAVE 20%",
+      "label": "Black Friday Badge Text"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_timer_label",
+      "default": "Deal ends in:",
+      "label": "Timer Label"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_end_date",
+      "default": "2026-11-30T23:59:59",
+      "label": "Countdown End Date (ISO 8601)"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_urgency_text",
+      "default": "High Demand: Black Friday stock is limited",
+      "label": "Urgency Text"
+    },
+    {
+      "type": "text",
+      "id": "bfcm_subtext",
+      "default": "✓ Extra 20% applied at checkout • 30-Day Money-Back Guarantee",
+      "label": "Trust Subtext"
+    },
+    {
+      "type": "text",
+      "id": "stock_badge_text",
+      "default": "IN STOCK — READY TO SHIP WITHIN 24 HOURS",
+      "label": "Stock Badge Text"
+    },
     {
       "type": "checkbox",
       "id": "enable_sticky_info",

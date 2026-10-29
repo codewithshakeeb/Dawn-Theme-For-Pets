@@ -71,32 +71,95 @@
               assign quantity_rule_soldout = true
             endif
           -%}
-          <button
-            id="ProductSubmitButton-{{ section_id }}"
-            type="submit"
-            name="add"
-            class="product-form__submit button button--full-width button--primary petssify-main-atc-btn"
-            {% if product.selected_or_first_available_variant.available == false
-              or quantity_rule_soldout
-              or product.selected_or_first_available_variant == null
-            %}
-              disabled
-              aria-disabled="true"
-            {% endif %}
-          >
-            <span>
-              {%- if product.selected_or_first_available_variant == null -%}
-                {{ 'products.product.unavailable' | t }}
-              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                Available soon
-              {%- else -%}
-                {{ 'products.product.add_to_cart' | t }}
-              {%- endif -%}
-            </span>
-            {%- render 'loading-spinner' -%}
-          </button>
+          <!-- Side-by-Side Pill Quantity Selector + Add to Cart Button (image_c8b0a8.png) -->
+          <div class="ps-atc-row">
+            <div class="ps-qty-pill">
+              <button
+                type="button"
+                class="ps-qty-step-btn"
+                name="minus"
+                aria-label="Decrease quantity"
+                onclick="
+                  var inp = this.closest('.ps-qty-pill').querySelector('.ps-qty-val');
+                  if (inp) {
+                    var v = Math.max(1, (parseInt(inp.value, 10) || 1) - 1);
+                    inp.value = v;
+                    inp.dispatchEvent(new Event('change', { bubbles: true }));
+                  }
+                "
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <input
+                type="number"
+                name="quantity"
+                class="ps-qty-val"
+                value="1"
+                min="1"
+                form="{{ product_form_id }}"
+                aria-label="Quantity"
+                readonly
+              >
+              <button
+                type="button"
+                class="ps-qty-step-btn"
+                name="plus"
+                aria-label="Increase quantity"
+                onclick="
+                  var inp = this.closest('.ps-qty-pill').querySelector('.ps-qty-val');
+                  if (inp) {
+                    var v = (parseInt(inp.value, 10) || 1) + 1;
+                    inp.value = v;
+                    inp.dispatchEvent(new Event('change', { bubbles: true }));
+                  }
+                "
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+
+            <button
+              id="ProductSubmitButton-{{ section_id }}"
+              type="submit"
+              name="add"
+              class="product-form__submit ps-atc-btn"
+              {% if product.selected_or_first_available_variant.available == false
+                or quantity_rule_soldout
+                or product.selected_or_first_available_variant == null
+              %}
+                disabled
+                aria-disabled="true"
+              {% endif %}
+            >
+              <svg class="ps-atc-bag-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                <path d="M3 6h18"></path>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                <line x1="12" y1="13" x2="12" y2="17"></line>
+                <line x1="10" y1="15" x2="14" y2="15"></line>
+              </svg>
+              <span>
+                {%- if product.selected_or_first_available_variant == null -%}
+                  {{ 'products.product.unavailable' | t }}
+                {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                  Available soon
+                {%- else -%}
+                  {{ 'products.product.add_to_cart' | t }}
+                {%- endif -%}
+              </span>
+              {%- render 'loading-spinner' -%}
+            </button>
+          </div>
+
           {%- if show_dynamic_checkout and product.selected_or_first_available_variant.available -%}
-            {{ form | payment_button }}
+            <div class="ps-dynamic-checkout-wrapper">
+              {{ form | payment_button }}
+            </div>
           {%- endif -%}
 
           <div class="petssify-checkout-trust-strip" aria-label="Customer Guarantees">
@@ -176,3 +239,115 @@
     <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 </div>
+
+<style>
+  .ps-atc-row {
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .ps-qty-pill {
+    width: 126px !important;
+    height: 52px !important;
+    border-radius: 999px !important;
+    border: 1.5px solid #0A2540 !important;
+    background: #FFFFFF !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 14px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .ps-qty-step-btn {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    color: #0A2540 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  .ps-qty-step-btn:hover {
+    background-color: #EEF4FF !important;
+  }
+
+  .ps-qty-val {
+    width: 34px !important;
+    border: none !important;
+    background: transparent !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0A2540 !important;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+    padding: 0 !important;
+    -moz-appearance: textfield !important;
+  }
+
+  .ps-qty-val::-webkit-outer-spin-button,
+  .ps-qty-val::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+  }
+
+  .ps-atc-btn {
+    flex: 1 !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    border-radius: 12px !important;
+    background-color: #0A2540 !important;
+    color: #FFFFFF !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, transform 0.15s ease !important;
+    margin: 0 !important;
+    padding: 0 20px !important;
+    box-shadow: 0 2px 8px rgba(10, 37, 64, 0.18) !important;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  }
+
+  .ps-atc-btn:hover:not([disabled]) {
+    background-color: #163A5F !important;
+  }
+
+  .ps-atc-bag-icon {
+    flex-shrink: 0 !important;
+  }
+
+  .ps-dynamic-checkout-wrapper {
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .ps-dynamic-checkout-wrapper .shopify-payment-button__button {
+    border-radius: 12px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.01em !important;
+  }
+
+  /* Prevent duplicate quantity selector on PDP */
+  .product-form__quantity {
+    display: none !important;
+  }
+</style>

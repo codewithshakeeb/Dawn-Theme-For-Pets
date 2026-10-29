@@ -85,6 +85,31 @@
           </p>
         {%- endif -%}
 
+        <!-- Live 4-box Countdown Timer (DAYS | HRS | MINS | SECS) -->
+        {%- if section.settings.enable_timer != false -%}
+          <div class="petssify-promo__timer" data-promo-timer data-end-date="{{ section.settings.timer_end_date | default: '2026-11-30T23:59:59' }}">
+            <div class="petssify-promo__timer-box">
+              <span class="petssify-promo__timer-num ps-days">02</span>
+              <span class="petssify-promo__timer-lbl">DAYS</span>
+            </div>
+            <div class="petssify-promo__timer-sep">:</div>
+            <div class="petssify-promo__timer-box">
+              <span class="petssify-promo__timer-num ps-hours">05</span>
+              <span class="petssify-promo__timer-lbl">HRS</span>
+            </div>
+            <div class="petssify-promo__timer-sep">:</div>
+            <div class="petssify-promo__timer-box">
+              <span class="petssify-promo__timer-num ps-mins">54</span>
+              <span class="petssify-promo__timer-lbl">MINS</span>
+            </div>
+            <div class="petssify-promo__timer-sep">:</div>
+            <div class="petssify-promo__timer-box">
+              <span class="petssify-promo__timer-num ps-secs">03</span>
+              <span class="petssify-promo__timer-lbl">SECS</span>
+            </div>
+          </div>
+        {%- endif -%}
+
         {%- if section.settings.button_label != blank -%}
           <a
             href="{{ section.settings.button_link | default: '/collections/all' }}"
@@ -240,6 +265,65 @@
   }
 
   /* Pill-shaped button matching Petssify Theme UI */
+  
+  .petssify-promo__timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 18px;
+  }
+
+  .petssify-promo__timer-box {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 8px 12px;
+    min-width: 58px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .petssify-promo__timer-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', monospace);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .petssify-promo__timer-lbl {
+    font-size: 10px;
+    font-weight: 700;
+    color: #FF6B00;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+    font-family: var(--font-body, 'Inter', sans-serif);
+  }
+
+  .petssify-promo__timer-sep {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1;
+    margin-top: -6px;
+  }
+
+  @media screen and (max-width: 480px) {
+    .petssify-promo__timer-box {
+      min-width: 48px;
+      padding: 6px 8px;
+    }
+    .petssify-promo__timer-num {
+      font-size: 18px;
+    }
+  }
+
   .petssify-promo__btn {
     display: inline-flex;
     align-items: center;
@@ -406,6 +490,61 @@
   }
 </style>
 
+
+<script>
+  (function() {
+    function initPromoTimer() {
+      var timerEl = document.querySelector('[data-promo-timer]');
+      if (!timerEl) return;
+      var storageKey = 'petssify_promo_timer_deadline_v1';
+      var endDateStr = timerEl.getAttribute('data-end-date');
+      var targetTime = endDateStr ? new Date(endDateStr).getTime() : NaN;
+      var now = Date.now();
+
+      if (isNaN(targetTime) || targetTime <= now) {
+        var saved = localStorage.getItem(storageKey);
+        if (saved && parseInt(saved, 10) > now) {
+          targetTime = parseInt(saved, 10);
+        } else {
+          targetTime = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000) + 3000;
+          try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
+        }
+      }
+
+      var daysEl = timerEl.querySelector('.ps-days');
+      var hoursEl = timerEl.querySelector('.ps-hours');
+      var minsEl = timerEl.querySelector('.ps-mins');
+      var secsEl = timerEl.querySelector('.ps-secs');
+
+      function update() {
+        var diff = targetTime - Date.now();
+        if (diff <= 0) {
+          targetTime = Date.now() + (2 * 86400000) + (5 * 3600000);
+          try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
+          diff = targetTime - Date.now();
+        }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        if (daysEl) daysEl.textContent = String(d).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
+        if (minsEl) minsEl.textContent = String(m).padStart(2, '0');
+        if (secsEl) secsEl.textContent = String(s).padStart(2, '0');
+      }
+      update();
+      if (timerEl._interval) clearInterval(timerEl._interval);
+      timerEl._interval = setInterval(update, 1000);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPromoTimer);
+    } else {
+      initPromoTimer();
+    }
+    document.addEventListener('shopify:section:load', initPromoTimer);
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Petssify Promo Banner",
@@ -500,6 +639,22 @@
       "id": "subtext",
       "label": "Subtext",
       "default": "on premium food"
+    },
+    {
+      "type": "header",
+      "content": "Flash Sale Countdown Timer"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_timer",
+      "label": "Enable 4-Box Countdown Timer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "timer_end_date",
+      "label": "Timer End Date (ISO 8601)",
+      "default": "2026-11-30T23:59:59"
     },
     {
       "type": "header",

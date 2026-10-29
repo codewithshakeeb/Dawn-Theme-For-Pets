@@ -96,6 +96,12 @@
             "custom_liquid": ""
           }
         },
+        "custom_liquid_bf_deal": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'petssify-bfcm-offer-box', product: product, section: section %}"
+          }
+        },
         "collapsible_tab_dXRwym": {
           "type": "collapsible_tab",
           "settings": {
@@ -110,7 +116,7 @@
           "settings": {
             "heading": "Refund, Return & Shipping Policy",
             "icon": "truck",
-            "content": "<p><strong>Shipping Policy</strong></p><ul><li><strong>Free Standard Shipping:</strong> Complimentary on all orders over $50 across the continental US.</li><li><strong>Fast Order Processing:</strong> Packed and dispatched within 1–2 business days.</li><li><strong>Tracked Delivery:</strong> Expected delivery in 5–8 business days with live shipment tracking.</li></ul><p><strong>Refund &amp; Return Policy</strong></p><ul><li><strong>30-Day Money-Back Guarantee:</strong> 30-day easy returns on unused items in original packaging.</li><li><strong>Fast &amp; Easy Process:</strong> Contact our team at support@petssify.com for instant prepaid return assistance.</li><li><strong>Prompt Refunds:</strong> Full refund processed to your original payment method within 3–5 business days of return receipt.</li></ul>",
+            "content": "<p><strong>Shipping Policy</strong></p><ul><li><strong>Fast 1–2 Day Processing:</strong> Orders dispatched within 1–2 business days.</li><li><strong>United States:</strong> Flat rate $3.99 ($1–$50). <strong>FREE Standard Shipping on orders $50+</strong> (5–10 business days).</li><li><strong>International:</strong> Flat rate $6.99 ($1–$50). <strong>FREE International Shipping on orders $50+</strong> (7–14 business days).</li><li><strong>Live Tracking:</strong> Tracking number provided for every shipment.</li></ul><p><strong>30-Day Return &amp; Refund Policy</strong></p><ul><li><strong>30-Day Returns:</strong> Return within 30 days of delivery. Items must be unused, in original packaging with proof of purchase.</li><li><strong>Fast Refunds:</strong> Approved refunds processed to original payment method within 5–7 business days.</li><li><strong>Damaged / Defective Items:</strong> Contact support@petssify.com within 48 hours with order number and photos for immediate free replacement or refund.</li><li><strong>Return Postage:</strong> Customer responsibility unless item arrived damaged, defective, or incorrect.</li></ul>",
             "page": ""
           }
         },
@@ -127,6 +133,7 @@
         "custom_liquid_K4KpCE",
         "custom_liquid_k8nVae",
         "variant_picker",
+        "custom_liquid_bf_deal",
         "quantity_selector",
         "buy_buttons",
         "custom_liquid_trust_row",

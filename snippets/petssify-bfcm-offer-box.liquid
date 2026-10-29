@@ -1,0 +1,453 @@
+{% comment %}
+  Snippet: snippets/petssify-bfcm-offer-box.liquid
+  Petssify Black Friday PDP Conversion Stack (Matches image_c8b0a8.png):
+  - Dynamic Price + Compare-At Price + SAVE X% OFF Pill Badge (when show_price: true)
+  - Pulsing IN STOCK — READY TO SHIP WITHIN 24 HOURS Badge (when show_price: true)
+  - Black Friday Special Offer Card with Live Countdown Timer (Tabular Nums, 0.00 CLS)
+  - Rolling 48h evergreen fallback in localStorage
+{% endcomment %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign has_discount = false -%}
+{%- if current_variant.compare_at_price > current_variant.price -%}
+  {%- assign has_discount = true -%}
+  {%- assign discount_amount = current_variant.compare_at_price | minus: current_variant.price -%}
+  {%- assign discount_pct = discount_amount | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+{%- endif -%}
+
+<div class="ps-pdp-conversion-stack" id="ps-bfcm-stack-{{ section.id }}">
+  {%- if show_price == true -%}
+    <!-- 1. Price + Compare-At + SAVE X% OFF Pill -->
+    <div class="ps-price-row" data-ps-price-row>
+      <span class="ps-price-current" data-ps-current-price>
+        {{ current_variant.price | money }}
+      </span>
+      <span
+        class="ps-price-compare{% unless has_discount %} ps-hidden{% endunless %}"
+        data-ps-compare-price
+      >
+        {%- if has_discount -%}
+          {{ current_variant.compare_at_price | money }}
+        {%- endif -%}
+      </span>
+      <span
+        class="ps-save-pill{% unless has_discount %} ps-hidden{% endunless %}"
+        data-ps-save-pill
+      >
+        SAVE <span data-ps-discount-pct>{{ discount_pct }}</span>% OFF
+      </span>
+    </div>
+
+    <!-- 2. Pulsing Stock Status Pill -->
+    <div class="ps-stock-pill" data-ps-stock-pill>
+      <span class="ps-stock-dot" aria-hidden="true"></span>
+      <span data-ps-stock-text>{{ section.settings.stock_badge_text | default: 'IN STOCK — READY TO SHIP WITHIN 24 HOURS' }}</span>
+    </div>
+  {%- endif -%}
+
+  <!-- 3. Black Friday Special Offer & Live Countdown Card (Exact Layout of image_c8b0a8.png) -->
+  {%- if section.settings.enable_bfcm_box != false -%}
+    <div
+      class="ps-bfcm-card"
+      data-bfcm-timer
+      data-end-date="{{ section.settings.bfcm_end_date | default: '2026-11-30T23:59:59' }}"
+    >
+      <!-- Header Row: Flex Space-Between -->
+      <div class="ps-bfcm-header">
+        <div class="ps-bfcm-title-wrap">
+          <span class="ps-bfcm-emoji" aria-hidden="true">🔥</span>
+          <span class="ps-bfcm-title">{{ section.settings.bfcm_title | default: 'Black Friday Special Offer' }}</span>
+        </div>
+        <span class="ps-bfcm-badge">{{ section.settings.bfcm_badge_text | default: 'SAVE 20%' }}</span>
+      </div>
+
+      <!-- Countdown Box (Inner White Pill Box) -->
+      <div class="ps-bfcm-timer-box">
+        <div class="ps-bfcm-timer-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A2540" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>{{ section.settings.bfcm_timer_label | default: 'Deal ends in:' }}</span>
+        </div>
+        <div class="ps-bfcm-countdown" data-bfcm-clock>2d 05h 54m 03s</div>
+      </div>
+
+      <!-- Urgency Line -->
+      <div class="ps-bfcm-urgency">
+        <span class="ps-bolt" aria-hidden="true">⚡</span>
+        <span class="ps-urgency-body">High Demand: <strong>{{ section.settings.bfcm_urgency_text | default: 'Black Friday stock is limited' }}</strong></span>
+      </div>
+
+      <!-- Trust & Checkout Sub-Line -->
+      <div class="ps-bfcm-subtext">
+        {{ section.settings.bfcm_subtext | default: '✓ Extra 20% applied at checkout • 30-Day Money-Back Guarantee' }}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  .ps-pdp-conversion-stack {
+    margin: 14px 0 16px;
+    font-family: inherit;
+  }
+
+  .ps-hidden {
+    display: none !important;
+  }
+
+  /* 1. Price Row */
+  .ps-price-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .ps-price-current {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0A2540;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  .ps-price-compare {
+    font-size: 20px;
+    font-weight: 500;
+    color: #64748B;
+    text-decoration: line-through;
+    line-height: 1;
+    font-family: var(--font-body, 'Inter', sans-serif);
+  }
+
+  .ps-save-pill {
+    background-color: #0A2540;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+    box-shadow: 0 2px 6px rgba(10, 37, 64, 0.15);
+  }
+
+  /* 2. In-Stock Pill */
+  .ps-stock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #E6EFE9;
+    color: #0F291E;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    line-height: 1.2;
+    border: 1px solid rgba(21, 128, 61, 0.12);
+  }
+
+  .ps-stock-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #22C55E;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.22);
+    animation: psStockPulse 1.8s infinite ease-in-out;
+    flex-shrink: 0;
+  }
+
+  @keyframes psStockPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.22);
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 0.85;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.12);
+    }
+  }
+
+  /* 3. Black Friday Special Offer Card (Exact replica of image_c8b0a8.png) */
+  .ps-bfcm-card {
+    background-color: #F6F9FC;
+    border: 1px solid #D8E2EE;
+    border-top: 3.5px solid #FF6B00;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    box-shadow: 0 4px 14px -2px rgba(10, 37, 64, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ps-bfcm-card:hover {
+    box-shadow: 0 6px 18px -2px rgba(10, 37, 64, 0.08);
+  }
+
+  .ps-bfcm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ps-bfcm-title-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ps-bfcm-emoji {
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ps-bfcm-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0A2540;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+    letter-spacing: -0.01em;
+  }
+
+  .ps-bfcm-badge {
+    background-color: #FF6B00;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(255, 107, 0, 0.28);
+  }
+
+  /* Inner White Pill Countdown Box */
+  .ps-bfcm-timer-box {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 11px 16px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  }
+
+  .ps-bfcm-timer-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    font-family: var(--font-body, 'Inter', sans-serif);
+  }
+
+  .ps-bfcm-countdown {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FF6B00;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', monospace);
+    letter-spacing: 0.01em;
+    min-width: 130px;
+    text-align: right;
+  }
+
+  /* Urgency Line */
+  .ps-bfcm-urgency {
+    font-size: 14px;
+    color: #1E293B;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    line-height: 1.35;
+  }
+
+  .ps-bolt {
+    color: #FF6B00;
+    font-size: 15px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ps-urgency-body strong {
+    color: #0A2540;
+    font-weight: 700;
+  }
+
+  /* Trust & Checkout Sub-Line */
+  .ps-bfcm-subtext {
+    font-size: 13px;
+    color: #475569;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 480px) {
+    .ps-price-current {
+      font-size: 26px;
+    }
+    .ps-price-compare {
+      font-size: 18px;
+    }
+    .ps-bfcm-card {
+      padding: 14px 15px;
+      margin: 14px 0;
+    }
+    .ps-bfcm-timer-box {
+      padding: 9px 12px;
+    }
+    .ps-bfcm-countdown {
+      font-size: 15px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    function initBfcmStack() {
+      var stack = document.getElementById('ps-bfcm-stack-{{ section.id }}');
+      if (!stack) return;
+
+      var card = stack.querySelector('[data-bfcm-timer]');
+      if (card) {
+        var clockEl = card.querySelector('[data-bfcm-clock]');
+        if (clockEl) {
+          var storageKey = 'petssify_bfcm_deadline_v1';
+          var endDateStr = card.getAttribute('data-end-date');
+          var targetTime = endDateStr ? new Date(endDateStr).getTime() : NaN;
+          var now = Date.now();
+
+          // Evergreen rolling fallback: if target is invalid or in the past, guarantee active timer
+          if (isNaN(targetTime) || targetTime <= now) {
+            var saved = localStorage.getItem(storageKey);
+            if (saved && parseInt(saved, 10) > now) {
+              targetTime = parseInt(saved, 10);
+            } else {
+              targetTime = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000) + 3000;
+              try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
+            }
+          }
+
+          function updateClock() {
+            var diff = targetTime - Date.now();
+            if (diff <= 0) {
+              targetTime = Date.now() + (2 * 86400000) + (5 * 3600000);
+              try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
+              diff = targetTime - Date.now();
+            }
+            var d = Math.floor(diff / 86400000);
+            var h = Math.floor((diff % 86400000) / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var s = Math.floor((diff % 60000) / 1000);
+            clockEl.textContent =
+              d + 'd ' +
+              String(h).padStart(2, '0') + 'h ' +
+              String(m).padStart(2, '0') + 'm ' +
+              String(s).padStart(2, '0') + 's';
+          }
+
+          updateClock();
+          if (card._bfcmInterval) clearInterval(card._bfcmInterval);
+          card._bfcmInterval = setInterval(updateClock, 1000);
+        }
+      }
+
+      // Sync Variant Price, Compare At, and SAVE % Pill
+      function formatMoney(cents) {
+        if (typeof window.Shopify !== 'undefined' && window.Shopify.formatMoney) {
+          return window.Shopify.formatMoney(cents, '{{ shop.money_format | default: "$%7B%7Bamount%7D%7D" }}');
+        }
+        return '$' + (cents / 100).toFixed(2);
+      }
+
+      function handleVariantChange(variant) {
+        if (!variant) return;
+
+        var curPriceEl = stack.querySelector('[data-ps-current-price]');
+        var compPriceEl = stack.querySelector('[data-ps-compare-price]');
+        var savePillEl = stack.querySelector('[data-ps-save-pill]');
+        var discPctEl = stack.querySelector('[data-ps-discount-pct]');
+        var stockPill = stack.querySelector('[data-ps-stock-pill]');
+
+        if (curPriceEl) {
+          curPriceEl.textContent = formatMoney(variant.price);
+        }
+
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          var diff = variant.compare_at_price - variant.price;
+          var pct = Math.round((diff * 100) / variant.compare_at_price);
+          if (compPriceEl) {
+            compPriceEl.textContent = formatMoney(variant.compare_at_price);
+            compPriceEl.classList.remove('ps-hidden');
+          }
+          if (savePillEl) {
+            if (discPctEl) discPctEl.textContent = pct;
+            savePillEl.classList.remove('ps-hidden');
+          }
+        } else {
+          if (compPriceEl) compPriceEl.classList.add('ps-hidden');
+          if (savePillEl) savePillEl.classList.add('ps-hidden');
+        }
+
+        if (stockPill) {
+          stockPill.style.display = 'inline-flex';
+        }
+      }
+
+      if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined' && PUB_SUB_EVENTS.variantChange) {
+        subscribe(PUB_SUB_EVENTS.variantChange, function(event) {
+          if (event && event.data && event.data.variant) {
+            handleVariantChange(event.data.variant);
+          }
+        });
+      }
+
+      document.addEventListener('change', function(e) {
+        if (e.target && (e.target.matches('[name="id"]') || e.target.closest('[data-section="{{ section.id }}"]'))) {
+          var form = document.querySelector('#product-form-{{ section.id }}');
+          if (form) {
+            var varInput = form.querySelector('input[name="id"]');
+            if (varInput && varInput.value && window._petssifyProductVariants) {
+              var found = window._petssifyProductVariants.find(function(v) { return String(v.id) === String(varInput.value); });
+              if (found) handleVariantChange(found);
+            }
+          }
+        }
+      });
+    }
+
+    window._petssifyProductVariants = {{ product.variants | json }};
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBfcmStack);
+    } else {
+      initBfcmStack();
+    }
+
+    document.addEventListener('shopify:section:load', initBfcmStack);
+  })();
+</script>

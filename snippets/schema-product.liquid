@@ -62,9 +62,9 @@
         "url": "{{ shop.url }}{{ product.url }}",
         "priceCurrency": {{ cart.currency.iso_code | json }},
         "price": "{{ current_variant.price | divided_by: 100.0 }}",
-        "priceValidUntil": "2027-12-31",
+        "priceValidUntil": "2026-12-05",
         "itemCondition": "https://schema.org/NewCondition",
-        "availability": "{% if current_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+        "availability": "https://schema.org/InStock",
         "seller": {
           "@id": "{{ shop.url }}/#organization"
         },
@@ -72,7 +72,7 @@
           "@type": "OfferShippingDetails",
           "shippingRate": {
             "@type": "MonetaryAmount",
-            "value": "{% if current_variant.price >= 5000 %}0.00{% else %}4.99{% endif %}",
+            "value": "{% if current_variant.price >= 5000 %}0.00{% else %}3.99{% endif %}",
             "currency": "USD"
           },
           "shippingDestination": {

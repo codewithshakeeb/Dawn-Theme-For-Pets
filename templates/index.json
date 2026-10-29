@@ -26,10 +26,10 @@
         "left_stat_number": "98K+",
         "left_avatar_1": "shopify://shop_images/Cat_right.png",
         "left_badge_text": "+",
-        "left_card_subtext": "Happy Clients and Their Pets\nWho Love Our Products",
-        "center_card_heading": "Best Products\nfor Your Pet",
-        "cta_button_label": "Explore Products",
-        "cta_button_link": "",
+        "left_card_subtext": "Happy Clients and Their Pets\nSaving Big This Black Friday",
+        "center_card_heading": "Black Friday Sale\nUp to 70% OFF",
+        "cta_button_label": "Shop Black Friday",
+        "cta_button_link": "/collections/all",
         "right_rating_value": "4.6",
         "show_star_icon": true,
         "right_card_subtext": "Based on Reviews from Happy\nPet Owners Worldwide",
@@ -47,15 +47,16 @@
       "type": "petssify-hero",
       "settings": {
         "image_opacity": 45,
-        "badge_text": "Verified Sizing & Specs on Every Product",
-        "heading": "Practical Dog & Cat Supplies — Verified Sizing, Materials & Breed Specs",
-        "subheading": "Shop 304 stainless steel water fountains, whisper-quiet LED nail grinders, interactive puzzle toys, escape-proof harnesses, and post-surgery recovery gear—with exact measurements in inches and centimeters before you buy.",
-        "primary_button_label": "Shop Best Sellers",
+        "badge_text": "🖤 Black Friday Mega Sale: Up to 70% OFF Storewide",
+        "heading": "Black Friday Mega Sale — Up to 70% OFF Dog & Cat Supplies",
+        "subheading": "Shop premium 304 stainless steel fountains, whisper-quiet LED nail grinders, interactive puzzle toys, and escape-proof harnesses with automatic holiday discounts. No code needed.",
+        "primary_button_label": "Shop Black Friday Deals",
         "primary_button_link": "/collections/best-sellers",
         "secondary_button_label": "Explore All Products",
         "secondary_button_link": "/collections/all",
         "color_scheme": "scheme-be67989a-20c9-42ec-9bd1-c4b22c355695"
-      }
+      },
+      "disabled": true
     },
     "petssify_value_props": {
       "type": "petssify-value-props",
@@ -70,22 +71,22 @@
         "prop_2": {
           "type": "prop",
           "settings": {
-            "title": "30-Day Easy Returns",
-            "text": "If a product doesn't fit your pet, return it within 30 days of delivery for a full refund. Items must be unused and in their original packaging."
+            "title": "30-Day Money-Back Guarantee",
+            "text": "If a product doesn't fit your pet, return it unused in its original packaging within 30 days of delivery. Full refunds processed to your original payment method in 5–7 business days."
           }
         },
         "prop_3": {
           "type": "prop",
           "settings": {
-            "title": "Ships Across the United States",
-            "text": "Orders process in 1–2 business days and arrive in 5–8 business days with live tracking. Free US shipping on all orders over $50."
+            "title": "Fast Tracked Shipping (US & Int'l)",
+            "text": "Orders dispatch in 1–2 business days. Free standard shipping on orders $50+ (US: 5–10 days, Int'l: 7–14 days) with verified live tracking."
           }
         },
         "prop_4": {
           "type": "prop",
           "settings": {
             "title": "Reachable Human Support",
-            "text": "Email support@petssify.com. We reply within 24 hours, Monday through Friday. Petssify is operated by Dynamic Resolutions LLC."
+            "text": "Email support@petssify.com. We reply within 24 hours. Petssify is operated by Dynamic Resolutions LLC."
           }
         }
       },
@@ -106,21 +107,21 @@
         "bento_1": {
           "type": "bento_card",
           "settings": {
-            "tag": "50% Off",
-            "title": "Pet Food & Accessories",
-            "subtext": "Everything for your pet.",
+            "tag": "UP TO 70% OFF",
+            "title": "Pet Food & Bowls",
+            "subtext": "Automatic holiday discount at checkout",
             "button_label": "Shop Food",
             "url": "/collections/all",
-            "bg_color": "#70B4E8"
+            "bg_color": "#00205B"
           }
         },
         "bento_2": {
           "type": "bento_card",
           "settings": {
-            "tag": "FREE SHIPPING",
-            "title": "30% Sale Off",
-            "subtext": "Interactive toys & gear",
-            "button_label": "Shop Now",
+            "tag": "FREE SHIPPING $50+",
+            "title": "50% Off Toys & Gear",
+            "subtext": "Interactive puzzles & play essentials",
+            "button_label": "Shop Toys",
             "url": "/collections/toys",
             "bg_color": "#14B8A6"
           }
@@ -128,20 +129,20 @@
         "bento_3": {
           "type": "bento_card",
           "settings": {
-            "tag": "Parrot Food",
-            "title": "Healthy Formula",
-            "subtext": "Nutritious daily blends",
-            "button_label": "Explore Treats",
+            "tag": "DOORBUSTER",
+            "title": "Healthy Feeders & Care",
+            "subtext": "Nutritious & slow-feeding blends",
+            "button_label": "Explore Feeding",
             "url": "/collections/feeding",
-            "bg_color": "#EAB308"
+            "bg_color": "#D97706"
           }
         },
         "bento_4": {
           "type": "bento_card",
           "settings": {
-            "tag": "Dog Supplies",
-            "title": "25% Off Dog Care",
-            "subtext": "Grooming & coat care essentials",
+            "tag": "BLACK FRIDAY DEAL",
+            "title": "Up to 60% Off Grooming",
+            "subtext": "Whisper-quiet LED nail grinders & coats",
             "button_label": "Shop Grooming",
             "url": "/collections/grooming-care",
             "bg_color": "#D95D10"
@@ -150,9 +151,9 @@
         "bento_5": {
           "type": "bento_card",
           "settings": {
-            "tag": "GIFT FOR PET",
-            "title": "Premium Cat Food",
-            "subtext": "Save up to 30%",
+            "tag": "HOLIDAY GIFT",
+            "title": "Up to 70% Off Cat Care",
+            "subtext": "Premium fountains & beds storewide",
             "button_label": "Shop Cat Care",
             "url": "/collections/cat",
             "bg_color": "#6B21A8"
@@ -167,8 +168,8 @@
         "bento_5"
       ],
       "settings": {
-        "heading": "Special Offers & Trending Categories",
-        "subheading": "Explore curated essentials tailored by category and species",
+        "heading": "🖤 Black Friday Doorbusters & Categories",
+        "subheading": "Save up to 70% across food, interactive toys, grooming essentials, and gear — no code needed",
         "mobile_layout": "carousel",
         "padding_top": 48,
         "padding_bottom": 48
@@ -339,7 +340,8 @@
         "stack_images_on_mobile": true,
         "mobile_content_alignment": "left",
         "show_text_below": false
-      }
+      },
+      "disabled": true
     },
     "featured_collection_Q7wpBw": {
       "type": "featured-collection",
@@ -494,21 +496,21 @@
           "type": "faq_item",
           "settings": {
             "question": "Do you ship internationally?",
-            "answer": "<p>Currently, Petssify ships orders within the United States. Tracking information is provided for shipped orders.</p>"
+            "answer": "<p>Yes! We offer international shipping at a flat rate of $6.99 for orders under $50, and <strong>FREE International Shipping on orders of $50 or more</strong>. Delivery typically takes 7–14 business days with tracking.</p>"
           }
         },
         "faq_item_bUM6ch": {
           "type": "faq_item",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders are processed within 1–2 business days (Monday–Friday) and delivered within 5–8 business days across the United States with tracking.</p>"
+            "answer": "<p>All orders are processed within 1–2 business days after payment confirmation. United States shipping takes 5–10 business days ($3.99 flat or FREE on $50+). International delivery takes 7–14 business days. Every order includes a verified tracking number.</p>"
           }
         },
         "faq_item_MXJWHW": {
           "type": "faq_item",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>Petssify accepts eligible returns within 30 days of delivery. Items generally need to be unused and in their original condition and packaging. Please review our Refund Policy for exclusions and complete return requirements.</p>"
+            "answer": "<p>We accept returns within 30 days of delivery. The item must be unused, unworn, in original condition and original packaging with proof of purchase. Approved refunds are credited to your original payment method within 5–7 business days.</p>"
           }
         },
         "faq_item_NcFdpq": {
@@ -543,7 +545,7 @@
           "type": "faq_item",
           "settings": {
             "question": "What if my item arrives damaged or defective?",
-            "answer": "<p>If your order arrives damaged, defective, or incorrect, please contact our support team as soon as possible with your order details and photos of the issue so we can assist you.</p>"
+            "answer": "<p>If you receive a damaged, defective, or incorrect item, please contact us within 48 hours of delivery at support@petssify.com with your order number and clear photos/video. We will arrange a free replacement or full refund.</p>"
           }
         },
         "faq_item_FRYe8M": {
@@ -827,20 +829,22 @@
         "popout_offset": 45,
         "card_max_width": 1140,
         "content_gap": 40,
-        "subheading": "Special Offer",
-        "heading": "30% OFF",
-        "subtext": "on premium food",
-        "button_label": "Shop Now",
+        "subheading": "🔥 BLACK FRIDAY FLASH SALE",
+        "heading": "Black Friday Mega Deal",
+        "subtext": "Up to 40% OFF + Extra 20% OFF at Checkout • Automatic Holiday Savings",
+        "button_label": "Shop Black Friday Deals",
         "button_link": "/collections/all",
         "show_arrow": true,
-        "bg_color": "#144e2b",
+        "bg_color": "#0A2540",
         "text_color": "#FFFFFF",
-        "accent_color": "#FEF08A",
-        "btn_bg": "#FEF08A",
-        "btn_text": "#134e2c",
+        "accent_color": "#FF6B00",
+        "btn_bg": "#FF6B00",
+        "btn_text": "#FFFFFF",
         "border_radius": 24,
         "padding_top": 12,
-        "padding_bottom": 24
+        "padding_bottom": 24,
+        "enable_timer": true,
+        "timer_end_date": "2026-11-30T23:59:59"
       }
     }
   },

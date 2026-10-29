@@ -38,6 +38,13 @@
   <div class="ps-hero-upper">
     <div class="ps-hero-container">
       <div class="ps-hero-headline-box">
+        {% if section.settings.show_bfcm_badge %}
+          <div class="ps-hero-bfcm-badge-wrap">
+            <span class="ps-hero-bfcm-badge">
+              {{ section.settings.bfcm_badge_text | default: '🔥 BLACK FRIDAY EARLY ACCESS — UP TO 40% OFF' }}
+            </span>
+          </div>
+        {% endif %}
         <h1 class="ps-hero-title">
           {% if section.settings.heading_line_1 != blank %}
             <span class="ps-title-line ps-title-line--1">{{ section.settings.heading_line_1 | escape }}</span>
@@ -550,6 +557,22 @@
   "tag": "section",
   "class": "section-petssify-hero-bento",
   "settings": [
+    {
+      "type": "header",
+      "content": "Black Friday Sale Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bfcm_badge",
+      "label": "Show Black Friday Early Access Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bfcm_badge_text",
+      "label": "Black Friday Badge Text",
+      "default": "🔥 BLACK FRIDAY EARLY ACCESS — UP TO 40% OFF"
+    },
     {
       "type": "header",
       "content": "1. Headline & Stage Height"
