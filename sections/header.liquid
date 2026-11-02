@@ -565,6 +565,9 @@
 
     assign header_menu = section.settings.menu
     if header_menu == blank or header_menu.links.size == 0
+      assign header_menu = linklists['new-main-menu']
+    endif
+    if header_menu == blank or header_menu.links.size == 0
       assign header_menu = linklists['main-menu']
     endif
   -%}
