@@ -88,7 +88,8 @@
         </div>
 
         <!-- TOP-RIGHT FLOATING WIDGET: "BLACK FRIDAY DEAL ENDS IN" 4-ORANGE-BOX TIMER -->
-        <div class="ps-bf-right-box" data-hero-bf-timer data-end-date="{{ section.settings.bf_end_date }}">
+        {%- assign hero_bf_end_date = section.settings.bf_end_date | default: '2026-11-30T23:59:59' -%}
+        <div class="ps-bf-right-box" data-hero-bf-timer data-end-date="{{ hero_bf_end_date }}">
           <div class="ps-rc-top">
             <span class="ps-rc-clock-circle" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -102,11 +103,11 @@
 
           <div class="ps-rc-grid" data-hero-clock>
             <div class="ps-rc-col">
-              <div class="ps-rc-orange-box" data-d>02</div>
+              <div class="ps-rc-orange-box" data-d>28</div>
               <span class="ps-rc-unit-label">Days</span>
             </div>
             <div class="ps-rc-col">
-              <div class="ps-rc-orange-box" data-h>14</div>
+              <div class="ps-rc-orange-box" data-h>04</div>
               <span class="ps-rc-unit-label">Hours</span>
             </div>
             <div class="ps-rc-col">
@@ -897,37 +898,77 @@
 
 <script>
   (function() {
-    var wrap = document.querySelector('#petssify-hero-{{ section.id }} [data-hero-bf-timer]');
-    if (!wrap) return;
-    var key = 'petssify_bfcm_deadline_v4';
-    var endStr = wrap.getAttribute('data-end-date');
-    var target = endStr ? new Date(endStr).getTime() : NaN;
-    var now = Date.now();
+    function initHeroBfTimer() {
+      var wrap = document.querySelector('[data-hero-bf-timer]');
+      if (!wrap) return;
 
-    if (isNaN(target) || target <= now || (target - now) > (4 * 86400000)) {
-      var saved = localStorage.getItem(key);
-      if (saved && parseInt(saved, 10) > now) {
-        target = parseInt(saved, 10);
-      } else {
-        target = now + (2 * 86400000) + (14 * 3600000) + (37 * 60000) + 56000;
-        localStorage.setItem(key, String(target));
+      // Purge legacy 2-day localStorage locks
+      try {
+        localStorage.removeItem('petssify_bfcm_deadline_v4');
+        localStorage.removeItem('petssify_bfcm_deadline_v3');
+        localStorage.removeItem('petssify_bfcm_deadline_v2');
+        localStorage.removeItem('petssify_bfcm_deadline_v1');
+      } catch (e) {}
+
+      var endStr = wrap.getAttribute('data-end-date');
+
+      function parseTarget(str) {
+        if (!str || typeof str !== 'string') return NaN;
+        var cleaned = str.trim();
+        if (/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}(:\d{2})?$/.test(cleaned)) {
+          cleaned = cleaned.replace(' ', 'T');
+        }
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleaned)) {
+          cleaned += 'T23:59:59';
+        }
+        var t = new Date(cleaned).getTime();
+        if (!isNaN(t)) return t;
+        t = Date.parse(cleaned);
+        return isNaN(t) ? NaN : t;
       }
+
+      var target = parseTarget(endStr);
+      var now = Date.now();
+
+      // If invalid or in the past, default to Black Friday / Cyber Month end (Nov 30, 2026)
+      if (isNaN(target) || target <= now) {
+        var defaultTarget = parseTarget('2026-11-30T23:59:59');
+        if (defaultTarget > now) {
+          target = defaultTarget;
+        } else {
+          target = now + (28 * 86400000);
+        }
+      }
+
+      var dEl = wrap.querySelector('[data-d]');
+      var hEl = wrap.querySelector('[data-h]');
+      var mEl = wrap.querySelector('[data-m]');
+      var sEl = wrap.querySelector('[data-s]');
+
+      function tick() {
+        var diff = Math.max(0, target - Date.now());
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+
+        if (dEl) dEl.textContent = String(d).padStart(2, '0');
+        if (hEl) hEl.textContent = String(h).padStart(2, '0');
+        if (mEl) mEl.textContent = String(m).padStart(2, '0');
+        if (sEl) sEl.textContent = String(s).padStart(2, '0');
+      }
+
+      tick();
+      if (wrap._bfTimerInterval) clearInterval(wrap._bfTimerInterval);
+      wrap._bfTimerInterval = setInterval(tick, 1000);
     }
 
-    var dEl = wrap.querySelector('[data-d]');
-    var hEl = wrap.querySelector('[data-h]');
-    var mEl = wrap.querySelector('[data-m]');
-    var sEl = wrap.querySelector('[data-s]');
-
-    function tick() {
-      var diff = Math.max(0, target - Date.now());
-      if (dEl) dEl.textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
-      if (hEl) hEl.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
-      if (mEl) mEl.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-      if (sEl) sEl.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroBfTimer);
+    } else {
+      initHeroBfTimer();
     }
-    tick();
-    setInterval(tick, 1000);
+    document.addEventListener('shopify:section:load', initHeroBfTimer);
   })();
 </script>
 

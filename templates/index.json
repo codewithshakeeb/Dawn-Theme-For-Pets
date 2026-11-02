@@ -50,7 +50,8 @@
         "right_box_accent": "ENDS IN",
         "center_line_1": "Black Friday Sale",
         "center_line_2_white": "Up to ",
-        "center_line_2_orange": "70% OFF"
+        "center_line_2_orange": "70% OFF",
+        "bf_end_date": "2026-11-30T23:59:59"
       }
     },
     "petssify_hero": {
