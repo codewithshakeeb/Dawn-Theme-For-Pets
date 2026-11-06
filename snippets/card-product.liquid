@@ -29,6 +29,11 @@
   if show_rating == false
     assign rating_flag = false
   endif
+
+  assign secondary_image_flag = true
+  if show_secondary_image == false
+    assign secondary_image_flag = false
+  endif
 -%}
 
 {% render 'petssify-product-card',
@@ -36,6 +41,7 @@
   lazy_load: lazy_load,
   show_quick_add: quick_add_flag,
   show_rating: rating_flag,
+  show_secondary_image: secondary_image_flag,
   section_id: section_id,
   horizontal_class: horizontal_class,
   placeholder_image: placeholder_image

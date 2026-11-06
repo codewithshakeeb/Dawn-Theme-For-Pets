@@ -37,6 +37,10 @@
     assign show_rating = true
   endif
 
+  if show_secondary_image == nil
+    assign show_secondary_image = true
+  endif
+
   if target_product and target_product != empty
     assign current_variant = target_product.selected_or_first_available_variant | default: target_product.variants.first
     assign compare_at_price = current_variant.compare_at_price | default: target_product.compare_at_price_max
@@ -53,8 +57,34 @@
     endif
 
     assign product_form_id = 'petssify-quick-add-' | append: section_id | append: '-' | append: target_product.id
-    assign featured_media = target_product.featured_media
-    assign secondary_media = target_product.media[1] | default: target_product.images[1]
+    assign featured_media = target_product.selected_or_first_available_variant.featured_media | default: target_product.featured_media | default: target_product.images.first
+    assign secondary_media = nil
+    if show_secondary_image
+      if target_product.media.size > 1
+        for media_item in target_product.media
+          if media_item.id != featured_media.id and media_item.media_type == 'image'
+            assign secondary_media = media_item
+            break
+          endif
+        endfor
+        if secondary_media == nil
+          for media_item in target_product.media
+            if media_item.id != featured_media.id
+              assign secondary_media = media_item
+              break
+            endif
+          endfor
+        endif
+      endif
+      if secondary_media == nil and target_product.images.size > 1
+        for img_item in target_product.images
+          if img_item.id != featured_media.id
+            assign secondary_media = img_item
+            break
+          endif
+        endfor
+      endif
+    endif
 
     comment
       Subtitle / Kit Descriptor Line Logic
@@ -100,8 +130,12 @@
       {%- if is_available == false -%}
         <span class="petssify-product-card__badge petssify-product-card__badge--sold-out" aria-label="Sold out">SOLD OUT</span>
       {%- elsif on_sale and show_sale_badge -%}
-        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="Black Friday Sale">
-          BLACK FRIDAY • -{{ discount_pct }}%
+        <span class="petssify-product-card__badge petssify-product-card__badge--sale" aria-label="Sale">
+          {%- if discount_pct >= 1 -%}
+            Sale • -{{ discount_pct }}%
+          {%- else -%}
+            Sale
+          {%- endif -%}
         </span>
       {%- endif -%}
 
@@ -109,7 +143,7 @@
       {%- render 'petssify-badge', product: target_product -%}
 
       {%- comment -%} 1:1 Aspect Ratio Media Container {%- endcomment -%}
-      <div class="petssify-product-card__media-inner">
+      <div class="petssify-product-card__media-inner{% if secondary_media != blank %} has-secondary-media{% endif %}">
         {%- if featured_media != blank -%}
           {%- capture default_sizes -%}
             (min-width: 1200px) 280px, (min-width: 750px) calc((100vw - 60px) / 4), calc((100vw - 36px) / 2)
@@ -294,25 +328,89 @@
 {%- endif -%}
 
 <style>
+  .petssify-product-card {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
   .petssify-product-card__media-wrap {
     background-color: #F8FAFC !important;
     border-radius: 14px !important;
+    border: 1px solid rgba(226, 232, 240, 0.7) !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+  .petssify-product-card:hover .petssify-product-card__media-wrap {
+    box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.08), 0 4px 8px -4px rgba(15, 23, 42, 0.04) !important;
+    border-color: rgba(203, 213, 225, 0.8) !important;
+  }
+  .petssify-product-card__media-inner {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
   }
   .petssify-product-card__image {
-    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    will-change: opacity, transform !important;
+  }
+  .petssify-product-card__image--primary {
+    position: relative !important;
+    z-index: 1 !important;
+    opacity: 1 !important;
+  }
+  .petssify-product-card__image--secondary {
+    position: absolute !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    z-index: 2 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  @media (hover: hover) {
+    /* Smooth hover swap: Fade out primary, fade in secondary without ghosting */
+    .petssify-product-card:not(.petssify-product-card--sold-out):hover .has-secondary-media .petssify-product-card__image--primary {
+      opacity: 0 !important;
+      transform: scale(1.04) !important;
+    }
+    .petssify-product-card:not(.petssify-product-card--sold-out):hover .has-secondary-media .petssify-product-card__image--secondary {
+      opacity: 1 !important;
+      transform: scale(1.04) !important;
+    }
+    /* When only 1 image exists: subtle clean zoom */
+    .petssify-product-card:not(.petssify-product-card--sold-out):hover .petssify-product-card__media-inner:not(.has-secondary-media) .petssify-product-card__image--primary {
+      opacity: 1 !important;
+      transform: scale(1.04) !important;
+    }
   }
   .petssify-product-card__badge--sale {
     background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
     color: #FFFFFF !important;
     border: none !important;
-    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.35) !important;
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.32) !important;
+    font-family: var(--font-body-family, 'Plus Jakarta Sans', -apple-system, sans-serif) !important;
     font-weight: 700 !important;
     letter-spacing: 0.03em !important;
     font-size: 11px !important;
-    padding: 3px 9px !important;
-    border-radius: 4px !important;
+    padding: 3.5px 9.5px !important;
+    border-radius: 5px !important;
     font-variant-numeric: tabular-nums !important;
     text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
   .petssify-product-card__badge--sold-out {
     background-color: #DC2626 !important;
@@ -320,15 +418,21 @@
     border: none !important;
     font-weight: 700 !important;
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
-    font-size: 11.5px !important;
-    padding: 4px 10px !important;
-    border-radius: 6px !important;
+    font-size: 11px !important;
+    padding: 3.5px 9.5px !important;
+    border-radius: 5px !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
   .petssify-product-card__price-row {
     display: flex;
     align-items: center;
     gap: 8px;
     font-variant-numeric: tabular-nums !important;
+    margin-top: 2px;
   }
   .petssify-product-card__price-current,
   .petssify-product-card__price-current--sale {
@@ -350,10 +454,59 @@
     border: 1px solid #FFEDD5 !important;
     border-radius: 6px !important;
     padding: 2px 8px !important;
-    font-size: 12px !important;
+    font-size: 11.5px !important;
     font-weight: 700 !important;
     letter-spacing: 0.01em !important;
     display: inline-block !important;
     font-variant-numeric: tabular-nums !important;
+  }
+  .petssify-product-card__hover-action {
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    z-index: 4 !important;
+    opacity: 0 !important;
+    transform: translateY(8px) !important;
+    transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    pointer-events: none !important;
+  }
+  @media (hover: hover) {
+    .petssify-product-card:hover .petssify-product-card__hover-action {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      pointer-events: auto !important;
+    }
+  }
+  .petssify-product-card__hover-action .petssify-quick-add__btn {
+    width: 100% !important;
+    min-height: 40px !important;
+    background: #00205B !important;
+    color: #FFFFFF !important;
+    border: 1px solid #00205B !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    box-shadow: 0 4px 12px rgba(0, 32, 91, 0.25) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+  }
+  .petssify-product-card__hover-action .petssify-quick-add__btn:hover {
+    background: #FF6B00 !important;
+    border-color: #FF6B00 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35) !important;
+  }
+  .petssify-product-card__hover-action .petssify-quick-add__btn.is-sold-out,
+  .petssify-product-card__hover-action .petssify-quick-add__btn:disabled {
+    background: #F1F5F9 !important;
+    border-color: #E2E8F0 !important;
+    color: #94A3B8 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
   }
 </style>
