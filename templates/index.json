@@ -837,7 +837,7 @@
     "petssify_promo_banner": {
       "type": "petssify-promo-banner",
       "settings": {
-        "popout_offset": 45,
+        "popout_offset": 65,
         "card_max_width": 1140,
         "content_gap": 40,
         "subheading": "BLACK FRIDAY FLASH SALE",

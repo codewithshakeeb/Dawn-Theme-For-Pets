@@ -55,14 +55,33 @@
 
       <!-- Left Column: 3D Pop-Out Pet Image (Head peeks above top card line) -->
       <div class="petssify-promo__media-wrap">
-        <img
-          src="{{ pet_img }}"
-          alt="{{ section.settings.heading | default: 'Special Offer 30% OFF' | escape }}"
-          loading="lazy"
-          width="836"
-          height="670"
-          class="petssify-promo__pet-img"
-        >
+        {%- if section.settings.pet_image != blank -%}
+          <img
+            src="{{ section.settings.pet_image | image_url: width: 1200 }}"
+            srcset="
+              {%- if section.settings.pet_image.width >= 360 -%}{{ section.settings.pet_image | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if section.settings.pet_image.width >= 540 -%}{{ section.settings.pet_image | image_url: width: 540 }} 540w,{%- endif -%}
+              {%- if section.settings.pet_image.width >= 720 -%}{{ section.settings.pet_image | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if section.settings.pet_image.width >= 900 -%}{{ section.settings.pet_image | image_url: width: 900 }} 900w,{%- endif -%}
+              {{ section.settings.pet_image | image_url }} {{ section.settings.pet_image.width }}w
+            "
+            sizes="(min-width: 990px) 460px, (min-width: 750px) 360px, 80vw"
+            alt="{{ section.settings.heading | default: 'Petssify Special Offer' | escape }}"
+            loading="lazy"
+            width="{{ section.settings.pet_image.width | default: 836 }}"
+            height="{{ section.settings.pet_image.height | default: 670 }}"
+            class="petssify-promo__pet-img"
+          >
+        {%- else -%}
+          <img
+            src="{{ pet_img }}"
+            alt="{{ section.settings.heading | default: 'Special Offer' | escape }}"
+            loading="lazy"
+            width="836"
+            height="670"
+            class="petssify-promo__pet-img"
+          >
+        {%- endif -%}
       </div>
 
       <!-- Right Column: Live Promotional Typography & CTA Block -->
@@ -129,35 +148,36 @@
 </section>
 
 <style>
-  /* Tight, controlled section vertical spacing */
+  /* Section headroom so the popout dog image does not collide with the section above */
   #petssify-promo-{{ section.id }} {
-    padding-top: calc(var(--promo-popout) + var(--promo-pt) * 0.4);
-    padding-bottom: var(--promo-pb);
+    padding-top: calc(var(--promo-popout, 65px) + var(--promo-pt, 16px) + 20px) !important;
+    padding-bottom: var(--promo-pb, 24px) !important;
+    overflow: visible !important;
   }
 
   .petssify-promo__container {
-    width: 100%;
-    padding: 0 1.5rem;
+    width: 100% !important;
+    padding: 0 1.5rem !important;
+    overflow: visible !important;
   }
 
-  /* Centered, cohesive card layout — NO massive empty gap */
+  /* Centered, cohesive card layout — Dog pops out above top edge */
   .petssify-promo__card {
-    position: relative;
-    max-width: var(--promo-card-max-w);
-    margin: 0 auto;
-    border-radius: var(--promo-radius);
-    background-color: var(--promo-bg);
-    overflow: visible;
+    position: relative !important;
+    max-width: var(--promo-card-max-w) !important;
+    margin: 0 auto !important;
+    border-radius: var(--promo-radius) !important;
+    background-color: var(--promo-bg) !important;
+    overflow: visible !important; /* CRITICAL: Allows dog head to burst out above the top edge */
     isolation: isolate;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 16px 36px -6px rgba(0, 32, 91, 0.14), 0 4px 14px rgba(0, 0, 0, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Groups pets & content together in the center */
-    gap: clamp(20px, 3.5vw, var(--promo-gap));
-    min-height: 260px;
-    padding: 0 clamp(20px, 3.5vw, 48px);
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 16px 36px -6px rgba(0, 32, 91, 0.14), 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+    display: flex !important;
+    align-items: flex-end !important; /* Keep bottom of dog sitting flush with container bottom */
+    justify-content: center !important;
+    gap: clamp(20px, 3.5vw, var(--promo-gap)) !important;
+    min-height: 280px !important;
+    padding: 0 clamp(20px, 3.5vw, 48px) !important;
   }
 
   .petssify-promo__card-link {
@@ -180,37 +200,45 @@
     background-size: 130px 130px;
   }
 
-  /* 3D Pop-Out Media Wrap: Sticks out above the card's top edge */
+  /* 3D Pop-Out Media Wrap: Sits on bottom edge and allows dog to burst out of the top */
   .petssify-promo__media-wrap {
-    position: relative;
-    z-index: 3;
-    flex: 0 1 420px;
-    max-width: 440px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    align-self: flex-end;
-    pointer-events: none;
-    line-height: 0;
-    margin-top: calc(-1 * var(--promo-popout));
-    margin-bottom: 0;
+    position: relative !important;
+    z-index: 4 !important;
+    flex: 0 0 clamp(300px, 32vw, 440px) !important;
+    max-width: 450px !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    align-self: flex-end !important;
+    pointer-events: none !important;
+    line-height: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
 
   .petssify-promo__pet-img {
-    display: block;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: calc(260px + var(--promo-popout));
-    object-fit: contain;
-    object-position: bottom center;
-    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.28));
-    transform-origin: bottom center;
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    height: clamp(340px, 34vw, 420px) !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: bottom center !important;
+    margin-bottom: 0 !important;
+    margin-top: calc(-1 * var(--promo-popout, 65px)) !important;
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.25)) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    /* Static presentation: Pop-up / hover animation completely removed as requested */
+    transition: none !important;
+    transform: none !important;
   }
 
   .petssify-promo__card:hover .petssify-promo__pet-img {
-    transform: scale(1.02) translateY(-2px);
+    transform: none !important;
   }
 
   /* Promotional Typography & CTA Block — Aligned with Petssify Theme */
@@ -373,20 +401,24 @@
   /* Tablet Adjustments (750px - 989px) */
   @media screen and (min-width: 750px) and (max-width: 989px) {
     .petssify-promo__card {
-      gap: 24px;
-      padding: 0 24px;
-      min-height: 230px;
+      gap: 20px !important;
+      padding: 0 20px !important;
+      min-height: 240px !important;
     }
     .petssify-promo__media-wrap {
-      flex: 0 1 360px;
-      margin-top: calc(-1 * (var(--promo-popout) * 0.8));
+      flex: 0 0 clamp(260px, 32vw, 340px) !important;
+      margin-top: calc(-1 * var(--promo-popout, 50px)) !important;
     }
     .petssify-promo__pet-img {
-      max-height: calc(230px + (var(--promo-popout) * 0.8));
+      height: clamp(290px, 34vw, 360px) !important;
+      max-height: none !important;
+      margin-top: calc(-1 * var(--promo-popout, 50px)) !important;
+      transition: none !important;
+      transform: none !important;
     }
     .petssify-promo__content {
-      flex: 0 1 380px;
-      padding: 18px 0;
+      flex: 0 1 380px !important;
+      padding: 20px 0 !important;
     }
     .petssify-promo__subtext {
       margin-bottom: 14px;
@@ -400,40 +432,52 @@
   /* Mobile Adjustments (< 750px down to 320px) */
   @media screen and (max-width: 749px) {
     #petssify-promo-{{ section.id }} {
-      padding-top: calc(var(--promo-popout) + 8px);
-      padding-bottom: 20px;
+      padding-top: calc(var(--promo-popout, 55px) + 24px) !important;
+      padding-bottom: 24px !important;
+      overflow: visible !important;
     }
 
     .petssify-promo__container {
-      padding: 0 12px;
+      padding: 0 14px !important;
+      overflow: visible !important;
     }
 
     .petssify-promo__card {
-      max-width: 440px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      min-height: auto;
-      border-radius: min(var(--promo-radius), 20px);
-      padding: 0 16px;
-      gap: 0;
-      margin-top: 20px;
+      max-width: 440px !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      min-height: auto !important;
+      border-radius: min(var(--promo-radius), 20px) !important;
+      padding: 0 18px 24px !important;
+      gap: 0 !important;
+      margin-top: calc(var(--promo-popout, 55px) * 0.7) !important;
+      overflow: visible !important;
     }
 
     .petssify-promo__media-wrap {
-      flex: 0 0 auto;
-      max-width: 84%;
-      width: 84%;
-      justify-content: center;
-      align-self: center;
-      margin-top: -45px; /* Dog pops out above top edge */
-      margin-bottom: 0;
+      flex: 0 0 auto !important;
+      max-width: 90% !important;
+      width: 90% !important;
+      justify-content: center !important;
+      align-self: center !important;
+      margin-top: calc(-1 * var(--promo-popout, 55px)) !important;
+      margin-bottom: 0 !important;
+      overflow: visible !important;
+      background: transparent !important;
     }
 
     .petssify-promo__pet-img {
-      max-height: 210px;
-      width: auto;
-      margin: 0 auto;
+      max-height: none !important;
+      height: 220px !important;
+      width: auto !important;
+      max-width: 100% !important;
+      margin: 0 auto !important;
+      object-fit: contain !important;
+      object-position: bottom center !important;
+      transition: none !important;
+      transform: none !important;
+      background: transparent !important;
     }
 
     .petssify-promo__content {
@@ -558,15 +602,15 @@
     {
       "type": "image_picker",
       "id": "pet_image",
-      "label": "Pet Pop-Out Image (PNG)",
+      "label": "Dog/Pet Image (Transparent PNG)",
       "info": "Leave blank to use default golden retriever puppy & kibble bowl cutout."
     },
     {
       "type": "range",
       "id": "popout_offset",
       "label": "Dog Pop-Out Height",
-      "min": 10,
-      "max": 80,
+      "min": 20,
+      "max": 120,
       "step": 5,
       "unit": "px",
       "default": 45,
