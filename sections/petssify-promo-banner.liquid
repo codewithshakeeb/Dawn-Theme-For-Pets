@@ -537,55 +537,73 @@
 
 <script>
   (function() {
-    function initPromoTimer() {
-      var timerEl = document.querySelector('[data-promo-timer]');
-      if (!timerEl) return;
-      var storageKey = 'petssify_promo_timer_deadline_v1';
-      var endDateStr = timerEl.getAttribute('data-end-date');
-      var targetTime = endDateStr ? new Date(endDateStr).getTime() : NaN;
+    function initPromoTimers() {
+      var timers = document.querySelectorAll('.petssify-promo-section [data-promo-timer]');
+      if (!timers || timers.length === 0) return;
+
+      var globalStorageKey = 'petssify_promo_timer_master_v2';
       var now = Date.now();
+      var masterFallbackTarget = null;
 
-      if (isNaN(targetTime) || targetTime <= now) {
-        var saved = localStorage.getItem(storageKey);
-        if (saved && parseInt(saved, 10) > now) {
-          targetTime = parseInt(saved, 10);
-        } else {
-          targetTime = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000) + 3000;
-          try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
+      timers.forEach(function(timerEl) {
+        if (timerEl._promoInterval) {
+          clearInterval(timerEl._promoInterval);
+          timerEl._promoInterval = null;
         }
-      }
 
-      var daysEl = timerEl.querySelector('.ps-days');
-      var hoursEl = timerEl.querySelector('.ps-hours');
-      var minsEl = timerEl.querySelector('.ps-mins');
-      var secsEl = timerEl.querySelector('.ps-secs');
+        var endDateStr = timerEl.getAttribute('data-end-date');
+        var targetTime = endDateStr ? new Date(endDateStr).getTime() : NaN;
 
-      function update() {
-        var diff = targetTime - Date.now();
-        if (diff <= 0) {
-          targetTime = Date.now() + (2 * 86400000) + (5 * 3600000);
-          try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
-          diff = targetTime - Date.now();
+        if (isNaN(targetTime) || targetTime <= now) {
+          if (!masterFallbackTarget) {
+            var saved = localStorage.getItem(globalStorageKey);
+            if (saved && parseInt(saved, 10) > now) {
+              masterFallbackTarget = parseInt(saved, 10);
+            } else {
+              masterFallbackTarget = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000) + 3000;
+              try { localStorage.setItem(globalStorageKey, String(masterFallbackTarget)); } catch(e){}
+            }
+          }
+          targetTime = masterFallbackTarget;
         }
-        var d = Math.floor(diff / 86400000);
-        var h = Math.floor((diff % 86400000) / 3600000);
-        var m = Math.floor((diff % 3600000) / 60000);
-        var s = Math.floor((diff % 60000) / 1000);
-        if (daysEl) daysEl.textContent = String(d).padStart(2, '0');
-        if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
-        if (minsEl) minsEl.textContent = String(m).padStart(2, '0');
-        if (secsEl) secsEl.textContent = String(s).padStart(2, '0');
-      }
-      update();
-      if (timerEl._interval) clearInterval(timerEl._interval);
-      timerEl._interval = setInterval(update, 1000);
+
+        var daysEl = timerEl.querySelector('.ps-days');
+        var hoursEl = timerEl.querySelector('.ps-hours');
+        var minsEl = timerEl.querySelector('.ps-mins');
+        var secsEl = timerEl.querySelector('.ps-secs');
+
+        function updateTimer() {
+          var currentNow = Date.now();
+          var diff = targetTime - currentNow;
+          if (diff <= 0) {
+            targetTime = currentNow + (2 * 86400000) + (5 * 3600000);
+            try { localStorage.setItem(globalStorageKey, String(targetTime)); } catch(e){}
+            diff = targetTime - currentNow;
+          }
+          var d = Math.floor(diff / 86400000);
+          var h = Math.floor((diff % 86400000) / 3600000);
+          var m = Math.floor((diff % 3600000) / 60000);
+          var s = Math.floor((diff % 60000) / 1000);
+
+          if (daysEl) daysEl.textContent = d < 10 ? '0' + d : String(d);
+          if (hoursEl) hoursEl.textContent = h < 10 ? '0' + h : String(h);
+          if (minsEl) minsEl.textContent = m < 10 ? '0' + m : String(m);
+          if (secsEl) secsEl.textContent = s < 10 ? '0' + s : String(s);
+        }
+
+        updateTimer();
+        timerEl._promoInterval = setInterval(updateTimer, 1000);
+      });
     }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPromoTimer);
+      document.addEventListener('DOMContentLoaded', initPromoTimers);
     } else {
-      initPromoTimer();
+      initPromoTimers();
     }
-    document.addEventListener('shopify:section:load', initPromoTimer);
+    document.addEventListener('shopify:section:load', initPromoTimers);
+    document.addEventListener('shopify:section:select', initPromoTimers);
+    document.addEventListener('shopify:section:reorder', initPromoTimers);
   })();
 </script>
 
