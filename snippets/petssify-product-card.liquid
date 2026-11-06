@@ -1,3 +1,4 @@
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 {%- comment -%}
   Petssify Product Card (Single Source of Truth Component)
   Updated to match Editorial Wild One / Walk Kit Reference Design:
@@ -211,13 +212,6 @@
             >
               Sold out
             </button>
-          {%- elsif target_product.variants.size > 1 -%}
-            <a
-              href="{{ target_product.url }}"
-              class="petssify-quick-add__btn button button--secondary petssify-quick-add__btn--options"
-            >
-              Choose options
-            </a>
           {%- else -%}
             <product-form data-section-id="{{ section_id }}">
               {%- form 'product',
@@ -240,6 +234,7 @@
                   class="petssify-quick-add__btn button button--secondary"
                   aria-haspopup="dialog"
                   aria-live="polite"
+                  onclick="event.stopPropagation();"
                 >
                   <span class="petssify-quick-add__text">Add to Cart</span>
                   <div class="loading__spinner hidden">
@@ -509,4 +504,30 @@
     cursor: not-allowed !important;
     box-shadow: none !important;
   }
+
+  .petssify-quick-add__btn.loading {
+    position: relative !important;
+  }
+  .petssify-quick-add__btn.loading .petssify-quick-add__text {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  .petssify-quick-add__btn.loading .loading__spinner {
+    display: flex !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+  .petssify-quick-add__btn .loading__spinner svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .petssify-quick-add__btn .loading__spinner .path {
+    stroke: #FFFFFF !important;
+  }
+
 </style>
