@@ -208,6 +208,62 @@
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      width: auto !important;
+      overflow: hidden !important;
+    }
+
+    /* Strict Mobile Single Logo Enforcement: Sticky Logo NEVER shows when unscrolled */
+    .header__heading-logo--sticky {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      max-width: 0 !important;
+      max-height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+      pointer-events: none !important;
+    }
+
+    .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      max-width: 0 !important;
+      max-height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+      pointer-events: none !important;
+    }
+
+    .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default {
+      display: block !important;
+      visibility: visible !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    .header-wrapper.header-wrapper--scrolled .header__heading-logo--sticky,
+    .header-wrapper.scrolled-past-header .header__heading-logo--sticky {
+      display: block !important;
+      visibility: visible !important;
+      width: auto !important;
+      height: auto !important;
+      position: static !important;
+    }
+
+    .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+    .header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      max-width: 0 !important;
+      max-height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+      pointer-events: none !important;
     }
 
     .header__heading-link .h2,
@@ -276,8 +332,58 @@
       flex-shrink: 0 !important;
     }
 
+    .header__icon svg,
+    .header__icon .svg-wrapper svg,
+    .header__icon .icon,
+    .header__icon--cart svg,
+    #cart-icon-bubble svg {
+      width: 18px !important;
+      height: 18px !important;
+      max-width: 18px !important;
+      max-height: 18px !important;
+      transform: none !important;
+    }
+
     .header__icon--account {
       display: inline-flex !important;
+    }
+
+    @media screen and (max-width: 420px) {
+      header.header {
+        padding: 0 8px !important;
+        gap: 4px !important;
+      }
+      .header__left-group {
+        gap: 4px !important;
+      }
+      .header__icons {
+        gap: 4px !important;
+      }
+      .header__heading-logo {
+        max-width: 112px !important;
+        max-height: 30px !important;
+      }
+      .header__icon--menu,
+      header-drawer .header__icon--menu,
+      .header__search--mobile .header__icon--search,
+      .header__icons .header__icon--account,
+      .header__icons .header__icon--cart,
+      .header__icons .header__icon {
+        width: 35px !important;
+        height: 35px !important;
+        min-width: 35px !important;
+        min-height: 35px !important;
+      }
+      .header__icon svg,
+      .header__icon .svg-wrapper svg,
+      .header__icon .icon,
+      .header__icon--cart svg,
+      #cart-icon-bubble svg {
+        width: 16px !important;
+        height: 16px !important;
+        max-width: 16px !important;
+        max-height: 16px !important;
+      }
     }
 
     /* When Hamburger Drawer is open: Hide the Search Icon in the header bar */

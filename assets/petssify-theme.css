@@ -2849,7 +2849,6 @@ header.header,
     width: auto !important;
     max-width: 180px !important;
     object-fit: contain !important;
-    display: block !important;
   }
 
   .header__inline-menu,
@@ -3158,11 +3157,35 @@ header.header,
 
 .header__heading-logo--sticky {
   display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+}
+
+.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky,
+.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--sticky {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  pointer-events: none !important;
 }
 
 .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default,
-.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo {
+.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--default {
   display: block !important;
+  visibility: visible !important;
+  width: auto !important;
+  height: auto !important;
   mix-blend-mode: multiply;
   /* Seamlessly dissolves white canvas into header background */
   transition: opacity 0.25s ease !important;
@@ -3276,9 +3299,15 @@ details[open]>summary.header__menu-item svg.icon-caret {
 
 /* Floating White Circular Action Buttons in Non-Sticky State */
 .header__icons .header__icon,
-.header__icon {
+.header__icon,
+.header__icon--search,
+.header__icon--account,
+.header__icon--cart,
+#cart-icon-bubble {
   width: 42px !important;
   height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
   border-radius: 50% !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -3286,39 +3315,36 @@ details[open]>summary.header__menu-item svg.icon-caret {
   margin-left: 8px !important;
   position: relative !important;
   padding: 0 !important;
+  box-sizing: border-box !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   flex-shrink: 0 !important;
 }
 
-.header__icon svg {
-  width: 19px !important;
-  height: 19px !important;
-}
-
-/* Cart Icon Optical Alignment: Compensate for viewBox 0 0 40 40 */
-.header__icon--cart,
-#cart-icon-bubble {
-  position: relative !important;
-}
-
+.header__icon .svg-wrapper,
+.header__icon--search .svg-wrapper,
+.header__icon--account .svg-wrapper,
 .header__icon--cart .svg-wrapper,
 #cart-icon-bubble .svg-wrapper {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 22px !important;
-  height: 22px !important;
+  width: 20px !important;
+  height: 20px !important;
   line-height: 0 !important;
 }
 
+.header__icon svg,
+.header__icon .icon,
+.header__icon--search svg,
+.header__icon--account svg,
 .header__icon--cart svg,
 #cart-icon-bubble svg {
-  width: 26px !important;
-  height: 26px !important;
-  max-width: none !important;
-  max-height: none !important;
-  transform: scale(1.3) !important;
-  transform-origin: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  display: block !important;
+  transform: none !important;
 }
 
 /* CRITICAL: Search & Close Icon Mutual Exclusivity (No Duplicate Q X) */
@@ -3405,13 +3431,30 @@ details[open]>summary.header__menu-item svg.icon-caret {
 
 /* Sticky Logo Switch & Fallback */
 .header-wrapper.header-wrapper--scrolled .header__heading-logo--sticky,
-.header-wrapper.scrolled-past-header .header__heading-logo--sticky {
+.header-wrapper.scrolled-past-header .header__heading-logo--sticky,
+.header-wrapper.header-wrapper--scrolled img.header__heading-logo--sticky,
+.header-wrapper.scrolled-past-header img.header__heading-logo--sticky {
   display: block !important;
+  visibility: visible !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+  pointer-events: auto !important;
 }
 
-.header-wrapper.header-wrapper--scrolled .header__heading-logo--default,
-.header-wrapper.scrolled-past-header .header__heading-logo--default {
+.header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+.header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+.header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky img.header__heading-logo--default,
+.header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky img.header__heading-logo--default {
   display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  pointer-events: none !important;
 }
 
 /* Fallback if no sticky logo uploaded: Wrap default logo in a clean, elegant white pill badge */
@@ -4136,6 +4179,48 @@ details[open] .modal-overlay::after {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: auto !important;
+    overflow: hidden !important;
+  }
+
+  /* Single Logo Discipline on Mobile: Sticky Logo Strictly Hidden when Unscrolled */
+  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    pointer-events: none !important;
+  }
+
+  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default {
+    display: block !important;
+    visibility: visible !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .header-wrapper.header-wrapper--scrolled .header__heading-logo--sticky,
+  .header-wrapper.scrolled-past-header .header__heading-logo--sticky {
+    display: block !important;
+    visibility: visible !important;
+    width: auto !important;
+    height: auto !important;
+    position: static !important;
+  }
+
+  .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+  .header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    pointer-events: none !important;
   }
 
   .header__heading-link .h2,
@@ -4207,8 +4292,58 @@ details[open] .modal-overlay::after {
     flex-shrink: 0 !important;
   }
 
+  .header__icon svg,
+  .header__icon .svg-wrapper svg,
+  .header__icon .icon,
+  .header__icon--cart svg,
+  #cart-icon-bubble svg {
+    width: 18px !important;
+    height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    transform: none !important;
+  }
+
   .header__icon--account {
     display: inline-flex !important;
+  }
+
+  @media screen and (max-width: 420px) {
+    header.header {
+      padding: 0 8px !important;
+      gap: 4px !important;
+    }
+    .header__left-group {
+      gap: 4px !important;
+    }
+    .header__icons {
+      gap: 4px !important;
+    }
+    .header__heading-logo {
+      max-width: 110px !important;
+      max-height: 30px !important;
+    }
+    .header__icon--menu,
+    header-drawer .header__icon--menu,
+    .header__search--mobile .header__icon--search,
+    .header__icons .header__icon--account,
+    .header__icons .header__icon--cart,
+    .header__icons .header__icon {
+      width: 35px !important;
+      height: 35px !important;
+      min-width: 35px !important;
+      min-height: 35px !important;
+    }
+    .header__icon svg,
+    .header__icon .svg-wrapper svg,
+    .header__icon .icon,
+    .header__icon--cart svg,
+    #cart-icon-bubble svg {
+      width: 16px !important;
+      height: 16px !important;
+      max-width: 16px !important;
+      max-height: 16px !important;
+    }
   }
 
   /* Hide Desktop Horizontal Menu */
