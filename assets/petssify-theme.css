@@ -5142,21 +5142,22 @@ details[open] .modal-overlay::after {
 
   .cart-drawer .cart-item {
     display: grid !important;
-    grid-template-columns: 75px 1fr !important;
+    grid-template-columns: 80px 1fr auto !important;
     grid-template-areas:
-      "media details"
-      "media quantity" !important;
-    column-gap: 12px !important;
-    row-gap: 6px !important;
-    padding: 14px 0 !important;
+      "media details totals"
+      "media quantity quantity" !important;
+    column-gap: 14px !important;
+    row-gap: 8px !important;
+    padding: 16px 0 !important;
     border-bottom: 1px solid #F1F5F9 !important;
     align-items: start !important;
+    position: relative !important;
   }
 
   .cart-drawer .cart-item__media {
     grid-area: media !important;
-    width: 75px !important;
-    height: 75px !important;
+    width: 80px !important;
+    height: 80px !important;
     border-radius: 10px !important;
     overflow: hidden !important;
     background: #F8FAFC !important;
@@ -5177,58 +5178,89 @@ details[open] .modal-overlay::after {
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
+    padding-right: 8px !important;
+  }
+
+  .cart-drawer .cart-item__totals {
+    grid-area: totals !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    text-align: right !important;
+    padding: 0 !important;
+    font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+    color: #00205B !important;
   }
 
   .cart-drawer .cart-item__name {
     font-size: 14px !important;
     font-weight: 700 !important;
     color: #00205B !important;
-    line-height: 1.3 !important;
+    line-height: 1.35 !important;
     text-decoration: none !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .cart-drawer .cart-item__discounted-prices,
+  .cart-drawer .cart-item__name:hover {
+    color: #FF6B00 !important;
+  }
+
   .cart-drawer .product-option {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: #FF7A29 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #64748B !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .cart-drawer .product-option dd,
+  .cart-drawer .product-option dt {
+    display: inline !important;
+    margin: 0 !important;
+    color: #64748B !important;
   }
 
   .cart-drawer .cart-item__quantity {
     grid-area: quantity !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     width: 100% !important;
     margin-top: 4px !important;
+    padding: 0 !important;
   }
 
   .cart-drawer .cart-item__quantity-wrapper {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 12px !important;
-    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
     width: 100% !important;
   }
 
   .cart-drawer quantity-input.quantity {
     display: inline-flex !important;
     align-items: center !important;
-    border: 1.5px solid #CBD5E1 !important;
+    border: 1px solid #CBD5E1 !important;
     border-radius: 999px !important;
-    height: 34px !important;
-    min-height: 34px !important;
+    height: 32px !important;
+    min-height: 32px !important;
     width: 96px !important;
     background: #FFFFFF !important;
-    overflow: hidden !important;
     box-sizing: border-box !important;
-    flex-shrink: 0 !important;
+    padding: 0 4px !important;
   }
 
   .cart-drawer .quantity__button {
-    width: 30px !important;
-    height: 34px !important;
-    min-width: 30px !important;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -5237,14 +5269,20 @@ details[open] .modal-overlay::after {
     background: transparent !important;
     cursor: pointer !important;
     padding: 0 !important;
+    border-radius: 50% !important;
+    transition: background 0.15s ease !important;
+  }
+
+  .cart-drawer .quantity__button:hover {
+    background: #F1F5F9 !important;
   }
 
   .cart-drawer .quantity__input {
-    width: 36px !important;
-    height: 34px !important;
+    width: 32px !important;
+    height: 30px !important;
     text-align: center !important;
     font-size: 13px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     color: #00205B !important;
     border: none !important;
     padding: 0 !important;
@@ -5254,24 +5292,32 @@ details[open] .modal-overlay::after {
   .cart-drawer cart-remove-button {
     display: inline-flex !important;
     margin: 0 !important;
-    flex-shrink: 0 !important;
   }
 
-  .cart-drawer cart-remove-button .button {
-    min-width: 34px !important;
-    min-height: 34px !important;
-    height: 34px !important;
-    width: 34px !important;
+  .cart-drawer cart-remove-button .button,
+  .cart-drawer cart-remove-button .cart-remove-button {
+    min-width: 30px !important;
+    min-height: 30px !important;
+    height: 30px !important;
+    width: 30px !important;
     padding: 0 !important;
-    border-radius: 8px !important;
-    background: #FF7A29 !important;
-    color: #FFFFFF !important;
+    border-radius: 6px !important;
+    background: #F8FAFC !important;
+    color: #94A3B8 !important;
+    border: 1px solid #E2E8F0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border: none !important;
     cursor: pointer !important;
-    box-shadow: 0 1px 3px rgba(255, 122, 41, 0.25) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .cart-drawer cart-remove-button .button:hover,
+  .cart-drawer cart-remove-button .cart-remove-button:hover {
+    background: #FEE2E2 !important;
+    color: #EF4444 !important;
+    border-color: #FECACA !important;
   }
 
   .cart-drawer cart-remove-button .button svg {

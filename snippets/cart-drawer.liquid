@@ -76,6 +76,24 @@
           </button>
         </div>
       {%- endif -%}
+      {%- comment -%} Petssify: Black Friday Auto-Applied Sitewide Banner {%- endcomment -%}
+      <div class="ps-cart-bfcm-banner">
+        <div class="ps-cart-bfcm-banner__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+          </svg>
+        </div>
+        <div class="ps-cart-bfcm-banner__content">
+          <div class="ps-cart-bfcm-banner__title-row">
+            <span class="ps-cart-bfcm-banner__title">BLACK FRIDAY SPECIAL</span>
+            <span class="ps-cart-bfcm-banner__badge">AUTO-APPLIED</span>
+          </div>
+          <p class="ps-cart-bfcm-banner__text">
+            <strong>Up to 70% OFF</strong> applied sitewide! Extra savings added automatically.
+          </p>
+        </div>
+      </div>
       {%- comment -%} Petssify: Free Shipping Progress Bar (Spec 1.3) {%- endcomment -%}
       {%- render 'petssify-free-shipping-bar' -%}
       <cart-drawer-items
@@ -158,67 +176,27 @@
                             {{- item.product.title | escape -}}
                           </a>
 
-                          {%- if item.original_price != item.final_price -%}
-                            <div class="cart-item__discounted-prices">
-                              <span class="visually-hidden">
-                                {{ 'products.product.price.regular_price' | t }}
-                              </span>
-                              <s class="cart-item__old-price product-option">
-                                {{- item.original_price | money -}}
-                              </s>
-                              <span class="visually-hidden">
-                                {{ 'products.product.price.sale_price' | t }}
-                              </span>
-                              <strong class="cart-item__final-price product-option">
-                                {{ item.final_price | money }}
-                              </strong>
-                            </div>
-                          {%- else -%}
-                            <div class="product-option">
-                              {{ item.original_price | money }}
-                            </div>
-                          {%- endif -%}
+                          <div class="cart-item__price-wrap">
+                            <span class="cart-item__price-current">{{ item.final_price | money }}</span>
+                            {%- if item.variant.compare_at_price > item.variant.price -%}
+                              <s class="cart-item__price-compare">{{ item.variant.compare_at_price | money }}</s>
+                              {%- assign item_diff = item.variant.compare_at_price | minus: item.variant.price -%}
+                              {%- assign item_discount_pct = item_diff | times: 100 | divided_by: item.variant.compare_at_price | round -%}
+                              <span class="cart-item__auto-discount-pill">{{ item_discount_pct }}% OFF AUTO-APPLIED</span>
+                            {%- endif -%}
+                          </div>
 
                           {%- if item.product.has_only_default_variant == false
                             or item.properties.size != 0
                             or item.selling_plan_allocation != null
                           -%}
-                            <dl>
-                              {%- if item.product.has_only_default_variant == false -%}
-                                {%- for option in item.options_with_values -%}
-                                  <div class="product-option">
-                                    <dt>{{ option.name }}:</dt>
-                                    <dd>
-                                      {{ option.value -}}
-                                      {%- unless forloop.last %}, {% endunless %}
-                                    </dd>
-                                  </div>
-                                {%- endfor -%}
-                              {%- endif -%}
-
-                              {%- for property in item.properties -%}
-                                {%- assign property_first_char = property.first | slice: 0 -%}
-                                {%- if property.last != blank and property_first_char != '_' -%}
-                                  <div class="product-option">
-                                    <dt>{{ property.first }}:</dt>
-                                    <dd>
-                                      {%- if property.last contains '/uploads/' -%}
-                                        <a
-                                          href="{{ property.last }}"
-                                          class="link"
-                                          target="_blank"
-                                          aria-describedby="a11y-new-window-message"
-                                        >
-                                          {{ property.last | split: '/' | last }}
-                                        </a>
-                                      {%- else -%}
-                                        {{ property.last }}
-                                      {%- endif -%}
-                                    </dd>
-                                  </div>
-                                {%- endif -%}
+                            {%- if item.product.has_only_default_variant == false -%}
+                            <div class="cart-item__variant-wrap">
+                              {%- for option in item.options_with_values -%}
+                                <span class="cart-item__variant-badge">{{ option.name }}: {{ option.value }}</span>
                               {%- endfor -%}
-                            </dl>
+                            </div>
+                          {%- endif -%}
 
                             <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
                           {%- endif -%}
@@ -237,32 +215,12 @@
                           </ul>
                         </td>
 
-                        <td class="cart-item__totals right" role="cell" headers="CartDrawer-ColumnTotal">
+                        <td class="cart-item__totals" role="cell" headers="CartDrawer-ColumnTotal">
                           {%- render 'loading-spinner' -%}
                           <div class="cart-item__price-wrapper">
-                            {%- if item.original_line_price != item.final_line_price -%}
-                              <div class="cart-item__discounted-prices">
-                                <span class="visually-hidden">
-                                  {{ 'products.product.price.regular_price' | t }}
-                                </span>
-                                <s class="cart-item__old-price price price--end">
-                                  {{ item.original_line_price | money }}
-                                </s>
-                                <span class="visually-hidden">
-                                  {{ 'products.product.price.sale_price' | t }}
-                                </span>
-                                <span class="price price--end">
-                                  {{ item.final_line_price | money }}
-                                </span>
-                              </div>
-                            {%- else -%}
-                              <span class="price price--end">
-                                {{ item.original_line_price | money }}
-                              </span>
-                            {%- endif -%}
-
-                            {%- if item.variant.available and item.unit_price_measurement -%}
-                              {% render 'unit-price', price: item.unit_price, measurement: item.unit_price_measurement %}
+                            <span class="cart-item__line-total-price">{{ item.final_line_price | money }}</span>
+                            {%- if item.variant.compare_at_price > item.variant.price -%}
+                              <s class="cart-item__line-compare-price">{{ item.variant.compare_at_price | times: item.quantity | money }}</s>
                             {%- endif -%}
                           </div>
                         </td>
@@ -517,9 +475,39 @@
             {%- endif -%}
           </div>
 
+          {%- assign total_cart_savings = 0 -%}
+          {%- assign total_original_price = 0 -%}
+          {%- for item in cart.items -%}
+            {%- if item.variant.compare_at_price > item.variant.price -%}
+              {%- assign line_savings = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
+              {%- assign total_cart_savings = total_cart_savings | plus: line_savings -%}
+              {%- assign line_orig = item.variant.compare_at_price | times: item.quantity -%}
+              {%- assign total_original_price = total_original_price | plus: line_orig -%}
+            {%- else -%}
+              {%- assign total_original_price = total_original_price | plus: item.final_line_price -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if total_cart_savings > 0 -%}
+            <div class="cart-drawer__auto-savings-strip">
+              <div class="cart-drawer__savings-left">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Black Friday Auto-Applied Savings:</span>
+              </div>
+              <span class="cart-drawer__savings-amount">-{{ total_cart_savings | money }}</span>
+            </div>
+          {%- endif -%}
+
           <div class="totals" role="status">
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-            <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            <div class="totals__values-wrap">
+              {%- if total_cart_savings > 0 -%}
+                <s class="totals__original-total">{{ total_original_price | money }}</s>
+              {%- endif -%}
+              <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            </div>
           </div>
 
           <small class="tax-note caption-large rte">
