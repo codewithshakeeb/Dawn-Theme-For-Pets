@@ -422,3 +422,259 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
     margin-left: 0;
   }
 }
+
+/* ==========================================================================
+   Petssify Enhanced Modern Cart Drawer Styles
+   Clean DTC aesthetic (Wild One / Petlibro benchmark)
+   ========================================================================== */
+
+.drawer.active {
+  visibility: visible !important;
+}
+
+.drawer__inner {
+  width: 44rem !important;
+  max-width: 100vw !important;
+  padding: 0 1.8rem !important;
+  background-color: #FFFFFF !important;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.14) !important;
+}
+
+@media screen and (max-width: 500px) {
+  .drawer__inner {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 1.2rem !important;
+  }
+}
+
+.drawer__header {
+  padding: 16px 0 12px 0 !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+.drawer__heading {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #00205B !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.drawer__header-count {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+}
+
+/* Items in Cart Table */
+.cart-drawer .cart-item {
+  border-bottom: 1px solid #F1F5F9 !important;
+  padding-bottom: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.cart-drawer .cart-item:last-child {
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+}
+
+.cart-drawer .cart-item__media {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border: 1px solid #E2E8F0 !important;
+  background: #F8FAFC !important;
+}
+
+.cart-drawer .cart-item__name {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: #0B1320 !important;
+  line-height: 1.35 !important;
+  text-decoration: none !important;
+}
+
+.cart-drawer .cart-item__name:hover {
+  color: #FF6B00 !important;
+}
+
+.cart-drawer .cart-item__price-wrapper,
+.cart-drawer .cart-item__totals .price {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #00205B !important;
+}
+
+/* Quantity Stepper Pill in Cart Drawer */
+.cart-drawer quantity-input.quantity {
+  width: 96px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  border-radius: 999px !important;
+  border: 1px solid #CBD5E1 !important;
+  background: #FFFFFF !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 4px !important;
+}
+
+.cart-drawer .quantity__button {
+  width: 24px !important;
+  height: 24px !important;
+  border: none !important;
+  background: transparent !important;
+  color: #0B1320 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.cart-drawer .quantity__button:hover {
+  background-color: #F1F5F9 !important;
+}
+
+.cart-drawer .quantity__input {
+  width: 32px !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  color: #0B1320 !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.cart-drawer cart-remove-button .cart-remove-button {
+  color: #94A3B8 !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+}
+
+.cart-drawer cart-remove-button .cart-remove-button:hover {
+  color: #DC2626 !important;
+  background-color: rgba(220, 38, 38, 0.08) !important;
+}
+
+/* Cart Footer */
+.drawer__footer {
+  border-top: 1px solid #E2E8F0 !important;
+  padding: 16px 0 20px 0 !important;
+}
+
+.cart-drawer .totals {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  margin-bottom: 4px !important;
+}
+
+.cart-drawer .totals__total {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  margin: 0 !important;
+}
+
+.cart-drawer .totals__total-value {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  color: #00205B !important;
+  margin: 0 !important;
+}
+
+.cart-drawer .tax-note {
+  font-size: 12px !important;
+  color: #64748B !important;
+  margin: 0 0 14px 0 !important;
+}
+
+.cart-drawer .cart__checkout-button {
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  background-color: #00205B !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 15.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(0, 32, 91, 0.22) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.cart-drawer .cart__checkout-button:hover:not([disabled]) {
+  background-color: #FF6B00 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.35) !important;
+}
+
+/* Trust Badges */
+.cart-drawer__trust-badges {
+  margin-top: 14px !important;
+  padding-top: 12px !important;
+  border-top: 1px dashed #E2E8F0 !important;
+  text-align: center !important;
+}
+
+.cart-drawer__trust-ssl {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #059669 !important;
+  margin-bottom: 8px !important;
+}
+
+.cart-drawer__payment-icons {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 8px !important;
+}
+
+.cart-drawer__card-badge {
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  padding: 3px 6px !important;
+  border-radius: 4px !important;
+  background: #F1F5F9 !important;
+  color: #475569 !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.cart-drawer__trust-guarantee {
+  font-size: 11.5px !important;
+  color: #64748B !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  margin: 0 !important;
+}

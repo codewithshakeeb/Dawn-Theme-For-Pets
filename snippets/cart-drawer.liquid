@@ -63,7 +63,7 @@
       {%- endif -%}
       {%- if cart != empty -%}
         <div class="drawer__header">
-          <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
+          <h2 class="drawer__heading">{{ 'sections.cart.title' | t }} <span class="drawer__header-count">({{ cart.item_count }})</span></h2>
           <button
             class="drawer__close"
             type="button"
@@ -576,8 +576,33 @@
               disabled
             {% endif %}
           >
-            {{ 'sections.cart.checkout' | t }}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 6px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            {{ 'sections.cart.checkout' | t }} • {{ cart.total_price | money }}
           </button>
+        </div>
+
+        {%- comment -%} Petssify Trust & Security Badges in Drawer Footer {%- endcomment -%}
+        <div class="cart-drawer__trust-badges">
+          <div class="cart-drawer__trust-ssl">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Guaranteed Safe &amp; Secure Checkout</span>
+          </div>
+          <div class="cart-drawer__payment-icons">
+            <span class="cart-drawer__card-badge">VISA</span>
+            <span class="cart-drawer__card-badge">MASTERCARD</span>
+            <span class="cart-drawer__card-badge">AMEX</span>
+            <span class="cart-drawer__card-badge">DISCOVER</span>
+            <span class="cart-drawer__card-badge">APPLE PAY</span>
+            <span class="cart-drawer__card-badge">PAYPAL</span>
+          </div>
+          <p class="cart-drawer__trust-guarantee">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            30-Day Money-Back Guarantee &bull; Hassle-Free Returns
+          </p>
         </div>
       </div>
     </div>

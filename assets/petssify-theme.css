@@ -1392,19 +1392,48 @@ body {
   letter-spacing: 0 !important;
 }
 
-.price--large .price-item--sale,
-.price--large .price-item--regular {
-  font-family: var(--font-heading) !important;
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: var(--color-primary) !important;
+.price--large .price-item--sale {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  color: #00205B !important;
   letter-spacing: -0.01em !important;
+  line-height: 1.15 !important;
 }
 
-.price--large .price-item--regular.price-item--last {
-  font-size: 16px !important;
+.price--large s.price-item--regular,
+.price--large s .price-item--regular,
+.price--large .price__sale .price-item--regular {
+  font-family: var(--font-body-family, 'Inter', sans-serif) !important;
+  font-size: 20px !important;
   font-weight: 500 !important;
   color: #94A3B8 !important;
+  text-decoration: line-through !important;
+  line-height: 1.2 !important;
+}
+
+.price--large .price__regular .price-item--regular {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  color: #00205B !important;
+  line-height: 1.15 !important;
+}
+
+.price--large .price__sale,
+.price--large .price__container {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.price--large.price--show-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 8px !important;
 }
 
 /* ==========================================================================

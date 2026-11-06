@@ -279,22 +279,27 @@
             const cartHtml = await cartRes.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(cartHtml, 'text/html');
-            const newDrawerInner = doc.querySelector('cart-drawer');
-            if (newDrawerInner) {
-              cartDrawer.innerHTML = newDrawerInner.innerHTML;
+            const newDrawerInner = doc.querySelector('#CartDrawer') || doc.querySelector('cart-drawer');
+            const targetEl = document.querySelector('#CartDrawer') || cartDrawer;
+            if (newDrawerInner && targetEl) {
+              targetEl.innerHTML = newDrawerInner.innerHTML;
             }
+            cartDrawer.classList.remove('is-empty');
+            const overlay = cartDrawer.querySelector('#CartDrawer-Overlay');
+            if (overlay) overlay.addEventListener('click', () => cartDrawer.close());
             if (typeof cartDrawer.open === 'function') {
-              cartDrawer.open();
+              setTimeout(() => {
+                cartDrawer.open();
+              }, 50);
             }
-          } else {
-            fetch('/cart.js')
-              .then((r) => r.json())
-              .then((c) => {
-                const countEls = document.querySelectorAll('.cart-count-bubble span:first-child');
-                countEls.forEach((el) => (el.textContent = c.item_count));
-              })
-              .catch(() => {});
           }
+          fetch('/cart.js')
+            .then((r) => r.json())
+            .then((c) => {
+              const countEls = document.querySelectorAll('.cart-count-bubble span:first-child');
+              countEls.forEach((el) => (el.textContent = c.item_count));
+            })
+            .catch(() => {});
 
           setTimeout(() => {
             if (btnText) btnText.textContent = 'Add to cart';
