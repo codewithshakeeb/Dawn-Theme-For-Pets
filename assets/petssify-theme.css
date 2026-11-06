@@ -3176,20 +3176,10 @@ header.header,
   transition: color 0.25s ease !important;
 }
 
-.header__heading-logo--sticky {
-  display: none !important;
-  visibility: hidden !important;
-  width: 0 !important;
-  height: 0 !important;
-  max-width: 0 !important;
-  max-height: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  pointer-events: none !important;
-}
-
 .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky,
-.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--sticky {
+.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--sticky,
+.section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky,
+.section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--sticky {
   display: none !important;
   visibility: hidden !important;
   width: 0 !important;
@@ -3202,16 +3192,19 @@ header.header,
 }
 
 .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default,
-.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--default {
+.header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--default,
+.section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default,
+.section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) img.header__heading-logo--default {
   display: block !important;
   visibility: visible !important;
   width: auto !important;
   height: auto !important;
-  mix-blend-mode: multiply;
-  /* Seamlessly dissolves white canvas into header background */
+  max-width: 180px !important;
+  max-height: 44px !important;
+  position: static !important;
+  mix-blend-mode: normal !important;
   transition: opacity 0.25s ease !important;
 }
-
 /* Floating White Capsule Menu in Non-Sticky State */
 @media screen and (min-width: 990px) {
   .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__inline-menu>.list-menu--inline {
@@ -3451,22 +3444,36 @@ details[open]>summary.header__menu-item svg.icon-caret {
 }
 
 /* Sticky Logo Switch & Fallback */
+:is(.header-wrapper--scrolled, .scrolled-past-header, .shopify-section-header-sticky) .header__heading-logo--sticky,
 .header-wrapper.header-wrapper--scrolled .header__heading-logo--sticky,
 .header-wrapper.scrolled-past-header .header__heading-logo--sticky,
 .header-wrapper.header-wrapper--scrolled img.header__heading-logo--sticky,
-.header-wrapper.scrolled-past-header img.header__heading-logo--sticky {
+.header-wrapper.scrolled-past-header img.header__heading-logo--sticky,
+.section-header.header-wrapper--scrolled .header__heading-logo--sticky,
+.section-header.scrolled-past-header .header__heading-logo--sticky,
+.section-header.shopify-section-header-sticky .header__heading-logo--sticky {
   display: block !important;
   visibility: visible !important;
+  opacity: 1 !important;
   width: auto !important;
   height: auto !important;
+  max-width: 180px !important;
+  max-height: 44px !important;
   position: static !important;
+  left: auto !important;
   pointer-events: auto !important;
+  object-fit: contain !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
 }
 
+:is(.header-wrapper--scrolled, .scrolled-past-header, .shopify-section-header-sticky) .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
 .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
 .header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
 .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky img.header__heading-logo--default,
-.header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky img.header__heading-logo--default {
+.header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky img.header__heading-logo--default,
+.section-header.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+.section-header.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default {
   display: none !important;
   visibility: hidden !important;
   width: 0 !important;
@@ -3478,23 +3485,23 @@ details[open]>summary.header__menu-item svg.icon-caret {
   pointer-events: none !important;
 }
 
-/* Fallback if no sticky logo uploaded: Wrap default logo in a clean, elegant white pill badge */
-.header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky),
-.header-wrapper.scrolled-past-header .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) {
-  background: #FFFFFF !important;
-  border-radius: 8px !important;
-  padding: 4px 10px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22) !important;
-}
-
+/* Fallback if no sticky logo uploaded: show default logo inverted to clean white for dark navy */
+:is(.header-wrapper--scrolled, .scrolled-past-header, .shopify-section-header-sticky) .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default,
 .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default,
-.header-wrapper.scrolled-past-header .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default {
+.header-wrapper.scrolled-past-header .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default,
+.section-header.header-wrapper--scrolled .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default,
+.section-header.scrolled-past-header .header__heading-logo-wrapper:not(.header__heading-logo-wrapper--has-sticky) .header__heading-logo--default {
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 180px !important;
+  max-height: 44px !important;
+  position: static !important;
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
 }
-
 /* Capsule Menu in Sticky State -> Elegant Frosted Pill */
 @media screen and (min-width: 990px) {
 
@@ -4201,11 +4208,11 @@ details[open] .modal-overlay::after {
     align-items: center !important;
     justify-content: center !important;
     width: auto !important;
-    overflow: hidden !important;
   }
 
   /* Single Logo Discipline on Mobile: Sticky Logo Strictly Hidden when Unscrolled */
-  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky {
+  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky,
+  .section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--sticky {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
@@ -4217,33 +4224,49 @@ details[open] .modal-overlay::after {
     pointer-events: none !important;
   }
 
-  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default {
+  .header-wrapper:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default,
+  .section-header:not(.header-wrapper--scrolled):not(.scrolled-past-header) .header__heading-logo--default {
     display: block !important;
     visibility: visible !important;
     width: auto !important;
     height: auto !important;
+    max-width: 140px !important;
+    max-height: 34px !important;
   }
 
+  :is(.header-wrapper--scrolled, .scrolled-past-header, .shopify-section-header-sticky) .header__heading-logo--sticky,
   .header-wrapper.header-wrapper--scrolled .header__heading-logo--sticky,
-  .header-wrapper.scrolled-past-header .header__heading-logo--sticky {
+  .header-wrapper.scrolled-past-header .header__heading-logo--sticky,
+  .section-header.header-wrapper--scrolled .header__heading-logo--sticky,
+  .section-header.scrolled-past-header .header__heading-logo--sticky {
     display: block !important;
     visibility: visible !important;
+    opacity: 1 !important;
     width: auto !important;
     height: auto !important;
+    max-width: 140px !important;
+    max-height: 34px !important;
     position: static !important;
+    left: auto !important;
+    pointer-events: auto !important;
+    object-fit: contain !important;
   }
 
+  :is(.header-wrapper--scrolled, .scrolled-past-header, .shopify-section-header-sticky) .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
   .header-wrapper.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
-  .header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default {
+  .header-wrapper.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+  .section-header.header-wrapper--scrolled .header__heading-logo-wrapper--has-sticky .header__heading-logo--default,
+  .section-header.scrolled-past-header .header__heading-logo-wrapper--has-sticky .header__heading-logo--default {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
     height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
     position: absolute !important;
     left: -9999px !important;
     pointer-events: none !important;
   }
-
   .header__heading-link .h2,
   .header__heading .h2,
   .header__heading span.h2 {
