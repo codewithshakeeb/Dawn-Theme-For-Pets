@@ -46,12 +46,19 @@
     </div>
   {%- endif -%}
 
+  {%- assign bfcm_title = block.settings.bfcm_title | default: section.settings.bfcm_title | default: 'Black Friday Special Offer' -%}
+  {%- assign bfcm_badge = block.settings.bfcm_badge_text | default: section.settings.bfcm_badge_text | default: 'SAVE 20%' -%}
+  {%- assign bfcm_timer_label = block.settings.bfcm_timer_label | default: section.settings.bfcm_timer_label | default: 'Deal ends in:' -%}
+  {%- assign bfcm_end_date = block.settings.bfcm_end_date | default: section.settings.bfcm_end_date | default: '2026-11-30T23:59:59' -%}
+  {%- assign bfcm_urgency = block.settings.bfcm_urgency_text | default: section.settings.bfcm_urgency_text | default: 'High Demand: Limited Black Friday allocation remaining' -%}
+  {%- assign bfcm_subtext = block.settings.bfcm_subtext | default: section.settings.bfcm_subtext | default: 'Extra 20% applied at checkout • 30-Day Money-Back Guarantee' -%}
+
   <!-- 3. Black Friday Special Offer Card -->
   {%- if section.settings.enable_bfcm_box != false -%}
     <div
       class="ps-bfcm-card"
       data-bfcm-timer
-      data-end-date="{{ section.settings.bfcm_end_date | default: '2026-11-30T23:59:59' }}"
+      data-end-date="{{ bfcm_end_date }}"
     >
       <!-- Header Row: Title with Vector Tag Icon + SAVE 20% Pill -->
       <div class="ps-bfcm-header">
@@ -60,9 +67,9 @@
             <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
             <line x1="7" y1="7" x2="7.01" y2="7"></line>
           </svg>
-          <span class="ps-bfcm-title">{{ section.settings.bfcm_title | default: 'Black Friday Special Offer' }}</span>
+          <span class="ps-bfcm-title">{{ bfcm_title }}</span>
         </div>
-        <span class="ps-bfcm-badge">{{ section.settings.bfcm_badge_text | default: 'SAVE 20%' }}</span>
+        <span class="ps-bfcm-badge">{{ bfcm_badge }}</span>
       </div>
 
       <!-- Countdown Box (Inner White Pill Box) -->
@@ -72,9 +79,14 @@
             <circle cx="12" cy="12" r="10"></circle>
             <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
-          <span>{{ section.settings.bfcm_timer_label | default: 'Deal ends in:' }}</span>
+          <span>{{ bfcm_timer_label }}</span>
         </div>
-        <div class="ps-bfcm-countdown" data-bfcm-clock>01d 18h 45m 12s</div>
+        <div class="ps-bfcm-countdown" data-bfcm-clock>
+          <span class="ps-bfcm-pill"><span class="ps-bfcm-num" data-bfcm-d>01</span><span class="ps-bfcm-lbl">d</span></span>
+          <span class="ps-bfcm-pill"><span class="ps-bfcm-num" data-bfcm-h>18</span><span class="ps-bfcm-lbl">h</span></span>
+          <span class="ps-bfcm-pill"><span class="ps-bfcm-num" data-bfcm-m>45</span><span class="ps-bfcm-lbl">m</span></span>
+          <span class="ps-bfcm-pill"><span class="ps-bfcm-num" data-bfcm-s>12</span><span class="ps-bfcm-lbl">s</span></span>
+        </div>
       </div>
 
       <!-- Urgency Row with Vector Icon -->
@@ -82,7 +94,7 @@
         <svg class="ps-bolt-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
-        <span class="ps-urgency-body">High Demand: <strong>Limited Black Friday allocation remaining</strong></span>
+        <span class="ps-urgency-body">{{ bfcm_urgency }}</span>
       </div>
 
       <!-- Trust Sub-Line with Vector Check -->
@@ -90,7 +102,7 @@
         <svg class="ps-check-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        <span>Extra 20% applied at checkout • 30-Day Money-Back Guarantee</span>
+        <span>{{ bfcm_subtext }}</span>
       </div>
     </div>
   {%- endif -%}
@@ -254,12 +266,38 @@
   }
 
   .ps-bfcm-countdown {
-    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14.5px;
     font-weight: 800;
     color: #C2410C;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
     font-variant-numeric: tabular-nums;
     font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  }
+
+  .ps-bfcm-pill {
+    display: inline-flex;
+    align-items: baseline;
+    background: #FFF7ED;
+    border: 1px solid #FFEDD5;
+    color: #EA580C;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 13.5px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 1px 2px rgba(234, 88, 12, 0.05);
+  }
+
+  .ps-bfcm-pill .ps-bfcm-lbl {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #C2410C;
+    margin-left: 2px;
+    text-transform: lowercase;
   }
 
   /* Urgency Row */
@@ -309,58 +347,135 @@
       padding: 14px 14px 12px;
     }
     .ps-bfcm-timer-box {
-      padding: 9px 12px;
+      padding: 9px 10px;
+      gap: 6px;
+    }
+    .ps-bfcm-timer-label {
+      font-size: 12.5px;
+      gap: 6px;
     }
     .ps-bfcm-countdown {
-      font-size: 15px;
+      font-size: 13px;
+      gap: 3px;
+    }
+    .ps-bfcm-pill {
+      padding: 2.5px 5px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+    .ps-bfcm-pill .ps-bfcm-lbl {
+      font-size: 9.5px;
     }
   }
 </style>
 
 <script>
   (function() {
-    function initBfcmStack() {
-      var stack = document.getElementById('ps-bfcm-stack-{{ section.id }}');
-      if (!stack) return;
+    function parseTarget(str) {
+      if (!str || typeof str !== 'string') return NaN;
+      var cleaned = str.trim();
 
-      var card = stack.querySelector('[data-bfcm-timer]');
-      if (card) {
-        var clockEl = card.querySelector('[data-bfcm-clock]');
-        if (clockEl) {
-          var storageKey = 'petssify_bfcm_urgency_timer_v3';
-          var saved = localStorage.getItem(storageKey);
-          var now = Date.now();
-          var targetTime = saved ? parseInt(saved, 10) : 0;
-
-          // 48-Hour Rolling Black Friday Deal Countdown (01d 18h 45m 12s)
-          if (!targetTime || targetTime <= now || targetTime > now + (48 * 3600000)) {
-            targetTime = now + (1 * 86400000) + (18 * 3600000) + (45 * 60000) + 12000;
-            try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
-          }
-
-          function updateClock() {
-            var diff = targetTime - Date.now();
-            if (diff <= 0) {
-              targetTime = Date.now() + (2 * 86400000) + (5 * 3600000);
-              try { localStorage.setItem(storageKey, String(targetTime)); } catch(e){}
-              diff = targetTime - Date.now();
-            }
-            var d = Math.floor(diff / 86400000);
-            var h = Math.floor((diff % 86400000) / 3600000);
-            var m = Math.floor((diff % 3600000) / 60000);
-            var s = Math.floor((diff % 60000) / 1000);
-            clockEl.textContent =
-              String(d).padStart(2, '0') + 'd ' +
-              String(h).padStart(2, '0') + 'h ' +
-              String(m).padStart(2, '0') + 'm ' +
-              String(s).padStart(2, '0') + 's';
-          }
-
-          updateClock();
-          if (card._bfcmInterval) clearInterval(card._bfcmInterval);
-          card._bfcmInterval = setInterval(updateClock, 1000);
-        }
+      // Check for rolling duration syntax like "48h", "24h", "2d"
+      var hourMatch = cleaned.match(/^(\d+)\s*h(?:ours?)?$/i);
+      if (hourMatch) {
+        return Date.now() + parseInt(hourMatch[1], 10) * 3600000;
       }
+      var dayMatch = cleaned.match(/^(\d+)\s*d(?:ays?)?$/i);
+      if (dayMatch) {
+        return Date.now() + parseInt(dayMatch[1], 10) * 86400000;
+      }
+
+      // Convert format YYYY-MM-DD HH:mm:ss to ISO YYYY-MM-DDTHH:mm:ss
+      if (/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}(:\d{2})?$/.test(cleaned)) {
+        cleaned = cleaned.replace(' ', 'T');
+      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(cleaned)) {
+        cleaned += 'T23:59:59';
+      }
+      var t = new Date(cleaned).getTime();
+      if (!isNaN(t)) return t;
+      t = Date.parse(cleaned);
+      return isNaN(t) ? NaN : t;
+    }
+
+    function initBfcmStack() {
+      // Purge legacy localStorage keys that locked timer into 18h
+      try {
+        localStorage.removeItem('petssify_bfcm_urgency_timer_v3');
+        localStorage.removeItem('petssify_bfcm_urgency_timer_v2');
+        localStorage.removeItem('petssify_bfcm_urgency_timer_v1');
+      } catch (e) {}
+
+      var cards = document.querySelectorAll('.ps-pdp-conversion-stack [data-bfcm-timer]');
+      if (!cards || cards.length === 0) return;
+
+      var now = Date.now();
+      var masterGlobalKey = 'petssify_promo_timer_master_v2';
+      var masterTime = localStorage.getItem(masterGlobalKey);
+      var masterTimestamp = masterTime ? parseInt(masterTime, 10) : NaN;
+
+      cards.forEach(function(card) {
+        if (card._bfcmInterval) {
+          clearInterval(card._bfcmInterval);
+          card._bfcmInterval = null;
+        }
+
+        var clockEl = card.querySelector('[data-bfcm-clock]');
+        if (!clockEl) return;
+
+        var endDateStr = card.getAttribute('data-end-date');
+        var targetTime = parseTarget(endDateStr);
+
+        // If targetTime is invalid or in the past:
+        if (isNaN(targetTime) || targetTime <= now) {
+          // Check if master promo timer from banner exists
+          if (!isNaN(masterTimestamp) && masterTimestamp > now) {
+            targetTime = masterTimestamp;
+          } else {
+            // Default Black Friday End Date: Nov 30, 2026 23:59:59
+            var defaultDate = parseTarget('2026-11-30T23:59:59');
+            if (!isNaN(defaultDate) && defaultDate > now) {
+              targetTime = defaultDate;
+            } else {
+              targetTime = now + (2 * 86400000) + (5 * 3600000) + (54 * 60000);
+            }
+          }
+        }
+
+        var dEl = clockEl.querySelector('[data-bfcm-d]');
+        var hEl = clockEl.querySelector('[data-bfcm-h]');
+        var mEl = clockEl.querySelector('[data-bfcm-m]');
+        var sEl = clockEl.querySelector('[data-bfcm-s]');
+
+        function updateClock() {
+          var currentNow = Date.now();
+          var diff = targetTime - currentNow;
+          if (diff <= 0) {
+            diff = 0;
+          }
+          var d = Math.floor(diff / 86400000);
+          var h = Math.floor((diff % 86400000) / 3600000);
+          var m = Math.floor((diff % 3600000) / 60000);
+          var s = Math.floor((diff % 60000) / 1000);
+
+          var dStr = d < 10 ? '0' + d : String(d);
+          var hStr = h < 10 ? '0' + h : String(h);
+          var mStr = m < 10 ? '0' + m : String(m);
+          var sStr = s < 10 ? '0' + s : String(s);
+
+          if (dEl && hEl && mEl && sEl) {
+            dEl.textContent = dStr;
+            hEl.textContent = hStr;
+            mEl.textContent = mStr;
+            sEl.textContent = sStr;
+          } else {
+            clockEl.textContent = dStr + 'd ' + hStr + 'h ' + mStr + 'm ' + sStr + 's';
+          }
+        }
+
+        updateClock();
+        card._bfcmInterval = setInterval(updateClock, 1000);
+      });
 
       // Sync Variant Price, Compare At, and SAVE % Pill
       function formatMoney(cents) {
@@ -372,6 +487,9 @@
 
       function handleVariantChange(variant) {
         if (!variant) return;
+
+        var stack = document.getElementById('ps-bfcm-stack-{{ section.id }}');
+        if (!stack) return;
 
         var curPriceEl = stack.querySelector('[data-ps-current-price]');
         var compPriceEl = stack.querySelector('[data-ps-compare-price]');
@@ -430,5 +548,7 @@
     }
 
     document.addEventListener('shopify:section:load', initBfcmStack);
+    document.addEventListener('shopify:section:select', initBfcmStack);
+    document.addEventListener('shopify:section:reorder', initBfcmStack);
   })();
 </script>
